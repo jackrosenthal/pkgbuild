@@ -1,4 +1,3 @@
-# $Id: PKGBUILD,v 1.30 2007/12/20 08:24:46 tpowa Exp $
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: Sarah Hay <sarahhay@mb.sympatico.ca>
 
