@@ -1,4 +1,3 @@
-# $Id: PKGBUILD,v 1.109 2008/03/12 21:06:10 jgc Exp $
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 
 pkgname=gtk2
