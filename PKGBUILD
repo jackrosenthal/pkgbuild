@@ -4,7 +4,7 @@
 pkgbase=xsane
 pkgname=('xsane' 'xsane-gimp')
 pkgver=0.997
-pkgrel=3
+pkgrel=4
 arch=(i686 x86_64)
 url="http://www.xsane.org"
 license=('GPL2')
@@ -39,7 +39,7 @@ package_xsane() {
 
 package_xsane-gimp() {
   pkgdesc="XSane Gimp plugin"
-  depends=('sane' 'gimp')
+  depends=('xsane' 'gimp')
   cd "$srcdir/$pkgname-$pkgver"
   install -D -m755 src/xsane-gimp ${pkgdir}/usr/bin/xsane-gimp || return 1
 
