@@ -2,7 +2,7 @@
 
 pkgname=gtk2
 pkgver=2.22.0
-pkgrel=2
+pkgrel=3
 pkgdesc="The GTK+ Toolkit (v2)"
 arch=('i686' 'x86_64')
 url="http://www.gtk.org/"
@@ -30,6 +30,8 @@ build() {
       --with-xinput=yes
   make
   make DESTDIR="${pkgdir}" install
+
+  sed -i "s#env python#env python2#" $pkgdir/usr/bin/gtk-builder-convert
 
   echo 'gtk-fallback-icon-theme = "gnome"' > "${pkgdir}/etc/gtk-2.0/gtkrc"
 }
