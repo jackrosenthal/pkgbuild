@@ -3,7 +3,7 @@
 pkgbase=gtk2
 pkgname=('gtk2' 'gtk-update-icon-cache')
 pkgver=2.24.9
-pkgrel=2
+pkgrel=3
 arch=('i686' 'x86_64')
 url="http://www.gtk.org/"
 makedepends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
@@ -50,7 +50,7 @@ package_gtk2() {
 }
 package_gtk-update-icon-cache() {
     pkgdesc="The GTK+ update icon cache tool"
-    depends=('gdk-pixbuf2')
+    depends=('gdk-pixbuf2>=2.24.1-3')
 
     cd "$srcdir/gtk+-$pkgver/gtk"
 
