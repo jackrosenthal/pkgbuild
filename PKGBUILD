@@ -4,7 +4,7 @@
 pkgbase=xsane
 pkgname=('xsane' 'xsane-gimp')
 pkgver=0.998
-pkgrel=3
+pkgrel=4
 arch=(i686 x86_64)
 url="http://www.xsane.org"
 license=('GPL2')
@@ -22,8 +22,7 @@ build() {
 
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
-    --enable-gimp \
-    --help
+    --enable-gimp
   make
   mv src/xsane src/xsane-gimp
 
