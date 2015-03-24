@@ -1,7 +1,7 @@
 # Maintainer: Eric Bélanger <eric@archlinux.org>
 
 pkgname=webkit2gtk
-pkgver=2.7.91
+pkgver=2.8.0
 pkgrel=1
 pkgdesc="GTK+ Web content engine library"
 arch=('i686' 'x86_64')
@@ -17,7 +17,7 @@ optdepends=('gtk2: Netscape plugin support'
 options=('!emptydirs')
 source=(http://webkitgtk.org/releases/webkitgtk-${pkgver}.tar.xz
         fix-pretty-quotes.patch)
-sha256sums=('9d2b70a0dba6e2b6f74b82b2ceb92605921ecf0a554633ed98bc277c55b091e1'
+sha256sums=('05fad239f5f035b0a3628bb7bc1536d916f772fc9ff95de22e3cec1af2ac6815'
             '56316228bbbf0b7ebcbe210a35120f4e72cb9c1b680dd82cc2bde0f4549245e6')
 
 prepare() {
