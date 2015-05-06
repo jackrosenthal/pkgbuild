@@ -3,11 +3,12 @@
 pkgbase=gtk2
 pkgname=('gtk2' 'gtk-update-icon-cache')
 pkgver=2.24.27
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.gtk.org/"
 makedepends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-             'shared-mime-info' 'cairo' 'libcups' 'gdk-pixbuf2' 'gobject-introspection' 'python2')
+             'shared-mime-info' 'cairo' 'libcups' 'gdk-pixbuf2' 'gobject-introspection' 'python2'
+             'librsvg')
 license=('LGPL')
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz
         gtkrc xid-collision-debug.patch)
@@ -38,7 +39,7 @@ package_gtk2() {
     pkgdesc="GTK+ is a multi-platform toolkit (v2)"
     install=gtk2.install
     depends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 
-             'shared-mime-info' 'cairo' 'libcups' 'gtk-update-icon-cache')
+             'shared-mime-info' 'cairo' 'libcups' 'gtk-update-icon-cache' 'librsvg')
     optdepends=('gnome-themes-standard: Default widget theme'
                 'gnome-icon-theme: Default icon theme')
     replaces=('gtk2-docs')
