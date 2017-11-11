@@ -1,7 +1,7 @@
 # Contributor: Eric Bélanger <eric@archlinux.org>
 
 pkgname=webkit2gtk
-pkgver=2.18.2
+pkgver=2.18.3
 pkgrel=1
 pkgdesc="GTK+ Web content engine library"
 arch=(i686 x86_64)
@@ -15,7 +15,7 @@ optdepends=('gtk2: Netscape plugin support'
             'gst-plugins-good: media decoding'
             'gst-libav: nonfree media decoding')
 source=(https://webkitgtk.org/releases/webkitgtk-${pkgver}.tar.xz{,.asc})
-sha256sums=('b14cb3f1b5321b1dc50abcc0445a97f8e2f8813562bca7ce4d2f8069f6fec8e7'
+sha256sums=('e15420e1616a6f70f321541d467af5ca285bff66b1e0fa68a01df3ccf1b18f9e'
             'SKIP')
 validpgpkeys=('D7FCF61CF9A2DEAB31D81BD3F3D322D0EC4582C3')
 
@@ -24,7 +24,7 @@ prepare() {
   cd webkitgtk-$pkgver
 
   sed -i '1s/python$/&2/' Tools/gtk/generate-gtkdoc
-  rm -r Source/ThirdParty/gtest/
+  rm -r Source/ThirdParty/gtest
 }
 
 build() {
