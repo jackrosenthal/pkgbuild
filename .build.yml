@@ -16,4 +16,4 @@ secrets:
 tasks:
   - run-orchestrator: |
       cd pkgbuild
-      ./buildbot.py orchestrate --rebuild-all
+      ./buildbot.py orchestrate
