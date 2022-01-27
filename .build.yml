@@ -1,6 +1,7 @@
 image: archlinux
 repositories:
   jmr: "https://archlinux-jmr.s3.us-west-004.backblazeb2.com/$repo/$arch#55E00EDED9D418CBACB39CAD184AD86A1B97C873"
+  multilib: "http://mirror.rackspace.com/archlinux/$repo/os/$arch#c100346676634e80c940fb9e9c02ff419fecbe16"
 packages:
   - curl
   - git

@@ -57,6 +57,7 @@ def make_manifest(packages=(), tasks=(), artifacts=()):
             ],
             "repositories": {
                 REPO_NAME: f"{REPO_URL}#{GPG_KEY_ID}",
+                "multilib": "http://mirror.rackspace.com/archlinux/$repo/os/$arch#c100346676634e80c940fb9e9c02ff419fecbe16",
             },
             "tasks": list(tasks),
             "artifacts": list(artifacts),
