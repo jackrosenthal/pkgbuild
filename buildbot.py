@@ -215,7 +215,10 @@ def load_package_from_dir(path):
         srcinfo_contents = result.stdout
     pkgbase = parse_srcinfo(srcinfo_contents)
     pkgbase.path_abs = path
-    pkgbase.path = path.relative_to(pathlib.Path(__file__).parent)
+    try:
+        pkgbase.path = path.relative_to(pathlib.Path(__file__).parent)
+    except ValueError:
+        pkgbase.path = path
     if path.parent.name == "aur":
         pkgbase.aursrc = f"https://aur.archlinux.org/{pkgbase.name}"
     return pkgbase
@@ -484,10 +487,69 @@ def orchestrate(
         sys.exit(1)
 
 
+def aur_merge(remote):
+    here = pathlib.Path(__file__).parent
+
+    subprocess.run(["git", "fetch", remote], check=True, cwd=here)
+
+    with tempfile.TemporaryDirectory() as worktree:
+        worktree = pathlib.Path(worktree) / "wt"
+        subprocess.run(
+            ["git", "worktree", "add", worktree, "FETCH_HEAD"],
+            check=True,
+            cwd=here,
+        )
+        pkgbase = load_package_from_dir(worktree)
+        dirname = f"aur/{pkgbase.name}"
+        (worktree / dirname).mkdir(parents=True)
+        ls_files_result = subprocess.run(
+            ["git", "ls-files", "-z"],
+            check=True,
+            cwd=worktree,
+            stdout=subprocess.PIPE,
+            encoding="utf-8",
+        )
+        paths = ls_files_result.stdout.split("\0")
+        subprocess.run(
+            ["git", "mv", *(path for path in paths if path), dirname],
+            check=True,
+            cwd=worktree,
+        )
+        subprocess.run(
+            ["git", "commit", "-m", "Move files for merge"],
+            check=True,
+            cwd=worktree,
+        )
+        rev_result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True,
+            cwd=worktree,
+            stdout=subprocess.PIPE,
+            encoding="utf-8",
+        )
+        rev = rev_result.stdout.strip()
+        subprocess.run(
+            ["git", "worktree", "remove", worktree],
+            check=True,
+            cwd=here,
+        )
+
+    subprocess.run(
+        ["git", "merge", "--allow-unrelated-histories", "--no-edit", rev],
+        check=True,
+        cwd=here,
+    )
+
+
+def import_from_aur(pkgname):
+    remote = f"https://aur.archlinux.org/{pkgname}"
+    aur_merge(remote)
+
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands([orchestrate])
+    parser.add_commands([orchestrate, import_from_aur])
 
     parser.dispatch()
 
