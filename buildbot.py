@@ -433,52 +433,53 @@ def orchestrate(
 
         time.sleep(5)
 
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmp_path = pathlib.Path(tmpdir)
+    if finished_urls:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = pathlib.Path(tmpdir)
 
-        filenames = []
+            filenames = []
 
-        for url in itertools.chain(finished_urls.values(), signature_urls):
-            _, _, filename = url.rpartition("/")
-            filenames.append(filename)
+            for url in itertools.chain(finished_urls.values(), signature_urls):
+                _, _, filename = url.rpartition("/")
+                filenames.append(filename)
+                subprocess.run(
+                    ["curl", "-f", "-o", filename, url],
+                    check=True,
+                    cwd=tmp_path,
+                )
+
+            repo_db_path = f"{REPO_NAME}.db.tar.xz"
+            repo_db_remote = f"{S3_UPLOADS}{REPO_NAME}.db"
             subprocess.run(
-                ["curl", "-f", "-o", filename, url],
+                ["s3cmd", "get", repo_db_remote, repo_db_path],
                 check=True,
                 cwd=tmp_path,
             )
-
-        repo_db_path = f"{REPO_NAME}.db.tar.xz"
-        repo_db_remote = f"{S3_UPLOADS}{REPO_NAME}.db"
-        subprocess.run(
-            ["s3cmd", "get", repo_db_remote, repo_db_path],
-            check=True,
-            cwd=tmp_path,
-        )
-        subprocess.run(
-            [
-                "repo-add",
-                "--sign",
-                "--key",
-                GPG_KEY_ID,
-                repo_db_path,
-                *(name for name in filenames if not name.endswith(".sig")),
-            ],
-            check=True,
-            cwd=tmp_path,
-        )
-        subprocess.run(
-            [
-                "s3cmd",
-                "put",
-                "-F",
-                f"{REPO_NAME}.db",
-                f"{REPO_NAME}.db.sig",
-                *filenames,
-                S3_UPLOADS,
-            ],
-            check=True,
-            cwd=tmp_path,
-        )
+            subprocess.run(
+                [
+                    "repo-add",
+                    "--sign",
+                    "--key",
+                    GPG_KEY_ID,
+                    repo_db_path,
+                    *(name for name in filenames if not name.endswith(".sig")),
+                ],
+                check=True,
+                cwd=tmp_path,
+            )
+            subprocess.run(
+                [
+                    "s3cmd",
+                    "put",
+                    "-F",
+                    f"{REPO_NAME}.db",
+                    f"{REPO_NAME}.db.sig",
+                    *filenames,
+                    S3_UPLOADS,
+                ],
+                check=True,
+                cwd=tmp_path,
+            )
 
     if failed_package_names:
         logger.error(
