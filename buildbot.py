@@ -183,6 +183,9 @@ def parse_srcinfo(content):
         key = key.strip()
         value = value.strip()
 
+        if key.endswith("_x86_64"):
+            key = key[: -len("_x86_64")]
+
         if key == "pkgbase":
             pkgbase = PkgBase(name=value)
             section = pkgbase
