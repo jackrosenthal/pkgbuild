@@ -20,6 +20,8 @@ sha256sums=(
 
 build() {
     cd "coreboot-${pkgver}"
+    export CFLAGS="${CFLAGS} -Wno-format-security"
+    export CXXFLAGS="${CXXFLAGS} -Wno-format-security"
     make crossgcc CPUS="$(nproc)" DEST="${srcdir}/${pkgname}"
 }
 
