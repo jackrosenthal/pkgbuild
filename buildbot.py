@@ -124,11 +124,13 @@ class PkgBase:
     def get_build_dependencies(self, check=True):
         pkgs = set()
 
+        pkgs.update(self.depends)
         pkgs.update(self.makedepends)
         if check:
             pkgs.update(self.checkdepends)
 
         for pkg in self.packages:
+            pkgs.update(pkg.depends)
             pkgs.update(pkg.makedepends)
             if check:
                 pkgs.update(pkg.checkdepends)
