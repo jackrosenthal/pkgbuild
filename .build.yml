@@ -13,6 +13,6 @@ secrets:
   - e699b07a-a885-4022-9b4e-332d5c1b451e  # s3 cfg
   - aa330b00-43e1-4478-84ec-fa764c64cef5  # sourcehut oauth token
 tasks:
-  - run-orchestrator:
+  - run-orchestrator: |
       cd pkgbuild
       ./buildbot.py orchestrate --rebuild-all
