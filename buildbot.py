@@ -544,9 +544,10 @@ def aur_merge(remote):
     )
 
 
-def import_from_aur(pkgname):
-    remote = f"https://aur.archlinux.org/{pkgname}"
-    aur_merge(remote)
+def import_from_aur(*pkgnames):
+    for name in pkgnames:
+        remote = f"https://aur.archlinux.org/{name}"
+        aur_merge(remote)
 
 
 def main():
