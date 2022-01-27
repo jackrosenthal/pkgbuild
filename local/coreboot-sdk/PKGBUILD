@@ -1,0 +1,29 @@
+pkgname=coreboot-sdk
+pkgver=4.15
+pkgrel=1
+pkgdesc="Coreboot crossgcc Toolchain"
+arch=('x86_64')
+url='https://coreboot.org'
+license=('GPL')
+
+makedepends=(
+    gcc
+    gcc-ada
+)
+
+source=(
+    "${url}/releases/coreboot-${pkgver}.tar.xz"
+)
+sha256sums=(
+    '20e6aaa6dd0eaec7753441c799711d1b4630e3ca709536386f2242ac2c8a1ec5'
+)
+
+build() {
+    cd "coreboot-${pkgver}"
+    make crossgcc CPUS="$(nproc)" DEST="${srcdir}/${pkgname}"
+}
+
+package() {
+    mkdir "${pkgdir}/opt"
+    cp -r "${srcdir}/${pkgname}" "${pkgdir}/opt/${pkgname}"
+}
