@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import dataclasses
+import itertools
 import json
 import logging
 import pathlib
@@ -19,7 +20,7 @@ import requests
 REPO_NAME = "jmr"
 REPO_URL = "https://archlinux-jmr.s3.us-west-004.backblazeb2.com/$repo/$arch"
 S3_UPLOADS = f"s3://archlinux-jmr/{REPO_NAME}/x86_64/"
-GPG_KEY_ID = "61AE330688C78B615A397D87924EDC10B20E73F7"
+GPG_KEY_ID = "55E00EDED9D418CBACB39CAD184AD86A1B97C873"
 
 
 # Ugly, can we remove the need?
@@ -48,6 +49,9 @@ def make_manifest(packages=(), tasks=(), artifacts=()):
         {
             "image": "archlinux",
             "packages": sorted(packages),
+            "secrets": [
+                "02a0c815-b30f-4ea4-ba07-c5f8f3b63fee",  # PGP signing key
+            ],
             "sources": [
                 "https://git.sr.ht/~jmr/pkgbuild",
             ],
@@ -310,6 +314,7 @@ def orchestrate(
     pending_packages = list(get_depgraph(pkgs))
     running_builds = []
     finished_urls = {}
+    signature_urls = set()
     failed_package_names = set()
 
     def mark_pkgbase_failed(pkgbase):
@@ -322,6 +327,10 @@ def orchestrate(
         for artifact in artifacts:
             name = artifact["name"]
             url = artifact["url"]
+
+            if url.endswith(".sig"):
+                signature_urls.add(url)
+                continue
 
             if len(pkgbase.packages) == 1:
                 pkgname = pkgbase.packages[0].name
@@ -349,13 +358,22 @@ def orchestrate(
                 "makepkg",
                 [
                     ["cd", pkgdir],
-                    ["makepkg", "--check" if check else "--nocheck"],
+                    [
+                        "makepkg",
+                        "--check" if check else "--nocheck",
+                        "--sign",
+                        "--key",
+                        GPG_KEY_ID,
+                    ],
                 ],
             )
         )
-        artifacts = [
-            f"{pkgdir}/{name}" for name in depgraph_entry.pkgbase.get_artifact_names()
-        ]
+
+        artifacts = []
+        for name in depgraph_entry.pkgbase.get_artifact_names():
+            artifacts.append(f"{pkgdir}/{name}")
+            artifacts.append(f"{pkgdir}/{name}.sig")
+
         manifest = make_manifest(
             packages=depgraph_entry.otherdepends,
             tasks=tasks,
@@ -416,7 +434,8 @@ def orchestrate(
         tmp_path = pathlib.Path(tmpdir)
 
         filenames = []
-        for url in finished_urls.values():
+
+        for url in itertools.chain(finished_urls.values(), signature_urls):
             _, _, filename = url.rpartition("/")
             filenames.append(filename)
             subprocess.run(
@@ -433,12 +452,27 @@ def orchestrate(
             cwd=tmp_path,
         )
         subprocess.run(
-            ["repo-add", repo_db_path, *filenames],
+            [
+                "repo-add",
+                "--sign",
+                "--key",
+                GPG_KEY_ID,
+                repo_db_path,
+                *(name for name in filenames if not name.endswith(".sig")),
+            ],
             check=True,
             cwd=tmp_path,
         )
         subprocess.run(
-            ["s3cmd", "put", "-F", f"{REPO_NAME}.db", *filenames, S3_UPLOADS],
+            [
+                "s3cmd",
+                "put",
+                "-F",
+                f"{REPO_NAME}.db",
+                f"{REPO_NAME}.db.sig",
+                *filenames,
+                S3_UPLOADS,
+            ],
             check=True,
             cwd=tmp_path,
         )
