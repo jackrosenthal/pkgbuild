@@ -523,7 +523,8 @@ def import_from_aur(*pkgnames):
 
 def update():
     for package in find_packages():
-        aur_merge(package.aursrc)
+        if package.aursrc:
+            aur_merge(package.aursrc)
 
 
 def main():
