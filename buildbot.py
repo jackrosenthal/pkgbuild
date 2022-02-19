@@ -541,11 +541,33 @@ def aur_merge(remote):
             cwd=here,
         )
 
-    subprocess.run(
-        ["git", "merge", "--allow-unrelated-histories", "--no-edit", rev],
-        check=True,
+    diff_result = subprocess.run(
+        [
+            "git",
+            "diff",
+            "--name-only",
+            "--exit-code",
+            f"HEAD:aur/{pkgbase.name}",
+            f"{rev}:aur/{pkgbase.name}",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
         cwd=here,
     )
+    if diff_result.returncode:
+        subprocess.run(
+            [
+                "git",
+                "merge",
+                "-X",
+                "theirs",
+                "--allow-unrelated-histories",
+                "--no-edit",
+                rev,
+            ],
+            check=True,
+            cwd=here,
+        )
 
 
 def import_from_aur(*pkgnames):
@@ -554,10 +576,15 @@ def import_from_aur(*pkgnames):
         aur_merge(remote)
 
 
+def update():
+    for package in find_packages():
+        aur_merge(package.aursrc)
+
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands([orchestrate, import_from_aur])
+    parser.add_commands([orchestrate, import_from_aur, update])
 
     parser.dispatch()
 
