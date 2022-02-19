@@ -4,6 +4,7 @@ import dataclasses
 import itertools
 import json
 import logging
+import os
 import pathlib
 import pprint
 import re
@@ -497,76 +498,20 @@ def orchestrate(
 def aur_merge(remote):
     here = pathlib.Path(__file__).parent
 
-    subprocess.run(["git", "fetch", remote], check=True, cwd=here)
-
-    with tempfile.TemporaryDirectory() as worktree:
-        worktree = pathlib.Path(worktree) / "wt"
-        subprocess.run(
-            ["git", "worktree", "add", worktree, "FETCH_HEAD"],
-            check=True,
-            cwd=here,
-        )
-        pkgbase = load_package_from_dir(worktree)
+    with tempfile.TemporaryDirectory() as tmp_git:
+        tmp_git = pathlib.Path(tmp_git)
+        subprocess.run(["git", "clone", remote, tmp_git], check=True)
+        pkgbase = load_package_from_dir(tmp_git)
         dirname = f"aur/{pkgbase.name}"
-        (worktree / dirname).mkdir(parents=True)
-        ls_files_result = subprocess.run(
-            ["git", "ls-files", "-z"],
-            check=True,
-            cwd=worktree,
-            stdout=subprocess.PIPE,
-            encoding="utf-8",
-        )
-        paths = ls_files_result.stdout.split("\0")
-        subprocess.run(
-            ["git", "mv", *(path for path in paths if path), dirname],
-            check=True,
-            cwd=worktree,
-        )
-        subprocess.run(
-            ["git", "commit", "-m", "Move files for merge"],
-            check=True,
-            cwd=worktree,
-        )
-        rev_result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            check=True,
-            cwd=worktree,
-            stdout=subprocess.PIPE,
-            encoding="utf-8",
-        )
-        rev = rev_result.stdout.strip()
-        subprocess.run(
-            ["git", "worktree", "remove", worktree],
-            check=True,
-            cwd=here,
-        )
 
-    diff_result = subprocess.run(
-        [
-            "git",
-            "diff",
-            "--name-only",
-            "--exit-code",
-            f"HEAD:aur/{pkgbase.name}",
-            f"{rev}:aur/{pkgbase.name}",
-        ],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        cwd=here,
-    )
-    if diff_result.returncode:
         subprocess.run(
-            [
-                "git",
-                "merge",
-                "-X",
-                "theirs",
-                "--allow-unrelated-histories",
-                "--no-edit",
-                rev,
-            ],
+            ["git", "subtree", "pull", f"--prefix={dirname}", tmp_git, "HEAD"],
             check=True,
             cwd=here,
+            env={
+                **os.environ,
+                "GIT_EDITOR": "/bin/true",
+            },
         )
 
 
