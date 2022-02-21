@@ -512,9 +512,13 @@ def aur_merge(remote):
         pkgbase = load_package_from_dir(tmp_git)
         dirname = f"aur/{pkgbase.name}"
 
+        subtree_cmd = "pull"
+        if not (here / dirname).is_dir():
+            subtree_cmd = "add"
+
         with git_lock:
             subprocess.run(
-                ["git", "subtree", "pull", f"--prefix={dirname}", tmp_git, "HEAD"],
+                ["git", "subtree", subtree_cmd, f"--prefix={dirname}", tmp_git, "HEAD"],
                 check=True,
                 cwd=here,
                 env={
