@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import concurrent.futures
 import dataclasses
 import itertools
 import json
@@ -12,16 +13,18 @@ import shlex
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 
 import argh
 import requests
-
+import tqdm
 
 REPO_NAME = "jmr"
 REPO_URL = "https://archlinux-jmr.s3.us-west-004.backblazeb2.com/$repo/$arch"
 S3_UPLOADS = f"s3://archlinux-jmr/{REPO_NAME}/x86_64/"
 GPG_KEY_ID = "55E00EDED9D418CBACB39CAD184AD86A1B97C873"
+git_lock = threading.Lock()
 
 
 # Ugly, can we remove the need?
@@ -500,19 +503,27 @@ def aur_merge(remote):
 
     with tempfile.TemporaryDirectory() as tmp_git:
         tmp_git = pathlib.Path(tmp_git)
-        subprocess.run(["git", "clone", remote, tmp_git], check=True)
+        subprocess.run(
+            ["git", "clone", remote, tmp_git],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+        )
         pkgbase = load_package_from_dir(tmp_git)
         dirname = f"aur/{pkgbase.name}"
 
-        subprocess.run(
-            ["git", "subtree", "pull", f"--prefix={dirname}", tmp_git, "HEAD"],
-            check=True,
-            cwd=here,
-            env={
-                **os.environ,
-                "GIT_EDITOR": "/bin/true",
-            },
-        )
+        with git_lock:
+            subprocess.run(
+                ["git", "subtree", "pull", f"--prefix={dirname}", tmp_git, "HEAD"],
+                check=True,
+                cwd=here,
+                env={
+                    **os.environ,
+                    "GIT_EDITOR": "/bin/true",
+                },
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+            )
 
 
 def import_from_aur(*pkgnames):
@@ -521,10 +532,14 @@ def import_from_aur(*pkgnames):
         aur_merge(remote)
 
 
-def update():
-    for package in find_packages():
-        if package.aursrc:
-            aur_merge(package.aursrc)
+def update(jobs=8):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as executor:
+        futures = []
+        for package in find_packages():
+            if package.aursrc:
+                futures.append(executor.submit(aur_merge, package.aursrc))
+        for future in tqdm.tqdm(futures):
+            future.result()
 
 
 def main():

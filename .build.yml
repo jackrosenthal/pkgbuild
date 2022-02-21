@@ -9,6 +9,7 @@ packages:
   - python
   - python-argh
   - python-requests
+  - python-tqdm
   - s3cmd
 sources:
   - https://git.sr.ht/~jmr/pkgbuild
