@@ -1,0 +1,28 @@
+pkgname=mikmodvis
+pkgver=0.1
+pkgrel=1
+pkgdesc="Coreboot crossgcc Toolchain"
+arch=('x86_64')
+url='https://github.com/jackrosenthal/mikmodvis'
+license=('GPL')
+
+depends=(libmikmod)
+makedepends=(gcc)
+
+source=(
+    "${url}/archive/refs/tags/v${pkgver}.tar.gz"
+)
+sha256sums=(
+    '3b7316a2723b0f42a5253898b6e6fd324089e7ca520cc7538750fa0bc06f0c3b'
+)
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    make
+}
+
+package() {
+    install -d "${pkgdir}/usr/bin"
+    install -t "${pkgdir}/usr/bin" \
+            "${srcdir}/${pkgname}-${pkgver}/mikmod"{vis,test}
+}

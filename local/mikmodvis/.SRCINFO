@@ -1,0 +1,13 @@
+pkgbase = mikmodvis
+	pkgdesc = Coreboot crossgcc Toolchain
+	pkgver = 0.1
+	pkgrel = 1
+	url = https://github.com/jackrosenthal/mikmodvis
+	arch = x86_64
+	license = GPL
+	makedepends = gcc
+	depends = libmikmod
+	source = https://github.com/jackrosenthal/mikmodvis/archive/refs/tags/v0.1.tar.gz
+	sha256sums = 3b7316a2723b0f42a5253898b6e6fd324089e7ca520cc7538750fa0bc06f0c3b
+
+pkgname = mikmodvis
