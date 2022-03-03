@@ -9,6 +9,7 @@ pkgbase = vboot-utils
 	makedepends = git
 	makedepends = libyaml
 	makedepends = trousers
+	makedepends = flashrom
 	depends = libutil-linux
 	depends = flashrom
 	depends = openssl
