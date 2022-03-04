@@ -1,7 +1,7 @@
 pkgname=mikmodvis
 pkgver=0.1
-pkgrel=1
-pkgdesc="Coreboot crossgcc Toolchain"
+pkgrel=2
+pkgdesc="Mikmod ncurses visualization"
 arch=('x86_64')
 url='https://github.com/jackrosenthal/mikmodvis'
 license=('GPL')

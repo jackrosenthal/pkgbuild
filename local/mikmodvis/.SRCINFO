@@ -1,7 +1,7 @@
 pkgbase = mikmodvis
-	pkgdesc = Coreboot crossgcc Toolchain
+	pkgdesc = Mikmod ncurses visualization
 	pkgver = 0.1
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/jackrosenthal/mikmodvis
 	arch = x86_64
 	license = GPL
