@@ -373,6 +373,7 @@ def orchestrate(
                     ["cd", pkgdir],
                     [
                         "makepkg",
+                        "--skippgpcheck",
                         "--check" if check else "--nocheck",
                         "--sign",
                         "--key",
