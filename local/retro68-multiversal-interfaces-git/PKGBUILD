@@ -1,0 +1,51 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=retro68-multiversal-interfaces-git
+pkgver=r151.f53cb0c
+pkgrel=1
+pkgdesc="Retro68: Host-side tools (e.g., Rez, Elf2Mac, etc.)"
+arch=(x86_64)
+url="https://github.com/autc04/multiversal"
+license=("GPL")
+groups=()
+depends=()
+makedepends=("git" "ruby")
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+replaces=()
+backup=()
+options=()
+install=
+source=("git+${url}")
+noextract=()
+md5sums=("SKIP")
+
+pkgver() {
+    cd "${srcdir}/multiversal"
+
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    mkdir -p "${srcdir}/output"
+    cd "${srcdir}/multiversal"
+    ruby make-multiverse.rb -G CIncludes -o "${srcdir}/output"
+}
+
+package() {
+    mkdir -p "${pkgdir}/opt/retro68"
+    cp -r "${srcdir}/output" "${pkgdir}/opt/retro68/multiversal"
+
+    for triple in m68k-apple-macos powerpc-apple-macos; do
+        triple_dir="${pkgdir}/opt/retro68/${triple}"
+        mkdir -p "${triple_dir}/include"
+
+        ln -sf ../multiversal/RIncludes "${triple_dir}/RIncludes"
+
+        for header in "${srcdir}"/output/CIncludes/*.h; do
+            header_basename="$(basename "${header}")"
+            ln -sf ../../multiversal/CIncludes/"${header_basename}" \
+               "${triple_dir}/include/${header_basename}"
+        done
+    done
+}

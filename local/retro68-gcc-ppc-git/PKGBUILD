@@ -1,0 +1,58 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=retro68-binutils-ppc-git
+pkgver=v2019.8.2.r121.ad7bdb84b8
+pkgrel=1
+pkgdesc="Retro68: GCC for PowerPC"
+arch=(x86_64)
+url="https://github.com/autc04/Retro68"
+license=("GPL")
+groups=()
+depends=("retro68-binutils-ppc-git")
+makedepends=(
+    "gcc"
+    "git"
+    "make"
+)
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+replaces=()
+backup=()
+options=()
+install=
+source=("git+${url}")
+noextract=()
+md5sums=("SKIP")
+
+pkgver() {
+    cd "${srcdir}/Retro68/gcc"
+
+    local commit="$(git log -n1 --format=%H .)"
+    printf "%s" "$(git describe --long --tags "${commit}" \
+                       | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
+}
+
+build() {
+    mkdir -p "${srcdir}/build"
+    cd "${srcdir}/build"
+    export target_configargs=" \
+           --disable-nls \
+           --enable-libstdcxx-dual-abi=no \
+           --disable-libstdcxx-verbose \
+    "
+    export CXXFLAGS="${CXXFLAGS} -Wno-error=format-security"
+    "${srcdir}/Retro68/gcc/configure" --prefix=/opt/retro68 \
+                                      --target=powerpc-apple-macos \
+                                      --enable-languages=c,c++ \
+                                      --with-arch=m68k \
+                                      --with-cpu=m68000 \
+                                      --disable-libssp \
+                                      --disable-lto \
+                                      MAKEINFO=missing
+    make
+}
+
+package() {
+    cd "${srcdir}/build"
+    make DESTDIR="${pkgdir}/" install
+}

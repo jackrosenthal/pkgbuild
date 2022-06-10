@@ -1,0 +1,53 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=retro68-binutils-68k-git
+pkgver=v2019.8.2.r120.16c9f7b849
+pkgrel=1
+pkgdesc="Retro68: GNU Binutils for 68k"
+arch=(x86_64)
+url="https://github.com/autc04/Retro68"
+license=("GPL")
+groups=()
+depends=()
+makedepends=(
+    "gcc"
+    "git"
+    "make"
+)
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+replaces=()
+backup=()
+options=()
+install=
+source=("git+${url}")
+noextract=()
+md5sums=("SKIP")
+
+pkgver() {
+    cd "${srcdir}/Retro68/binutils"
+
+    local commit="$(git log -n1 --format=%H .)"
+    printf "%s" "$(git describe --long --tags "${commit}" \
+                       | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
+}
+
+build() {
+    mkdir -p "${srcdir}/build"
+    cd "${srcdir}/build"
+    "${srcdir}/Retro68/binutils/configure" --prefix=/opt/retro68 \
+                                           --target=m68k-apple-macos \
+                                           --disable-doc
+    make
+}
+
+package() {
+    cd "${srcdir}/build"
+    make DESTDIR="${pkgdir}/" install
+
+    # Ld replaced by Elf2Mac (in retro68-tools-git).
+    mv "${pkgdir}/opt/retro68/bin/m68k-apple-macos-ld" \
+       "${pkgdir}/opt/retro68/bin/m68k-apple-macos-ld.real"
+    mv "${pkgdir}/opt/retro68/m68k-apple-macos/bin/ld" \
+       "${pkgdir}/opt/retro68/m68k-apple-macos/bin/ld.real"
+}

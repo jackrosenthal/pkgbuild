@@ -1,0 +1,36 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=retro68-libppc-git
+pkgver=r302.9cf0349de8
+pkgrel=1
+pkgdesc="Retro68: PowerPC static libaries"
+arch=(x86_64)
+url="https://github.com/autc04/Retro68"
+license=("GPL")
+groups=()
+depends=()
+makedepends=("git")
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+replaces=()
+backup=()
+options=()
+install=
+source=("git+${url}")
+noextract=()
+md5sums=("SKIP")
+
+pkgver() {
+    cd "${srcdir}/Retro68/ImportLibraries"
+
+    local commit="$(git log -n1 --format=%H .)"
+    printf "r%s.%s" "$(git rev-list --count "${commit}")" \
+           "$(git rev-parse --short "${commit}")"
+}
+
+package() {
+    cd "${srcdir}/Retro68/ImportLibraries"
+    destdir="${pkgdir}/opt/retro68/powerpc-apple-macos/lib"
+    mkdir -p "${destdir}"
+    cp *.a "${destdir}"
+}

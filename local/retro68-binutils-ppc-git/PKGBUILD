@@ -1,0 +1,47 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=retro68-binutils-ppc-git
+pkgver=v2019.8.2.r120.16c9f7b849
+pkgrel=1
+pkgdesc="Retro68: GNU Binutils for PowerPC"
+arch=(x86_64)
+url="https://github.com/autc04/Retro68"
+license=("GPL")
+groups=()
+depends=()
+makedepends=(
+    "gcc"
+    "git"
+    "make"
+)
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+replaces=()
+backup=()
+options=()
+install=
+source=("git+${url}")
+noextract=()
+md5sums=("SKIP")
+
+pkgver() {
+    cd "${srcdir}/Retro68/binutils"
+
+    local commit="$(git log -n1 --format=%H .)"
+    printf "%s" "$(git describe --long --tags "${commit}" \
+                       | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
+}
+
+build() {
+    mkdir -p "${srcdir}/build"
+    cd "${srcdir}/build"
+    "${srcdir}/Retro68/binutils/configure" --prefix=/opt/retro68 \
+                                           --target=powerpc-apple-macos \
+                                           --disable-doc
+    make
+}
+
+package() {
+    cd "${srcdir}/build"
+    make DESTDIR="${pkgdir}/" install
+}

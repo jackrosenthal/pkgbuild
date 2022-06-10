@@ -1,0 +1,49 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=retro68-hfsutils-git
+pkgver=v2019.8.2.r95.3236f3cfbf
+pkgrel=1
+pkgdesc="Retro68: Tools for reading and writing HFS volumes"
+arch=(x86_64)
+url="https://github.com/autc04/Retro68"
+license=("GPL")
+groups=()
+depends=()
+makedepends=(
+    "gcc"
+    "git"
+    "make"
+)
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+replaces=()
+backup=()
+options=()
+install=
+source=("git+${url}")
+noextract=()
+md5sums=("SKIP")
+
+pkgver() {
+    cd "${srcdir}/Retro68/hfsutils"
+
+    local commit="$(git log -n1 --format=%H .)"
+    printf "%s" "$(git describe --long --tags "${commit}" \
+                       | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
+}
+
+build() {
+    mkdir -p "${srcdir}/build"
+    cd "${srcdir}/build"
+    "${srcdir}/Retro68/hfsutils/configure" \
+        --prefix="${pkgdir}/opt/retro68" \
+        --mandir="${pkgdir}/opt/retro68/share/man" \
+        --enable-devlibs
+    make
+}
+
+package() {
+    cd "${srcdir}/build"
+    mkdir -p "${pkgdir}/opt/retro68/"{bin,lib,include,share/man/man1}
+    make install
+}

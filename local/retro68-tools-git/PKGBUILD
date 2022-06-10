@@ -1,0 +1,49 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=retro68-tools-git
+pkgver=v2019.8.2.r225.943a34a2f8
+pkgrel=1
+pkgdesc="Retro68: Host-side tools (e.g., Rez, Elf2Mac, etc.)"
+arch=(x86_64)
+url="https://github.com/autc04/Retro68"
+license=("GPL")
+groups=()
+depends=("boost")
+makedepends=(
+    "bison"
+    "cmake"
+    "gcc"
+    "git"
+)
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+replaces=()
+backup=()
+options=()
+install=
+source=("git+${url}")
+noextract=()
+md5sums=("SKIP")
+
+pkgver() {
+    cd "${srcdir}/Retro68"
+
+    printf "%s" "$(git describe --long --tags | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
+}
+
+build() {
+    mkdir -p "${srcdir}/build"
+    cd "${srcdir}/build"
+    cmake -S "${srcdir}/Retro68" -DCMAKE_INSTALL_PREFIX=/opt/retro68 \
+          -DCMAKE_BUILD_TYPE=Release
+    make
+}
+
+package() {
+    cd "${srcdir}/build"
+    make DESTDIR="${pkgdir}/" install
+
+    mkdir -p "${pkgdir}/opt/retro68/"{bin,m68k-apple-macos/bin}
+    ln -s Elf2Mac "${pkgdir}/opt/retro68/bin/m68k-apple-macos-ld"
+    ln -s ../../bin/Elf2Mac "${pkgdir}/opt/retro68/m68k-apple-macos/bin/ld"
+}
