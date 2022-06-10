@@ -44,4 +44,7 @@ build() {
 package() {
     cd "${srcdir}/build"
     make DESTDIR="${pkgdir}/" install
+
+    # Duplicate file in GCC.
+    rm -f "${pkgdir}/opt/retro68/share/info/dir"
 }

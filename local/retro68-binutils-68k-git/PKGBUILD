@@ -50,4 +50,7 @@ package() {
        "${pkgdir}/opt/retro68/bin/m68k-apple-macos-ld.real"
     mv "${pkgdir}/opt/retro68/m68k-apple-macos/bin/ld" \
        "${pkgdir}/opt/retro68/m68k-apple-macos/bin/ld.real"
+
+    # Duplicate file in GCC.
+    rm -f "${pkgdir}/opt/retro68/share/info/dir"
 }
