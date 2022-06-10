@@ -8,7 +8,7 @@ arch=(x86_64)
 url="https://github.com/autc04/Retro68"
 license=("GPL")
 groups=()
-depends=("boost")
+depends=("boost" "retro68-hfsutils-git")
 makedepends=(
     "bison"
     "cmake"
