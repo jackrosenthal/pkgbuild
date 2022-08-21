@@ -238,7 +238,8 @@ def find_packages():
     here = pathlib.Path(__file__).parent
     for pkgbuild in here.rglob("PKGBUILD"):
         pkgpath = pkgbuild.parent
-        yield load_package_from_dir(pkgpath)
+        if not (pkgpath / ".buildbot_disable").is_file():
+            yield load_package_from_dir(pkgpath)
 
 
 @dataclasses.dataclass
