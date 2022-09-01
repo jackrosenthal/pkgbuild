@@ -6,7 +6,6 @@ pkgbase = python-patman
 	arch = any
 	license = GPL
 	makedepends = python-setuptools
-	makedepends = python-pytest
 	depends = git
 	depends = python
 	depends = python-pygit2

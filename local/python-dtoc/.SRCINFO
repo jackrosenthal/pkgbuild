@@ -5,10 +5,10 @@ pkgbase = python-dtoc
 	url = https://www.denx.de/wiki/U-Boot
 	arch = any
 	license = GPL
-	checkdepends = python-pytest
 	makedepends = python-setuptools
 	depends = dtc
 	depends = python
+	depends = python-patman
 	source = https://github.com/u-boot/u-boot/archive/refs/tags/v2022.07.tar.gz
 	sha256sums = 1730dea306c016348efe641d812d4974745be3910af4769aecef740de549c81b
 
