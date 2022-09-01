@@ -9,7 +9,6 @@ license=("GPL")
 depends=(
     dtc
     python
-    python-dtoc
     python-patman
 )
 makedepends=(
