@@ -12,6 +12,8 @@ depends=(
     dtc
     gcc
     python
+    python-dtoc
+    python-patman
     python-pycryptodomex
     python-pyelftools
 )
