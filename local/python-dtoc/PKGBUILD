@@ -1,0 +1,36 @@
+pkgname=python-dtoc
+pkgver=2022.07
+pkgrel=1
+pkgdesc="Device tree to C compiler"
+arch=("any")
+url="https://www.denx.de/wiki/U-Boot"
+license=("GPL")
+
+depends=(
+    dtc
+    python
+    python-dtoc
+    python-patman
+)
+makedepends=(
+    python-setuptools
+)
+
+source=(
+    "https://github.com/u-boot/u-boot/archive/refs/tags/v${pkgver}.tar.gz"
+)
+sha256sums=(
+    '1730dea306c016348efe641d812d4974745be3910af4769aecef740de549c81b'
+)
+
+build() {
+    cd "u-boot-${pkgver}/tools/dtoc"
+    python setup.py build
+}
+
+# check() not implemented as tests fail in this release.
+
+package() {
+    cd "u-boot-${pkgver}/tools/dtoc"
+    python setup.py install --root="${pkgdir}" --optimize=1
+}

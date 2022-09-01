@@ -1,0 +1,39 @@
+pkgname=python-binman
+pkgver=2022.07
+pkgrel=1
+pkgdesc="Binman tool from U-boot"
+arch=("any")
+url="https://www.denx.de/wiki/U-Boot"
+license=("GPL")
+
+depends=(
+    binutils
+    coreboot-utils
+    dtc
+    gcc
+    python
+    python-pycryptodomex
+    python-pyelftools
+)
+makedepends=(
+    python-setuptools
+)
+
+source=(
+    "https://github.com/u-boot/u-boot/archive/refs/tags/v${pkgver}.tar.gz"
+)
+sha256sums=(
+    '1730dea306c016348efe641d812d4974745be3910af4769aecef740de549c81b'
+)
+
+build() {
+    cd "u-boot-${pkgver}/tools/binman"
+    python setup.py build
+}
+
+# check() not included as tests are broken in this release.
+
+package() {
+    cd "u-boot-${pkgver}/tools/binman"
+    python setup.py install --root="${pkgdir}" --optimize=1
+}
