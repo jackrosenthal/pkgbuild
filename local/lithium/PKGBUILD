@@ -1,0 +1,33 @@
+pkgname=lithium
+pkgver=0.1.0
+pkgrel=1
+_rev=6c407bb2bb86d66da5677d7196a3390eeb849cc4
+pkgdesc="C programming and unittest framework"
+arch=("x86_64")
+url="https://chromium.googlesource.com/chromiumos/platform/lithium"
+license=("BSD")
+
+makedepends=(gcc git)
+
+source=(
+    "git+${url}#commit=${_rev}"
+)
+sha256sums=("SKIP")
+
+build() {
+    cd lithium
+    make build/release/libithium.so
+}
+
+package() {
+    cd lithium
+    install -Dm755 -t "${pkgdir}/usr/lib" build/release/libithium.so
+    install -Dm644 -t "${pkgdir}/usr/include/lithium" include/*.h
+    install -Dm644 -t "${pkgdir}/usr/include/lithium/osutils" include/osutils/*.h
+    install -Dm644 -t "${pkgdir}/usr/include/lithium/util" include/util/*.h
+}
+
+check() {
+    cd lithium
+    make run-tests
+}

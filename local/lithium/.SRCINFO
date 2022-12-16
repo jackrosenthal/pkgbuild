@@ -1,0 +1,13 @@
+pkgbase = lithium
+	pkgdesc = C programming and unittest framework
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://chromium.googlesource.com/chromiumos/platform/lithium
+	arch = x86_64
+	license = BSD
+	makedepends = gcc
+	makedepends = git
+	source = git+https://chromium.googlesource.com/chromiumos/platform/lithium#commit=6c407bb2bb86d66da5677d7196a3390eeb849cc4
+	sha256sums = SKIP
+
+pkgname = lithium
