@@ -26,6 +26,13 @@ S3_UPLOADS = f"s3://archlinux-jmr/{REPO_NAME}/x86_64/"
 GPG_KEY_ID = "55E00EDED9D418CBACB39CAD184AD86A1B97C873"
 git_lock = threading.Lock()
 
+SKIP_CHECK_PKGS = [
+    "python2",
+]
+ALTERNATIVES = {
+    "electron12": "electron12-bin",
+}
+
 
 # Ugly, can we remove the need?
 def infer_package_name_from_archive(archive_name):
@@ -140,7 +147,7 @@ class PkgBase:
             if check:
                 pkgs.update(pkg.checkdepends)
 
-        return pkgs
+        return {ALTERNATIVES.get(pkg, pkg) for pkg in pkgs}
 
     def fmt_version(self):
         version = f"{self.pkgver}-{self.pkgrel}"
@@ -273,7 +280,10 @@ def get_depgraph(packages, check=True):
     depgraph = []
 
     for pkgbase in packages:
-        dep_names = pkgbase.get_build_dependencies(check=check)
+        check_this_pkg = check
+        if pkgbase.name in SKIP_CHECK_PKGS:
+            check_this_pkg = False
+        dep_names = pkgbase.get_build_dependencies(check=check_this_pkg)
         graphdepends = []
         for other_pkgbase in packages:
             if not dep_names:
@@ -367,6 +377,10 @@ def orchestrate(
             steps.append(["sudo", "pacman", "--noconfirm", "-U", *filenames])
             tasks.append(make_task("install-depgraph-artifacts", steps))
 
+        check_this_pkg = check
+        if depgraph_entry.pkgbase.name in SKIP_CHECK_PKGS:
+            check_this_pkg = False
+
         tasks.append(
             make_task(
                 "makepkg",
@@ -375,7 +389,7 @@ def orchestrate(
                     [
                         "makepkg",
                         "--skippgpcheck",
-                        "--check" if check else "--nocheck",
+                        "--check" if check_this_pkg else "--nocheck",
                         "--sign",
                         "--key",
                         GPG_KEY_ID,
