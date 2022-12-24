@@ -26,9 +26,7 @@ S3_UPLOADS = f"s3://archlinux-jmr/{REPO_NAME}/x86_64/"
 GPG_KEY_ID = "55E00EDED9D418CBACB39CAD184AD86A1B97C873"
 git_lock = threading.Lock()
 
-SKIP_CHECK_PKGS = [
-    "python2",
-]
+SKIP_CHECK_PKGS = []
 ALTERNATIVES = {
     "electron12": "electron12-bin",
 }
