@@ -1,11 +1,12 @@
 pkgbase = apt
 	pkgver = 2.5.3
-	pkgrel = 2
+	pkgrel = 3
 	url = https://salsa.debian.org/apt-team/apt
 	arch = i686
 	arch = x86_64
 	license = GPL2
 	makedepends = cmake
+	makedepends = db
 	makedepends = dpkg
 	makedepends = docbook-xsl
 	makedepends = doxygen
