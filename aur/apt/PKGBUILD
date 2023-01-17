@@ -21,6 +21,7 @@ sha512sums=('f24789ac9502a0c9e5e2597e24142ca61f34a2a364771001349121d2bdc37b2a203
 
 build() {
   cd "$srcdir/$pkgbase-$pkgver"
+  export PATH="/usr/bin/vendor_perl:${PATH}"
 
   # docbook xsl is stored with the version on Arch
   DOCBOOK_XSL_VER=$(find /usr/share/xml/docbook/xsl-stylesheets-* -maxdepth 1 -type d| sort | head -1 | xargs basename)
