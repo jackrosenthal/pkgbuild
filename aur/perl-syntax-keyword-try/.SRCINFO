@@ -1,11 +1,12 @@
 pkgbase = perl-syntax-keyword-try
 	pkgdesc = a try/catch/finally syntax for perl
 	pkgver = 0.27
-	pkgrel = 1
+	pkgrel = 2
 	url = https://metacpan.org/release/Syntax-Keyword-Try
 	arch = x86_64
 	license = GPL
 	license = PerlArtistic
+	makedepends = perl-module-build
 	depends = perl
 	depends = perl-xs-parse-keyword
 	options = !emptydirs
