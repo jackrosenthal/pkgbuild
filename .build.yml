@@ -15,7 +15,7 @@ sources:
   - https://git.sr.ht/~jmr/pkgbuild
 secrets:
   - e699b07a-a885-4022-9b4e-332d5c1b451e  # s3 cfg
-  - aa330b00-43e1-4478-84ec-fa764c64cef5  # sourcehut oauth token
+  - 2a3e934a-190c-405f-81cd-021a78a29b1b  # sourcehut oauth token
   - 02a0c815-b30f-4ea4-ba07-c5f8f3b63fee  # PGP signing key
 tasks:
   - run-orchestrator: |
