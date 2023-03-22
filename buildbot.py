@@ -53,11 +53,10 @@ def make_task(name, commands):
     return {name: commands}
 
 
-def make_manifest(packages=(), tasks=(), artifacts=()):
+def make_manifest(tasks=(), artifacts=()):
     return json.dumps(
         {
             "image": "archlinux",
-            "packages": sorted(packages),
             "secrets": [
                 "02a0c815-b30f-4ea4-ba07-c5f8f3b63fee",  # PGP signing key
             ],
@@ -365,6 +364,15 @@ def orchestrate(
         tasks = []
         pkgdir = f"pkgbuild/{depgraph_entry.pkgbase.path}"
 
+        deps = sorted(depgraph_entry.otherdepends)
+        if deps:
+            tasks.append(
+                make_task(
+                    "install-dependencies",
+                    ["sudo", "pacman", "-S", "--needed", *deps],
+                )
+            )
+
         if urls_to_install:
             steps = ["mkdir -p ~/depgraph_install && cd ~/depgraph_install"]
             filenames = []
@@ -402,7 +410,6 @@ def orchestrate(
             artifacts.append(f"{pkgdir}/{name}.sig")
 
         manifest = make_manifest(
-            packages=depgraph_entry.otherdepends,
             tasks=tasks,
             artifacts=artifacts,
         )
