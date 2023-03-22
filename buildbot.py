@@ -28,7 +28,7 @@ git_lock = threading.Lock()
 
 SKIP_CHECK_PKGS = []
 ALTERNATIVES = {
-    "cargo": "rustup",
+    "cargo": "rust",
     "electron12": "electron12-bin",
 }
 
