@@ -369,7 +369,9 @@ def orchestrate(
             tasks.append(
                 make_task(
                     "install-dependencies",
-                    ["sudo", "pacman", "-S", "--needed", *deps],
+                    [
+                        ["sudo", "pacman", "-S", "--needed", *deps],
+                    ],
                 )
             )
 
