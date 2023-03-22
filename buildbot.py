@@ -370,7 +370,7 @@ def orchestrate(
                 make_task(
                     "install-dependencies",
                     [
-                        ["sudo", "pacman", "-S", "--needed", *deps],
+                        ["sudo", "pacman", "-S", "--needed", "--noconfirm", *deps],
                     ],
                 )
             )
