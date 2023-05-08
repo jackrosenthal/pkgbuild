@@ -6,7 +6,7 @@ pkgbase = ttf-century-schoolbook
 	arch = any
 	license = GPL2
 	makedepends = fontforge
-	source = ${url}/archive/${rev}.tar.gz
+	source = https://github.com/TimothyGu/Century-Schoolbook-L/archive/84beddf324a808df318e504168587a8cd55f1123.tar.gz
 	md5sums = SKIP
 
 pkgname = ttf-century-schoolbook

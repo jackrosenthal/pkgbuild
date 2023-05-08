@@ -3,7 +3,7 @@
 pkgname=python-noiseprotocol-git
 _pkgname=noiseprotocol
 pkgver=0.3.1.r0.g7337544
-pkgrel=1
+pkgrel=2
 pkgdesc="A Python implementation of Noise Protocol Framework"
 arch=('any')
 depends=('python')
