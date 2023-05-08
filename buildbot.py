@@ -266,7 +266,6 @@ class DepgraphEntry:
         for pkg in other.pkgbase.packages:
             if pkg.name in self.otherdepends:
                 self.otherdepends.remove(pkg.name)
-                self.otherdepends.update(other.depends)
                 self.otherdepends.update(pkg.depends)
                 self.graphdepends.append((other, pkg))
                 rv = True
