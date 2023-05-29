@@ -1,0 +1,26 @@
+pkgbase = python-pygame
+	pkgdesc = Python game library
+	pkgver = 2.4.0
+	pkgrel = 1
+	url = http://www.pygame.org
+	arch = x86_64
+	license = LGPL
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	makedepends = sdl2
+	depends = glibc
+	depends = libpng
+	depends = python
+	depends = sdl2
+	depends = sdl2_mixer
+	depends = sdl2_ttf
+	depends = sdl2_image
+	depends = portmidi
+	optdepends = python-numpy: for examples
+	source = https://pypi.io/packages/source/p/pygame/pygame-2.4.0.tar.gz
+	sha256sums = e3603e70e96ee30af1954ce57d4922a059402f368013e7138e90f1c03d185267
+	b2sums = 413baa7113cc24e11bdc777c8d7c0ea42e357b60f090e47d0cd66482351f12b668e67846bca52d69b79da4dd4c77e03ca754d1187b5495b7a8a2f9fbe9ab3731
+
+pkgname = python-pygame
