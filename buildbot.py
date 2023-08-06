@@ -145,6 +145,11 @@ class PkgBase:
             if check:
                 pkgs.update(pkg.checkdepends)
 
+        # If a package depends on other packages provided by this pkgbase, we
+        # don't need it for building purposes.
+        for pkg in self.packages:
+            pkgs.discard(pkg.name)
+
         return {ALTERNATIVES.get(pkg, pkg) for pkg in pkgs}
 
     def fmt_version(self):
