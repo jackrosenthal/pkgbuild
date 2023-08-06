@@ -149,6 +149,10 @@ class PkgBase:
         # don't need it for building purposes.
         for pkg in self.packages:
             pkgs.discard(pkg.name)
+            pkgs.discard(f"{pkg.name}={self.pkgver}")
+            pkgs.discard(f"{pkg.name}={self.pkgver}-{self.pkgrel}")
+            pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}")
+            pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}-{self.pkgrel}")
 
         return {ALTERNATIVES.get(pkg, pkg) for pkg in pkgs}
 
