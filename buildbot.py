@@ -33,15 +33,6 @@ ALTERNATIVES = {
 }
 
 
-# Ugly, can we remove the need?
-def infer_package_name_from_archive(archive_name):
-    m = re.match(
-        r"([a-z0-9_-]+)-(?:[0-9]+:)?(?:[0-9]+\.)+[0-9][a-z]*-[0-9]+-[a-z0-9_]+.pkg",
-        archive_name,
-    )
-    return m.group(1)
-
-
 def make_task(name, commands):
     def shellsafe(command):
         if isinstance(command, str):
@@ -362,10 +353,12 @@ def orchestrate(
                 signature_urls.add(url)
                 continue
 
-            if len(pkgbase.packages) == 1:
-                pkgname = pkgbase.packages[0].name
+            for pkg in sorted(pkgbase.packages, key=lambda x: -len(x.name)):
+                if name.startswith(pkg.name):
+                    pkgname = pkg.name
+                    break
             else:
-                pkgname = infer_package_name_from_archive(name)
+                raise ValueError(f"{name} didn't match any packages")
 
             finished_urls[pkgname] = url
 
