@@ -23,7 +23,8 @@ prepare() {
   cd "$pkgname"
 
   # download dependencies
-  npm ci --no-audit --no-fund --no-update-notifier
+  # FS#79713 - remove environment variable with 10.9.x release
+  SKIP_PREPARE=1 npm ci --no-audit --no-fund --no-update-notifier
 }
 
 build() {
