@@ -13,7 +13,7 @@ depends=('qt5-webchannel' 'qt5-location' 'libxcomposite' 'libxrandr' 'pciutils' 
          'libevent' 'snappy' 'nss' 'libxslt' 'minizip' 'ffmpeg' 'libvpx' 'libxtst' 'ttf-font')
 makedepends=('git' 'python' 'gperf' 'jsoncpp' 'ninja' 'qt5-tools' 'poppler' 'pipewire' 'nodejs')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland')
-groups=('qt' 'qt5')
+groups=('qt5')
 _pkgfqn=${pkgname/5-/}
 source=(git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-lts
         git+https://code.qt.io/qt/qtwebengine-chromium.git
