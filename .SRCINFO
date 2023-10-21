@@ -1,12 +1,13 @@
 pkgbase = jellyfin-server
 	pkgdesc = Jellyfin server backend
 	pkgver = 10.8.11
-	pkgrel = 2
+	pkgrel = 3
 	url = https://jellyfin.org
 	arch = x86_64
 	license = GPL2
 	makedepends = git
 	makedepends = dotnet-sdk-6.0
+	depends = aspnet-runtime-6.0
 	depends = bash
 	depends = sqlite
 	depends = fontconfig
