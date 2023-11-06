@@ -2,8 +2,8 @@
 
 pkgname=jellyfin-server
 _pkgname="${pkgname%-server}"
-pkgver=10.8.11
-pkgrel=3
+pkgver=10.8.12
+pkgrel=1
 pkgdesc='Jellyfin server backend'
 arch=('x86_64')
 url='https://jellyfin.org'
@@ -28,7 +28,7 @@ backup=(
   "etc/$_pkgname/$_pkgname.env"
 )
 options=('!debug')
-_commit='be5e10ac373745dcb46f79d6c815ea3a480e8b8a'
+_commit='a173d01139357c5913d3293cfb4c6c53019fbed0'
 source=(
   "$pkgname::git+$_url#commit=$_commit"
   'sysusers.conf'
