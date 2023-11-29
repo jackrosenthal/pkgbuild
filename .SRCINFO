@@ -1,6 +1,6 @@
 pkgbase = jellyfin-server
 	pkgdesc = Jellyfin server backend
-	pkgver = 10.8.12
+	pkgver = 10.8.13
 	pkgrel = 1
 	url = https://jellyfin.org
 	arch = x86_64
@@ -16,7 +16,7 @@ pkgbase = jellyfin-server
 	options = !debug
 	backup = etc/jellyfin/logging.json
 	backup = etc/jellyfin/jellyfin.env
-	source = jellyfin-server::git+https://github.com/jellyfin/jellyfin#commit=a173d01139357c5913d3293cfb4c6c53019fbed0
+	source = jellyfin-server::git+https://github.com/jellyfin/jellyfin#commit=e93d03d8cbff2122d7296f477604146f64758a73
 	source = sysusers.conf
 	source = tmpfiles.conf
 	source = fix-envfile-path.patch
