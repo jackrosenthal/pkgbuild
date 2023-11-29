@@ -1,6 +1,6 @@
 pkgbase = jellyfin-web
 	pkgdesc = Web client for Jellyfin
-	pkgver = 10.8.12
+	pkgver = 10.8.13
 	pkgrel = 1
 	url = https://jellyfin.org
 	arch = any
@@ -8,7 +8,7 @@ pkgbase = jellyfin-web
 	makedepends = git
 	makedepends = nodejs
 	makedepends = npm
-	source = jellyfin-web::git+https://github.com/jellyfin/jellyfin-web#commit=4b6bbcfe2671b21a79e347241eed3c70acaad9e3
+	source = jellyfin-web::git+https://github.com/jellyfin/jellyfin-web#commit=8e37078b6066715b27fd2dde1f7d1eda216044d9
 	b2sums = SKIP
 
 pkgname = jellyfin-web
