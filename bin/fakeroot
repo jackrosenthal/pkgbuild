@@ -1,2 +1,3 @@
 #!/bin/sh
+export FAKEROOTKEY=fakefakeroot
 unshare -r "$@"
