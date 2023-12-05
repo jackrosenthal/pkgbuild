@@ -2,13 +2,11 @@
 
 import concurrent.futures
 import dataclasses
-import itertools
 import json
 import logging
 import os
 import pathlib
 import pprint
-import re
 import shlex
 import subprocess
 import sys
@@ -49,9 +47,6 @@ def make_manifest(tasks=(), artifacts=()):
     return json.dumps(
         {
             "image": "archlinux",
-            "secrets": [
-                "02a0c815-b30f-4ea4-ba07-c5f8f3b63fee",  # PGP signing key
-            ],
             "sources": [
                 "https://git.sr.ht/~jmr/pkgbuild",
             ],
@@ -143,8 +138,6 @@ class PkgBase:
             pkgs.discard(f"{pkg.name}={self.pkgver}-{self.pkgrel}")
             pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}")
             pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}-{self.pkgrel}")
-
-        pkgs.add("strace")
 
         return {ALTERNATIVES.get(pkg, pkg) for pkg in pkgs}
 
@@ -336,7 +329,6 @@ def orchestrate(
     pending_packages = list(get_depgraph(pkgs))
     running_builds = []
     finished_urls = {}
-    signature_urls = set()
     failed_package_names = set()
 
     def mark_pkgbase_failed(pkgbase):
@@ -349,10 +341,6 @@ def orchestrate(
         for artifact in artifacts:
             name = artifact["name"]
             url = artifact["url"]
-
-            if url.endswith(".sig"):
-                signature_urls.add(url)
-                continue
 
             for pkg in sorted(pkgbase.packages, key=lambda x: -len(x.name)):
                 if name.startswith(pkg.name):
@@ -396,7 +384,6 @@ def orchestrate(
             make_task(
                 "makepkg",
                 [
-                    'export PATH="${PWD}/pkgbuild/bin:${PATH}"',
                     ["cd", pkgdir],
                     [
                         "bash",
@@ -404,9 +391,7 @@ def orchestrate(
                         "/usr/bin/makepkg",
                         "--skippgpcheck",
                         "--check" if check_this_pkg else "--nocheck",
-                        "--sign",
-                        "--key",
-                        GPG_KEY_ID,
+                        "--nosign",
                     ],
                 ],
             )
@@ -415,7 +400,6 @@ def orchestrate(
         artifacts = []
         for name in depgraph_entry.pkgbase.get_artifact_names():
             artifacts.append(f"{pkgdir}/{name}")
-            artifacts.append(f"{pkgdir}/{name}.sig")
 
         manifest = make_manifest(
             tasks=tasks,
@@ -478,11 +462,31 @@ def orchestrate(
 
             filenames = []
 
-            for url in itertools.chain(finished_urls.values(), signature_urls):
+            for url in finished_urls.values():
                 _, _, filename = url.rpartition("/")
                 filenames.append(filename)
                 subprocess.run(
                     ["curl", "-f", "-o", filename, url],
+                    check=True,
+                    cwd=tmp_path,
+                )
+
+            signature_files = []
+            for pkg_path in filenames:
+                sig_path = f"{pkg_path}.sig"
+                signature_files.append(sig_path)
+                subprocess.run(
+                    [
+                        "gpg",
+                        "--detach-sign",
+                        "--batch",
+                        "--passphrase",
+                        "",
+                        "--output",
+                        sig_path,
+                        "--sign",
+                        pkg_path,
+                    ],
                     check=True,
                     cwd=tmp_path,
                 )
@@ -501,7 +505,8 @@ def orchestrate(
                     "--key",
                     GPG_KEY_ID,
                     repo_db_path,
-                    *(name for name in filenames if not name.endswith(".sig")),
+                    *filenames,
+                    *signature_files,
                 ],
                 check=True,
                 cwd=tmp_path,
