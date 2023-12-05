@@ -1,6 +1,6 @@
 pkgbase = pacman-git
 	pkgdesc = A library-based package manager with dependency support
-	pkgver = 6.0.1.r152.g34611a66
+	pkgver = 6.0.1.r178.g0df44c2e
 	pkgrel = 1
 	url = https://www.archlinux.org/pacman/
 	arch = i686

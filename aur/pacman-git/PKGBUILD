@@ -6,7 +6,7 @@
 # Contributor: Andres Perera <aepd87 at gmail dot com>
 
 pkgname=pacman-git
-pkgver=6.0.1.r152.g34611a66
+pkgver=6.0.1.r178.g0df44c2e
 pkgrel=1
 pkgdesc="A library-based package manager with dependency support"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
