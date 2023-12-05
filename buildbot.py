@@ -144,6 +144,8 @@ class PkgBase:
             pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}")
             pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}-{self.pkgrel}")
 
+        pkgs.add("strace")
+
         return {ALTERNATIVES.get(pkg, pkg) for pkg in pkgs}
 
     def fmt_version(self):

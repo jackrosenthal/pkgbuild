@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/gpg --batch --pinentry-mode error "$@"
+strace -f /usr/bin/gpg --batch --pinentry-mode error "$@"
