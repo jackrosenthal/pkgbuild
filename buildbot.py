@@ -394,6 +394,7 @@ def orchestrate(
             make_task(
                 "makepkg",
                 [
+                    'export PATH="${PWD}/pkgbuild/bin:${PATH}"',
                     ["cd", pkgdir],
                     [
                         "makepkg",
