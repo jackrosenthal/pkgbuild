@@ -397,7 +397,9 @@ def orchestrate(
                     'export PATH="${PWD}/pkgbuild/bin:${PATH}"',
                     ["cd", pkgdir],
                     [
-                        "makepkg",
+                        "bash",
+                        "-x",
+                        "/usr/bin/makepkg",
                         "--skippgpcheck",
                         "--check" if check_this_pkg else "--nocheck",
                         "--sign",
