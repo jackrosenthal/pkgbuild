@@ -311,7 +311,7 @@ def get_depgraph(packages, check=True):
             return depgraph
 
 
-def generate_dockerfile(pkgbase, artifacts=None, base_image: str = "pkgbuild:latest"):
+def generate_dockerfile(pkgbase, artifacts=None, base_image: str = "docker.io/library/pkgbuild:latest"):
     if not artifacts:
         artifacts = pkgbase.get_artifact_names()
     def _lines():
@@ -335,7 +335,7 @@ def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_ima
     pkgbase = load_package_from_dir(Path(pkg_dir))
     tag = f"makepkg-{pkgbase.name}:latest"
     subprocess.run(
-        ["docker", "buildx", "build", "-t", tag, "-"],
+        ["docker", "buildx", "build", "-t", tag, "--load", "-"],
         input=generate_dockerfile(pkgbase, artifacts=artifacts, base_image=base_image),
         check=True,
         encoding="utf-8",
