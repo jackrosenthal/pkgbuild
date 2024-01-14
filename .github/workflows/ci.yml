@@ -68,4 +68,4 @@ jobs:
       - name: makepkg
         run: |
           docker run pkgbuild:latest \
-          "cd ${{ matrix.pkgbase.subdir }} && makepkg --skippgpcheck --check --nosign --holdver"
+          "cd ${{ matrix.pkgbase.subdir }} && sudo -u build makepkg --skippgpcheck --check --nosign --holdver"
