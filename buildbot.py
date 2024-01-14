@@ -315,7 +315,7 @@ def generate_dockerfile(pkgbase, artifacts=None):
     if not artifacts:
         artifacts = pkgbase.get_artifact_names()
     def _lines():
-        yield "FROM pkgbuild:latest"
+        yield "FROM pkgbuild"
         build_deps = sorted(pkgbase.get_build_dependencies(check=False))
         if build_deps:
             pkgs_quoted = " ".join(shlex.quote(x) for x in build_deps)
