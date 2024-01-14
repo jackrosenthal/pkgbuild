@@ -311,7 +311,9 @@ def get_depgraph(packages, check=True):
             return depgraph
 
 
-def generate_dockerfile(pkgbase):
+def generate_dockerfile(pkgbase, artifacts=None):
+    if not artifacts:
+        artifacts = pkgbase.get_artifact_names()
     def _lines():
         yield "FROM pkgbuild:latest"
         build_deps = sorted(pkgbase.get_build_dependencies(check=False))
@@ -320,18 +322,21 @@ def generate_dockerfile(pkgbase):
             yield f"RUN pacman -S --needed --noconfirm {pkgs_quoted}"
         yield f"WORKDIR /pkgbuild/{pkgbase.path}"
         yield "RUN sudo -u build bash makepkg --skippgpcheck --nocheck --nosign --holdver"
-        artifacts = pkgbase.get_artifact_names()
         artifacts_quoted = " ".join(shlex.quote(x) for x in artifacts)
         yield f"RUN tar cf /pkgbuild/binpkgs.tar {artifacts_quoted}"
     return "".join(f"{x}\n" for x in _lines())
 
 
-def dockerbuild(pkg_dir: str, output_dir: str = "/tmp"):
+def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = ""):
+    artifacts = None
+    if plan:
+        plan_dict = json.loads(plan)
+        artifacts = plan_dict["artifacts"]
     pkgbase = load_package_from_dir(Path(pkg_dir))
     tag = f"makepkg-{pkgbase.name}:latest"
     subprocess.run(
         ["docker", "buildx", "build", "-t", tag, "-"],
-        input=generate_dockerfile(pkgbase),
+        input=generate_dockerfile(pkgbase, artifacts=artfiacts),
         check=True,
         encoding="utf-8",
     )
