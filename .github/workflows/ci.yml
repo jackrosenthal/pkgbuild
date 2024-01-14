@@ -32,7 +32,7 @@ jobs:
       - name: Plan Builds
         id: plan_builds
         run: |
-          docker run ${{ steps.build_container.outputs.ImageID }} sudo -u build ./buildbot.py plan-builds >> "${GITHUB_OUTPUT}"
+          docker run pkgbuild:latest sudo -u build ./buildbot.py plan-builds >> "${GITHUB_OUTPUT}"
   build-packages:
     runs-on: ubuntu-latest
     needs: build-container
@@ -62,7 +62,7 @@ jobs:
         run: |
           docker load --input /tmp/container.tar
       - name: dockerbuild
-        run: ./buildbot.py dockerbuild '${{ matrix.pkgbase.subdir }}' --plan="${PLAN}" --base-image=${{ needs.build-container.outputs.imageid }}
+        run: ./buildbot.py dockerbuild '${{ matrix.pkgbase.subdir }}' --plan="${PLAN}"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
