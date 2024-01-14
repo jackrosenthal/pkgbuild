@@ -1,6 +1,7 @@
 FROM archlinux
 WORKDIR /pkgbuild
 RUN useradd -Um build
+RUN echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 COPY --chown=build:build . /pkgbuild
 COPY pacman.conf /etc/pacman.conf
 RUN pacman-key --init

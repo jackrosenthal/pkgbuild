@@ -321,8 +321,11 @@ def generate_dockerfile(pkgbase, artifacts=None, base_image: str = "docker.io/li
             pkgs_quoted = " ".join(shlex.quote(x) for x in build_deps)
             yield f"RUN pacman -S --needed --noconfirm {pkgs_quoted}"
         yield f"WORKDIR /pkgbuild/{pkgbase.path}"
-        yield "RUN sudo -u build bash makepkg --skippgpcheck --nocheck --nosign --holdver"
+        yield "USER build"
+        yield 'ENV PATH="/pkgbuild/bin:$PATH"'
+        yield "RUN makepkg --skippgpcheck --nocheck --nosign --holdver"
         artifacts_quoted = " ".join(shlex.quote(x) for x in artifacts)
+        yield "USER root"
         yield f"RUN tar cf /pkgbuild/binpkgs.tar {artifacts_quoted}"
     return "".join(f"{x}\n" for x in _lines())
 
