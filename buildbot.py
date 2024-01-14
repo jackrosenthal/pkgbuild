@@ -338,7 +338,7 @@ def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_ima
     pkgbase = load_package_from_dir(Path(pkg_dir))
     tag = f"makepkg-{pkgbase.name}:latest"
     subprocess.run(
-        ["docker", "buildx", "build", "-t", tag, "--load", "-"],
+        ["docker", "buildx", "build", "--pull=false", "-t", tag, "--load", "-"],
         input=generate_dockerfile(pkgbase, artifacts=artifacts, base_image=base_image),
         check=True,
         encoding="utf-8",

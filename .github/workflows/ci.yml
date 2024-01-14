@@ -60,7 +60,6 @@ jobs:
           path: /tmp
       - name: Load Docker Image
         run: docker load --input /tmp/container.tar
-      - run: docker images
       - name: dockerbuild
         run: ./buildbot.py dockerbuild '${{ matrix.pkgbase.subdir }}' --plan="${PLAN}"
       - name: Upload Artifacts
