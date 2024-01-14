@@ -366,7 +366,6 @@ def plan_builds(rebuild_all: bool = False, indent: int = 0):
         artifacts = dge.pkgbase.get_artifact_names()
         result.append({
             "pkgbase": dge.pkgbase.name,
-            "build_deps": build_deps,
             "subdir": str(dge.pkgbase.path),
             "version": dge.pkgbase.fmt_version(),
             "packages": [x.name for x in dge.pkgbase.packages],
