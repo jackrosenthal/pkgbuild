@@ -310,6 +310,42 @@ def get_depgraph(packages, check=True):
             return depgraph
 
 
+def plan_builds(rebuild_all: bool = False, indent: int = 0):
+    pkgs = []
+    for pkg in find_packages():
+        if rebuild_all or pkg.needs_update():
+            pkgs.append(pkg)
+
+    depgraph = get_depgraph(pkgs)
+
+    with_graphdepends = []
+    no_graphdepends = []
+
+    for dge in depgraph:
+        if dge.graphdepends:
+            with_graphdepends.append(dge)
+        else:
+            no_graphdepends.append(dge)
+
+    result = []
+    for dge in no_graphdepends:
+        build_deps = sorted(dge.pkgbase.get_build_dependencies(check=True))
+        build_deps_cmd = "true"
+        if build_deps:
+            pkgs_quoted = " ".join(shlex.quote(x) for x in build_deps)
+            build_deps_cmd = f"pacman -S --needed --noconfirm {pkgs_quoted}"
+        result.append({
+            "pkgbase": dge.pkgbase.name,
+            "build_deps": build_deps,
+            "build_deps_cmd": build_deps_cmd,
+            "subdir": str(dge.pkgbase.path),
+            "version": dge.pkgbase.fmt_version(),
+            "packages": [x.name for x in dge.pkgbase.packages],
+        })
+
+    print(json.dumps(result, indent=indent or None, sort_keys=True))
+
+
 def orchestrate(
     rebuild_all: bool = False, check: bool = True, sourcehut_token: str = ""
 ):
@@ -581,7 +617,7 @@ def update(jobs=8):
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands([orchestrate, import_from_aur, update])
+    parser.add_commands([orchestrate, import_from_aur, update, plan_builds])
 
     parser.dispatch()
 

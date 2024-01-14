@@ -1,0 +1,71 @@
+name: Build Packages
+on:
+  push:
+    branches: main
+jobs:
+  build-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Container
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: pkgbuild:latest
+          outputs: type=docker,dest=/tmp/container.tar
+      - name: Upload Container
+        uses: actions/upload-artifact@v4
+        with:
+          name: container
+          path: /tmp/container.tar
+  plan-builds:
+    runs-on: ubuntu-latest
+    needs: build-container
+    outputs:
+      builds: ${{ steps.plan_builds.outputs.builds }}
+    steps:
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Download Container
+        uses: actions/download-artifact@v4
+        with:
+          name: container
+          path: /tmp
+      - name: Load Docker Image
+        run: |
+          docker load --input /tmp/container.tar
+      - name: Plan Builds
+        id: plan_builds
+        run: |
+          builds=$(
+          docker run pkgbuild:latest sudo -u build ./buildbot.py plan-builds
+          ) >> "${GITHUB_OUTPUT}"
+  build-packages:
+    runs-on: ubuntu-latest
+    needs: plan-builds
+    name: ${{ matrix.pkgbase.pkgbase }}-${{ matrix.pkgbase.version }}
+    strategy:
+      matrix:
+        pkgbase: ${{ fromJSON(needs.plan-builds.outputs.builds) }}
+    steps:
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Download Container
+        uses: actions/download-artifact@v4
+        with:
+          name: container
+          path: /tmp
+      - name: Load Docker Image
+        run: |
+          docker load --input /tmp/container.tar
+      - name: Install Build Dependencies
+        run: |
+          docker run pkgbuild:latest ${{ matrix.pkgbase.build_deps_cmd }}
+      - name: makepkg
+        run: |
+          docker run pkgbuild:latest \
+          "cd ${{ matrix.pkgbase.subdir }} && makepkg --skippgpcheck --check --nosign --holdver"
