@@ -41,9 +41,9 @@ jobs:
       - name: Plan Builds
         id: plan_builds
         run: |
-          builds=$(
+          echo "builds=$(
           docker run pkgbuild:latest sudo -u build ./buildbot.py plan-builds
-          ) >> "${GITHUB_OUTPUT}"
+          )" >> "${GITHUB_OUTPUT}"
   build-packages:
     runs-on: ubuntu-latest
     needs: plan-builds
