@@ -5,6 +5,7 @@ import dataclasses
 import json
 import logging
 import os
+from pathlib import Path
 import pathlib
 import pprint
 import shlex
@@ -310,6 +311,39 @@ def get_depgraph(packages, check=True):
             return depgraph
 
 
+def generate_dockerfile(pkgbase):
+    def _lines():
+        yield "FROM pkgbuild:latest"
+        build_deps = sorted(pkgbase.get_build_dependencies(check=False))
+        if build_deps:
+            pkgs_quoted = " ".join(shlex.quote(x) for x in build_deps)
+            yield f"RUN pacman -S --needed --noconfirm {pkgs_quoted}"
+        yield f"WORKDIR /pkgbuild/{pkgbase.path}"
+        yield "RUN sudo -u build bash makepkg --skippgpcheck --nocheck --nosign --holdver"
+        artifacts = pkgbase.get_artifact_names()
+        artifacts_quoted = " ".join(shlex.quote(x) for x in artifacts)
+        yield f"RUN tar cf /pkgbuild/binpkgs.tar {artifacts_quoted}"
+    return "".join(f"{x}\n" for x in _lines())
+
+
+def dockerbuild(pkg_dir: str, output_dir: str = "/tmp"):
+    pkgbase = load_package_from_dir(Path(pkg_dir))
+    tag = f"makepkg-{pkgbase.name}:latest"
+    subprocess.run(
+        ["docker", "buildx", "build", "-t", tag, "-"],
+        input=generate_dockerfile(pkgbase),
+        check=True,
+        encoding="utf-8",
+    )
+    with subprocess.Popen(["tar", "xf", "-"], stdin=subprocess.PIPE, cwd=output_dir) as proc:
+        subprocess.run(
+            ["docker", "run", "--rm", tag, "cat", "/pkgbuild/binpkgs.tar"],
+            stdout=proc.stdin,
+            check=True,
+        )
+        assert proc.wait() == 0
+
+
 def plan_builds(rebuild_all: bool = False, indent: int = 0):
     pkgs = []
     for pkg in find_packages():
@@ -329,18 +363,15 @@ def plan_builds(rebuild_all: bool = False, indent: int = 0):
 
     result = []
     for dge in no_graphdepends:
-        build_deps = sorted(dge.pkgbase.get_build_dependencies(check=True))
-        build_deps_cmd = "true"
-        if build_deps:
-            pkgs_quoted = " ".join(shlex.quote(x) for x in build_deps)
-            build_deps_cmd = f"pacman -S --needed --noconfirm {pkgs_quoted}"
+        artifacts = dge.pkgbase.get_artifact_names()
         result.append({
             "pkgbase": dge.pkgbase.name,
             "build_deps": build_deps,
-            "build_deps_cmd": build_deps_cmd,
             "subdir": str(dge.pkgbase.path),
             "version": dge.pkgbase.fmt_version(),
             "packages": [x.name for x in dge.pkgbase.packages],
+            "artifacts": artifacts,
+            "artifacts_path_expr": "\n".join(f"/tmp/{x}" for x in artifacts),
         })
 
     print(json.dumps(result, indent=indent or None, sort_keys=True))
@@ -617,7 +648,7 @@ def update(jobs=8):
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands([orchestrate, import_from_aur, update, plan_builds])
+    parser.add_commands([orchestrate, import_from_aur, update, plan_builds, dockerbuild])
 
     parser.dispatch()
 
