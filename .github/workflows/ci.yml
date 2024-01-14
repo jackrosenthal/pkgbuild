@@ -75,7 +75,7 @@ jobs:
       - name: dockerbuild
         run: ./buildbot.py dockerbuild '${{ matrix.pkgbase.subdir }}'
       - name: Upload Artifacts
-        users: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.pkgbase.pkgbase }}-binpkgs
           path: ${{ matrix.pkgbase.artifacts_path_expr }}
