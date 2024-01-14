@@ -330,7 +330,7 @@ def generate_dockerfile(pkgbase, artifacts=None, base_image: str = "docker.io/li
     return "".join(f"{x}\n" for x in _lines())
 
 
-def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_image: str = "pkgbuild:latest"):
+def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_image: str = "docker.io/library/pkgbuild:latest"):
     artifacts = None
     if plan:
         plan_dict = json.loads(plan)
