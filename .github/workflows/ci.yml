@@ -19,6 +19,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          load: true
           tags: pkgbuild:latest
           outputs: type=docker,dest=/tmp/container.tar
       - name: Upload Container
