@@ -311,11 +311,11 @@ def get_depgraph(packages, check=True):
             return depgraph
 
 
-def generate_dockerfile(pkgbase, artifacts=None):
+def generate_dockerfile(pkgbase, artifacts=None, base_image: str = "pkgbuild:latest"):
     if not artifacts:
         artifacts = pkgbase.get_artifact_names()
     def _lines():
-        yield "FROM pkgbuild"
+        yield f"FROM {base_image}"
         build_deps = sorted(pkgbase.get_build_dependencies(check=False))
         if build_deps:
             pkgs_quoted = " ".join(shlex.quote(x) for x in build_deps)
@@ -327,7 +327,7 @@ def generate_dockerfile(pkgbase, artifacts=None):
     return "".join(f"{x}\n" for x in _lines())
 
 
-def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = ""):
+def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_image: str = "pkgbuild:latest"):
     artifacts = None
     if plan:
         plan_dict = json.loads(plan)
@@ -336,7 +336,7 @@ def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = ""):
     tag = f"makepkg-{pkgbase.name}:latest"
     subprocess.run(
         ["docker", "buildx", "build", "-t", tag, "-"],
-        input=generate_dockerfile(pkgbase, artifacts=artifacts),
+        input=generate_dockerfile(pkgbase, artifacts=artifacts, base_image=base_image),
         check=True,
         encoding="utf-8",
     )

@@ -7,12 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       builds: ${{ steps.plan_builds.outputs.builds }}
+      imageid: ${{ steps.build_container.outputs.ImageID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Container
+        id: build_container
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -30,7 +32,7 @@ jobs:
         id: plan_builds
         run: |
           echo "builds=$(
-          docker run pkgbuild:latest sudo -u build ./buildbot.py plan-builds
+          docker run ${{ steps.build_container.outputs.ImageID }} sudo -u build ./buildbot.py plan-builds
           )" >> "${GITHUB_OUTPUT}"
   build-packages:
     runs-on: ubuntu-latest
@@ -61,7 +63,7 @@ jobs:
         run: |
           docker load --input /tmp/container.tar
       - name: dockerbuild
-        run: ./buildbot.py dockerbuild '${{ matrix.pkgbase.subdir }}' --plan="${PLAN}"
+        run: ./buildbot.py dockerbuild '${{ matrix.pkgbase.subdir }}' --plan="${PLAN}" --base-image=${{ needs.build-container.outputs.imageid }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
