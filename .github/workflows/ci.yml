@@ -25,7 +25,7 @@ jobs:
         run: docker load --input /tmp/container.tar
       - name: Plan Builds
         id: plan_builds
-        run: docker run pkgbuild:latest sudo -u build ./buildbot.py plan-builds >> "${GITHUB_OUTPUT}"
+        run: docker run -u build pkgbuild:latest ./buildbot.py plan-builds >> "${GITHUB_OUTPUT}"
       - name: Upload Container
         uses: actions/upload-artifact@v4
         with:
