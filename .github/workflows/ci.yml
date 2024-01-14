@@ -32,9 +32,7 @@ jobs:
       - name: Plan Builds
         id: plan_builds
         run: |
-          echo "builds=$(
-          docker run ${{ steps.build_container.outputs.ImageID }} sudo -u build ./buildbot.py plan-builds
-          )" >> "${GITHUB_OUTPUT}"
+          docker run ${{ steps.build_container.outputs.ImageID }} sudo -u build ./buildbot.py plan-builds >> "${GITHUB_OUTPUT}"
   build-packages:
     runs-on: ubuntu-latest
     needs: build-container

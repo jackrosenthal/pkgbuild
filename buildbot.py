@@ -349,7 +349,7 @@ def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_ima
         assert proc.wait() == 0
 
 
-def plan_builds(rebuild_all: bool = False, indent: int = 0):
+def plan_builds(rebuild_all: bool = False):
     pkgs = []
     for pkg in find_packages():
         if rebuild_all or pkg.needs_update():
@@ -378,7 +378,7 @@ def plan_builds(rebuild_all: bool = False, indent: int = 0):
             "artifacts_path_expr": "\n".join(f"/tmp/{x}" for x in artifacts),
         })
 
-    print(json.dumps(result, indent=indent or None, sort_keys=True))
+    print(f"builds={json.dumps(result, sort_keys=True)}")
 
 
 def orchestrate(
