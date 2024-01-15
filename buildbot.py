@@ -384,6 +384,76 @@ def plan_builds(rebuild_all: bool = False):
     print(f"builds={json.dumps(result, sort_keys=True)}")
 
 
+def s3cmd(argv, cwd):
+    access_key = os.environ["S3_ACCESS_KEY"]
+    secret_key = os.environ["S3_SECRET_KEY"]
+    subprocess.run(
+        ["s3cmd", "--access_key", access_key, "--secret_key", secret_key, *argv],
+        check=True,
+        cwd=cwd,
+    )
+
+
+def publish(workdir: str):
+    workdir = Path(workdir)
+    packages = list(workdir.glob("*.pkg.tar.zst"))
+
+    signatures = []
+
+    subprocess.run(
+        ["gpg", "--import"],
+        input=os.environ["GPG_PRIVATE_KEY"],
+        encoding="utf-8",
+    )
+
+    for pkg_path in packages:
+        sig_path = f"{pkg_path}.sig"
+        signatures.append(sig_path)
+        subprocess.run(
+            [
+                "gpg",
+                "--detach-sign",
+                "--batch",
+                "--passphrase",
+                "",
+                "--output",
+                sig_path,
+                "--sign",
+                pkg_path,
+            ],
+            check=True,
+            cwd=workdir,
+        )
+
+    repo_db_path = f"{REPO_NAME}.db.tar.xz"
+    repo_db_remote = f"{S3_UPLOADS}{REPO_NAME}.db"
+    s3cmd(["get", repo_db_remote, repo_db_path], cwd=workdir)
+    subprocess.run(
+        [
+            "repo-add",
+            "--sign",
+            "--key",
+            GPG_KEY_ID,
+            repo_db_path,
+            *packages,
+        ],
+        check=True,
+        cwd=workdir,
+    )
+    s3cmd(
+        [
+            "put",
+            "-F",
+            f"{REPO_NAME}.db",
+            f"{REPO_NAME}.db.sig",
+            *packages,
+            *signatures,
+            S3_UPLOADS,
+        ],
+        cwd=workdir,
+    )
+
+
 def orchestrate(
     rebuild_all: bool = False, check: bool = True, sourcehut_token: str = ""
 ):
