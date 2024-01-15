@@ -725,7 +725,7 @@ def update(jobs=8):
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands([orchestrate, import_from_aur, update, plan_builds, dockerbuild])
+    parser.add_commands([orchestrate, import_from_aur, update, plan_builds, dockerbuild, publish])
 
     parser.dispatch()
 
