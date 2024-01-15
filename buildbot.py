@@ -31,6 +31,8 @@ ALTERNATIVES = {
     "electron12": "electron12-bin",
 }
 
+logger = logging.getLogger(__name__)
+
 
 def make_task(name, commands):
     def shellsafe(command):
@@ -398,6 +400,13 @@ def publish(workdir: str):
     workdir = Path(workdir)
     packages = list(workdir.glob("*.pkg.tar.zst"))
 
+    logger.info("Workdir: %s", workdir)
+    logger.info("Workdir listing: %s", list(workdir.iterdir()))
+
+    if not packages:
+        logger.warning("No packages to publish... exiting!")
+        return 0
+
     signatures = []
 
     subprocess.run(
@@ -457,7 +466,6 @@ def publish(workdir: str):
 def orchestrate(
     rebuild_all: bool = False, check: bool = True, sourcehut_token: str = ""
 ):
-    logger = logging.getLogger(__name__)
     pkgs = []
     for pkg in find_packages():
         if rebuild_all or pkg.needs_update():
