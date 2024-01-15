@@ -313,9 +313,12 @@ def get_depgraph(packages, check=True):
             return depgraph
 
 
-def generate_dockerfile(pkgbase, artifacts=None, base_image: str = "docker.io/library/pkgbuild:latest"):
+def generate_dockerfile(
+    pkgbase, artifacts=None, base_image: str = "docker.io/library/pkgbuild:latest"
+):
     if not artifacts:
         artifacts = pkgbase.get_artifact_names()
+
     def _lines():
         yield f"FROM {base_image}"
         build_deps = sorted(pkgbase.get_build_dependencies(check=False))
@@ -329,10 +332,16 @@ def generate_dockerfile(pkgbase, artifacts=None, base_image: str = "docker.io/li
         artifacts_quoted = " ".join(shlex.quote(x) for x in artifacts)
         yield "USER root"
         yield f"RUN tar cf /pkgbuild/binpkgs.tar {artifacts_quoted}"
+
     return "".join(f"{x}\n" for x in _lines())
 
 
-def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_image: str = "docker.io/library/pkgbuild:latest"):
+def dockerbuild(
+    pkg_dir: str,
+    output_dir: str = "/tmp",
+    plan: str = "",
+    base_image: str = "docker.io/library/pkgbuild:latest",
+):
     artifacts = None
     if plan:
         plan_dict = json.loads(plan)
@@ -345,7 +354,9 @@ def dockerbuild(pkg_dir: str, output_dir: str = "/tmp", plan: str = "", base_ima
         check=True,
         encoding="utf-8",
     )
-    with subprocess.Popen(["tar", "xf", "-"], stdin=subprocess.PIPE, cwd=output_dir) as proc:
+    with subprocess.Popen(
+        ["tar", "xf", "-"], stdin=subprocess.PIPE, cwd=output_dir
+    ) as proc:
         subprocess.run(
             ["docker", "run", "--rm", tag, "cat", "/pkgbuild/binpkgs.tar"],
             stdout=proc.stdin,
@@ -374,14 +385,16 @@ def plan_builds(rebuild_all: bool = False):
     result = []
     for dge in no_graphdepends:
         artifacts = dge.pkgbase.get_artifact_names()
-        result.append({
-            "pkgbase": dge.pkgbase.name,
-            "subdir": str(dge.pkgbase.path),
-            "version": dge.pkgbase.fmt_version(),
-            "packages": [x.name for x in dge.pkgbase.packages],
-            "artifacts": artifacts,
-            "artifacts_path_expr": "\n".join(f"/tmp/{x}" for x in artifacts),
-        })
+        result.append(
+            {
+                "pkgbase": dge.pkgbase.name,
+                "subdir": str(dge.pkgbase.path),
+                "version": dge.pkgbase.fmt_version(),
+                "packages": [x.name for x in dge.pkgbase.packages],
+                "artifacts": artifacts,
+                "artifacts_path_expr": "\n".join(f"/tmp/{x}" for x in artifacts),
+            }
+        )
 
     print(f"builds={json.dumps(result, sort_keys=True)}")
 
@@ -733,7 +746,9 @@ def update(jobs=8):
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands([orchestrate, import_from_aur, update, plan_builds, dockerbuild, publish])
+    parser.add_commands(
+        [orchestrate, import_from_aur, update, plan_builds, dockerbuild, publish]
+    )
 
     parser.dispatch()
 
