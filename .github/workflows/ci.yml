@@ -50,7 +50,7 @@ jobs:
         with:
           python-version: 3.11
       - name: Python Dependencies
-        run: pip install argh tqdm requests
+        run: pip install argh tqdm
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:

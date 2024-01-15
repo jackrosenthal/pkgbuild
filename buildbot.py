@@ -5,18 +5,14 @@ import dataclasses
 import json
 import logging
 import os
-from pathlib import Path
 import pathlib
-import pprint
 import shlex
 import subprocess
-import sys
 import tempfile
 import threading
-import time
+from pathlib import Path
 
 import argh
-import requests
 import tqdm
 
 REPO_NAME = "jmr"
@@ -32,68 +28,6 @@ ALTERNATIVES = {
 }
 
 logger = logging.getLogger(__name__)
-
-
-def make_task(name, commands):
-    def shellsafe(command):
-        if isinstance(command, str):
-            return command
-        return " ".join(map(shlex.quote, command))
-
-    if not isinstance(commands, str):
-        commands = ";".join(map(shellsafe, commands))
-
-    return {name: commands}
-
-
-def make_manifest(tasks=(), artifacts=()):
-    return json.dumps(
-        {
-            "image": "archlinux",
-            "sources": [
-                "https://git.sr.ht/~jmr/pkgbuild",
-            ],
-            "repositories": {
-                REPO_NAME: f"{REPO_URL}#{GPG_KEY_ID}",
-            },
-            "tasks": list(tasks),
-            "artifacts": list(artifacts),
-        }
-    )
-
-
-class SourcehutBuildAPI:
-    def __init__(self, auth_token):
-        if not auth_token:
-            auth_token = (pathlib.Path.home() / ".srht_token").read_text().strip()
-
-        self.session = requests.Session()
-        self.session.headers.update({"Authorization": f"token {auth_token}"})
-
-    def submit_job(self, manifest):
-        r = self.session.post(
-            "https://builds.sr.ht/api/jobs",
-            json={"manifest": manifest},
-        )
-        r.raise_for_status()
-        job_json = r.json()
-        return job_json["id"]
-
-    def get_job_status(self, job_id):
-        r = self.session.get(
-            f"https://builds.sr.ht/api/jobs/{job_id}",
-        )
-        r.raise_for_status()
-        job_json = r.json()
-        return job_json["status"]
-
-    def get_job_artifacts(self, job_id):
-        r = self.session.get(
-            f"https://builds.sr.ht/api/jobs/{job_id}/artifacts",
-        )
-        r.raise_for_status()
-        paginated_wrapper = r.json()
-        return paginated_wrapper["results"]
 
 
 def pacman_db_has_version_or_newer(package_name, version_str):
@@ -476,225 +410,6 @@ def publish(workdir: str):
     )
 
 
-def orchestrate(
-    rebuild_all: bool = False, check: bool = True, sourcehut_token: str = ""
-):
-    pkgs = []
-    for pkg in find_packages():
-        if rebuild_all or pkg.needs_update():
-            pkgs.append(pkg)
-
-    if not pkgs:
-        logger.info("Nothing to do!")
-        return
-
-    logger.info("Packages to build: %s", pprint.pformat(pkgs))
-
-    build_api = SourcehutBuildAPI(sourcehut_token)
-    pending_packages = list(get_depgraph(pkgs))
-    running_builds = []
-    finished_urls = {}
-    failed_package_names = set()
-
-    def mark_pkgbase_failed(pkgbase):
-        logger.error("Build failed: %s", pkgbase.name)
-        for package in pkgbase.packages:
-            failed_package_names.add(package.name)
-
-    def job_success(pkgbase, job_id):
-        artifacts = build_api.get_job_artifacts(job_id)
-        for artifact in artifacts:
-            name = artifact["name"]
-            url = artifact["url"]
-
-            for pkg in sorted(pkgbase.packages, key=lambda x: -len(x.name)):
-                if name.startswith(pkg.name):
-                    pkgname = pkg.name
-                    break
-            else:
-                raise ValueError(f"{name} didn't match any packages")
-
-            finished_urls[pkgname] = url
-
-    def queue_build(depgraph_entry, urls_to_install):
-        tasks = []
-        pkgdir = f"pkgbuild/{depgraph_entry.pkgbase.path}"
-
-        deps = sorted(depgraph_entry.otherdepends)
-        if deps:
-            tasks.append(
-                make_task(
-                    "install-dependencies",
-                    [
-                        ["sudo", "pacman", "-S", "--needed", "--noconfirm", *deps],
-                    ],
-                )
-            )
-
-        if urls_to_install:
-            steps = ["mkdir -p ~/depgraph_install && cd ~/depgraph_install"]
-            filenames = []
-            for url in urls_to_install:
-                _, _, name = url.rpartition("/")
-                filenames.append(name)
-                steps.append(["curl", "-f", "-o", name, url])
-            steps.append(["sudo", "pacman", "--noconfirm", "-U", *filenames])
-            tasks.append(make_task("install-depgraph-artifacts", steps))
-
-        check_this_pkg = check
-        if depgraph_entry.pkgbase.name in SKIP_CHECK_PKGS:
-            check_this_pkg = False
-
-        tasks.append(
-            make_task(
-                "makepkg",
-                [
-                    ["cd", pkgdir],
-                    [
-                        "makepkg",
-                        "--skippgpcheck",
-                        "--check" if check_this_pkg else "--nocheck",
-                        "--nosign",
-                    ],
-                ],
-            )
-        )
-
-        artifacts = []
-        for name in depgraph_entry.pkgbase.get_artifact_names():
-            artifacts.append(f"{pkgdir}/{name}")
-
-        manifest = make_manifest(
-            tasks=tasks,
-            artifacts=artifacts,
-        )
-        job_id = build_api.submit_job(manifest)
-        running_builds.append((depgraph_entry.pkgbase, job_id, "queued"))
-        logging.info("Job %s submitted", job_id)
-
-    while pending_packages or running_builds:
-        logger.debug("pending_packages=%s", pprint.pformat(pending_packages))
-        logger.debug("running_builds=%s", pprint.pformat(running_builds))
-        new_running_builds = []
-        for pkgbase, job_id, last_status in running_builds:
-            status = build_api.get_job_status(job_id)
-            if status != last_status:
-                logger.info(
-                    "Job %s to build %s is now %s (was %s).",
-                    job_id,
-                    pkgbase.name,
-                    status,
-                    last_status,
-                )
-                if status in ("failed", "cancelled"):
-                    mark_pkgbase_failed(pkgbase)
-                elif status == "success":
-                    job_success(pkgbase, job_id)
-                else:
-                    new_running_builds.append((pkgbase, job_id, status))
-            else:
-                new_running_builds.append((pkgbase, job_id, status))
-
-        running_builds = new_running_builds
-
-        new_pending_packages = []
-        for dge in pending_packages:
-            for _, pkg in dge.graphdepends:
-                if pkg.name in failed_package_names:
-                    mark_pkgbase_failed(dge.pkgbase)
-                    break
-            else:
-                try:
-                    graphdepends_urls = dge.get_graphdepends_urls(finished_urls)
-                except KeyError:
-                    logger.debug(
-                        "%s not scheduled due to missing graphdepends",
-                        pprint.pformat(dge),
-                    )
-                    new_pending_packages.append(dge)
-                    continue
-                queue_build(dge, graphdepends_urls)
-
-        pending_packages = new_pending_packages
-
-        time.sleep(5)
-
-    if finished_urls:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmp_path = pathlib.Path(tmpdir)
-
-            filenames = []
-
-            for url in finished_urls.values():
-                _, _, filename = url.rpartition("/")
-                filenames.append(filename)
-                subprocess.run(
-                    ["curl", "-f", "-o", filename, url],
-                    check=True,
-                    cwd=tmp_path,
-                )
-
-            signature_files = []
-            for pkg_path in filenames:
-                sig_path = f"{pkg_path}.sig"
-                signature_files.append(sig_path)
-                subprocess.run(
-                    [
-                        "gpg",
-                        "--detach-sign",
-                        "--batch",
-                        "--passphrase",
-                        "",
-                        "--output",
-                        sig_path,
-                        "--sign",
-                        pkg_path,
-                    ],
-                    check=True,
-                    cwd=tmp_path,
-                )
-
-            repo_db_path = f"{REPO_NAME}.db.tar.xz"
-            repo_db_remote = f"{S3_UPLOADS}{REPO_NAME}.db"
-            subprocess.run(
-                ["s3cmd", "get", repo_db_remote, repo_db_path],
-                check=True,
-                cwd=tmp_path,
-            )
-            subprocess.run(
-                [
-                    "repo-add",
-                    "--sign",
-                    "--key",
-                    GPG_KEY_ID,
-                    repo_db_path,
-                    *filenames,
-                ],
-                check=True,
-                cwd=tmp_path,
-            )
-            subprocess.run(
-                [
-                    "s3cmd",
-                    "put",
-                    "-F",
-                    f"{REPO_NAME}.db",
-                    f"{REPO_NAME}.db.sig",
-                    *filenames,
-                    *signature_files,
-                    S3_UPLOADS,
-                ],
-                check=True,
-                cwd=tmp_path,
-            )
-
-    if failed_package_names:
-        logger.error(
-            "Failed to build packages: %s", " ".join(sorted(failed_package_names))
-        )
-        sys.exit(1)
-
-
 def aur_merge(remote):
     here = pathlib.Path(__file__).parent
 
@@ -746,9 +461,7 @@ def update(jobs=8):
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands(
-        [orchestrate, import_from_aur, update, plan_builds, dockerbuild, publish]
-    )
+    parser.add_commands([import_from_aur, update, plan_builds, dockerbuild, publish])
 
     parser.dispatch()
 
