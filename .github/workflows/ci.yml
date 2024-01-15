@@ -94,5 +94,5 @@ jobs:
       - name: Publish
         run: |
           docker run -e S3_ACCESS_KEY -e S3_SECRET_KEY -e GPG_PRIVATE_KEY \
-          --volume artifacts:/artifacts pkgbuild:latest \
+          --volume ./artifacts:/artifacts pkgbuild:latest \
           ./buildbot.py publish /artifacts
