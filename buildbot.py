@@ -288,12 +288,10 @@ def dockerbuild(
         check=True,
         encoding="utf-8",
     )
-    with subprocess.Popen(
-        ["tar", "xf", "-"], stdin=subprocess.PIPE, cwd=output_dir
-    ) as proc:
+    with open(f"/tmp/{pkgbase.name}-binpkgs.tar", "wb") as output_file:
         subprocess.run(
             ["docker", "run", "--rm", tag, "cat", "/pkgbuild/binpkgs.tar"],
-            stdout=proc.stdin,
+            stdout=output_file,
             check=True,
         )
         assert proc.wait() == 0
@@ -326,7 +324,7 @@ def plan_builds(rebuild_all: bool = False):
                 "version": dge.pkgbase.fmt_version(),
                 "packages": [x.name for x in dge.pkgbase.packages],
                 "artifacts": artifacts,
-                "artifacts_path_expr": "\n".join(f"/tmp/{x}" for x in artifacts),
+                "artifacts_path_expr": f"/tmp/{dge.pkgbase.name}-binpkgs.tar",
             }
         )
 
@@ -345,6 +343,11 @@ def s3cmd(argv, cwd):
 
 def publish(workdir: str):
     workdir = Path(workdir)
+
+    for tarpath in workdir.glob("*-binpkgs.tar"):
+        subprocess.run(["tar", "xf", tarpath], check=True, cwd=workdir)
+        tarpath.unlink()
+
     packages = list(workdir.glob("*.pkg.tar.zst"))
 
     logger.info("Workdir: %s", workdir)
