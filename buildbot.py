@@ -294,7 +294,6 @@ def dockerbuild(
             stdout=output_file,
             check=True,
         )
-        assert proc.wait() == 0
 
 
 def plan_builds(rebuild_all: bool = False):
