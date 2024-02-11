@@ -51,6 +51,10 @@ prepare() {
 }
 
 build() {
+  # this uses malloc_usable_size, which is incompatible with fortification level 3
+  export CFLAGS="${CFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
+  export CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
+
   cd build
   qmake ../${_pkgfqn} CONFIG+=force_debug_info -- \
     -proprietary-codecs \
@@ -64,6 +68,10 @@ build() {
 }
 
 package() {
+  # this uses malloc_usable_size, which is incompatible with fortification level 3
+  export CFLAGS="${CFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
+  export CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
+
   cd build
   make INSTALL_ROOT="$pkgdir" install
 
