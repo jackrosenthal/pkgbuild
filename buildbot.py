@@ -100,7 +100,8 @@ class PkgBase:
             encoding="utf-8",
         )
         lines = result.stdout.splitlines()
-        return [line.rstrip().split("/")[-1] for line in lines]
+        # Not sure where these -debug packages came from.  They don't exist.
+        return [line.rstrip().split("/")[-1] for line in lines if "-debug-" not in line]
 
 
 @dataclasses.dataclass
