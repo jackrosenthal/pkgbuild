@@ -3,6 +3,7 @@ WORKDIR /pkgbuild
 RUN useradd -Um build
 RUN echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 COPY --chown=build:build . /pkgbuild
+RUN chown build:build /pkgbuild
 COPY pacman.conf /etc/pacman.conf
 COPY .s3cfg /root/.s3cfg
 RUN pacman-key --init
