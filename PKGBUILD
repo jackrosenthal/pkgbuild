@@ -12,7 +12,7 @@ url='https://github.com/aio-libs/async-timeout'
 arch=('any')
 license=('Apache')
 depends=('python' 'python-typing_extensions')
-makedepends=('python-setuptools')
+makedepends=('python-setuptools' 'python-build' 'python-installer' 'python-wheel')
 checkdepends=('python-pytest' 'python-pytest-cov' 'python-pytest-asyncio' 'python-pytest-aiohttp')
 source=(https://github.com/aio-libs/async-timeout/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz)
 sha256sums=('c63f1252d5fa878fdceb7a6894f1df6a73f92546e52a0b7999a5de429fd64ff8')
@@ -20,7 +20,7 @@ sha512sums=('cb5913647e99783ab6ef07901808baa09d7221fc5f1c6e49e7a3e35bf8b627a8662
 
 build() {
   cd ${_pkgname}-${pkgver}
-  python setup.py build
+  python -m build --wheel --no-isolation
 }
 
 check() {
@@ -31,7 +31,7 @@ check() {
 
 package() {
   cd ${_pkgname}-${pkgver}
-  python setup.py install --root="${pkgdir}" -O1 --skip-build
+  python -m installer --destdir="$pkgdir" dist/*.whl
 }
 
 # vim: ts=2 sw=2 et:
