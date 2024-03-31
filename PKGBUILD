@@ -13,7 +13,7 @@ depends=('pango' 'openssl' 'libvorbis' 'libwebp' 'ffmpeg4.4')
 makedepends=('libpulse' 'libvorbis' 'openssl' 'libssh' 'libvncserver' 'pango' 'libtelnet')
 optdepends=('libssh: for ssh protocol support'
 'libvncserver: for vnc protocol support'
-'freerdp: for rdp protocol support'
+'freerdp2: for rdp protocol support'
 'libpulse: for pulseaudio support'
 'libtelnet: for telnet protocol support'
 'monospace: any monospace font such as terminus-font, ttf-inconsolata or ttf-fira-mono. Without it, SSH will not work'
