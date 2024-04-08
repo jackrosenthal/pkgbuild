@@ -15,7 +15,7 @@ makedepends=('git' 'python' 'gperf' 'jsoncpp' 'ninja' 'qt5-tools' 'poppler' 'pip
 optdepends=('pipewire: WebRTC desktop sharing under Wayland')
 groups=('qt5')
 _pkgfqn=${pkgname/5-/}
-source=(git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-lts
+source=(kde-$_pkgfqn::git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-lts
         git+https://code.qt.io/qt/qtwebengine-chromium.git
         qt5-webengine-python3.patch
         qt5-webengine-chromium-python3.patch
@@ -35,7 +35,7 @@ sha256sums=('SKIP'
 prepare() {
   mkdir -p build
 
-  cd ${_pkgfqn}
+  cd kde-$_pkgfqn
   git submodule init
   git submodule set-url src/3rdparty "$srcdir"/qtwebengine-chromium
   git submodule set-branch --branch 87-based src/3rdparty
