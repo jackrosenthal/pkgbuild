@@ -56,7 +56,7 @@ build() {
   export CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
 
   cd build
-  qmake ../${_pkgfqn} CONFIG+=force_debug_info -- \
+  qmake ../kde-$_pkgfqn CONFIG+=force_debug_info -- \
     -proprietary-codecs \
     -system-ffmpeg \
     -webp \
@@ -79,7 +79,7 @@ package() {
   find "$pkgdir/usr/lib" -type f -name '*.prl' \
     -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
-  install -Dm644 "$srcdir"/${_pkgfqn}/src/3rdparty/chromium/LICENSE "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE.chromium
+  install -Dm644 "$srcdi../kde-$_pkgfqn/src/3rdparty/chromium/LICENSE "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE.chromium
 
   # Fix cmake dependency versions
   sed -e "s|$pkgver\ |$_basever |" -i "$pkgdir"/usr/lib/cmake/*/*Config.cmake
