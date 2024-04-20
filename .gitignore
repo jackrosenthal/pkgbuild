@@ -2,4 +2,4 @@
 !.SRCINFO
 !.gitignore
 !PKGBUILD
-!fix-mpv-0_38_0.patch
+!*.patch
