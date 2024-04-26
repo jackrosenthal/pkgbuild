@@ -1,10 +1,4 @@
 *
-!/.SRCINFO
-!/.gitignore
-!/PKGBUILD
-!/fix-60-sec-delay.patch
-!/scons-py3.patch
-!/scons-v4.2.0.patch
-!/xboxdrv.default
-!/xboxdrv.service
-!/xboxdrvctl-py3.patch
+!PKGBUILD
+!.SRCINFO
+!.gitignore
