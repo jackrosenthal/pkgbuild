@@ -3,7 +3,7 @@
 
 pkgname=jellyfin-mpv-shim
 pkgver=2.6.0
-pkgrel=2
+pkgrel=3
 pkgdesc='Cast media from Jellyfin Mobile and Web apps to MPV'
 arch=(any)
 url='https://github.com/jellyfin/jellyfin-mpv-shim'
