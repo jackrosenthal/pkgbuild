@@ -1,7 +1,7 @@
 pkgbase = python-matrix-nio
 	pkgdesc = Python Matrix client library, designed according to sans I/O principles
 	pkgver = 0.24.0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/poljar/matrix-nio
 	arch = any
 	license = ISC

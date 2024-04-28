@@ -3,7 +3,7 @@
 
 pkgname=python-jellyfin-apiclient
 pkgver=1.9.2
-pkgrel=3
+pkgrel=4
 pkgdesc='Python API client for Jellyfin'
 arch=(any)
 url=https://github.com/iwalton3/jellyfin-apiclient-python
