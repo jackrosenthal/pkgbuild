@@ -1,7 +1,7 @@
 pkgbase = matrix-commander
 	pkgdesc = Simple CLI-based Matrix client
 	pkgver = 7.6.0
-	pkgrel = 4
+	pkgrel = 5
 	url = https://github.com/8go/matrix-commander
 	arch = any
 	license = GPL
