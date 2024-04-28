@@ -25,6 +25,7 @@ SKIP_CHECK_PKGS = []
 ALTERNATIVES = {
     "cargo": "rust",
     "electron12": "electron12-bin",
+    "electron22": "electron22-bin",
 }
 
 logger = logging.getLogger(__name__)
