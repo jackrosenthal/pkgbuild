@@ -1,12 +1,12 @@
-# Maintainer:
+# Maintainer: Matteo Piccinini (loacker) <matteo.piccinini@gmail.com>
 # Contributor: Jonas Witschel <diabonas@archlinux.org>
 
 pkgname=python-matrix-nio
 pkgver=0.24.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Python Matrix client library, designed according to sans I/O principles'
 arch=('any')
-url='https://github.com/poljar/matrix-nio'
+url='https://github.com/matrix-nio/matrix-nio'
 license=('ISC')
 depends=('python' 'python-aiofiles' 'python-aiohttp' 'python-aiohttp-socks' 'python-h11'
          'python-h2' 'python-jsonschema' 'python-pycryptodome' 'python-unpaddedbase64')
@@ -20,12 +20,11 @@ optdepends=('python-atomicwrites: end-to-end encryption support'
             'python-olm: end-to-end encryption support')
 source=("git+$url.git?signed#tag=$pkgver")
 sha512sums=('SKIP')
-validpgpkeys=('689A3B5BC6560AB4C99A2A0581314DA807EF4E22'  # Damir Jelić (poljar) <poljar@termina.org.uk>
-              'D0CB3DB01DEF8CA2F4C9C4E308D39021F6D6A7B8') # Paarth Shah <mail@shahpaarth.com>
+validpgpkeys=('D0CB3DB01DEF8CA2F4C9C4E308D39021F6D6A7B8') # Paarth Shah <mail@shahpaarth.com>
 
 pkgver() {
 	cd "${pkgname#python-}"
-	git describe | sed 's/\([^-]*-\)g/r\1/;s/-/./g'
+	printf "%s" "$(git describe | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
 }
 
 prepare() {
