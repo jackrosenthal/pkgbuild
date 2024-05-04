@@ -4,7 +4,7 @@
 pkgname=python-matrix-nio
 _name=${pkgname#python-}
 pkgver=0.24.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Python Matrix client library, designed according to sans I/O principles"
 arch=("any")
 url="https://github.com/matrix-nio/matrix-nio"
@@ -42,10 +42,13 @@ optdepends=('python-olm: end-to-end encryption support'
             'python-peewee: end-to-end encryption support'
             'python-cachetools: end-to-end encryption support'
             'python-atomicwrites: end-to-end encryption support')
-provides=("$pkgname")
 changelog="CHANGELOG.md"
-source=("$_name-$pkgver.tar.gz::https://github.com/$_name/$_name/archive/refs/tags/$pkgver.tar.gz")
-b2sums=('f4ff411701701d44082e452428e0866eb579ecdf833586d5524c77e3a3f0335c8af2af4f0ebd5a8f943986eb41b6e611293d9e2916da33d034ed6cc455df38b5')
+source=("$_name-$pkgver.tar.gz::https://api.github.com/repos/$_name/$_name/tarball/refs/tags/$pkgver")
+b2sums=('c93bdf9c5944c36aaeb5560600c99daf3a45f77291c655c2baaf5ac48e3d630cc85c42505aea89d2ff46d647a89736481883182d9b9f6c4c8284914e8463a36e')
+
+prepare() {
+    tar zxvf "$_name-$pkgver.tar.gz" --strip-components=1 --one-top-level
+}
 
 build() {
     cd "$_name-$pkgver"
