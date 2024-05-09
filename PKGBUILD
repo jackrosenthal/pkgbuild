@@ -4,7 +4,7 @@
 pkgname=qt5-webengine
 _basever=5.15.13
 pkgver=5.15.16
-pkgrel=6
+pkgrel=7
 arch=('x86_64')
 url='https://www.qt.io'
 license=('LGPL3' 'LGPL2.1' 'BSD')
@@ -22,15 +22,21 @@ source=(kde-$_pkgfqn::git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-l
         qt5-webengine-ffmpeg5.patch
         qt5-webengine-pipewire-0.3.patch
         qt5-webengine-libxml-2.12.patch
-        qt5-webengine-icu-74.patch)
-sha256sums=('SKIP'
+        qt5-webengine-icu-74.patch
+        qt5-webengine-icu-75.patch
+        python3.12-imp.patch
+        python3.12-six.patch)
+sha256sums=('a47f420bd0549b11faf70c86e97c6b696f56fd586a545b6bab8f596121c4ba17'
             'SKIP'
             '0ad5d1660886f7bbf5108b071bf5d7bbbabf1cd1258ce9d4587a01dec4a1aa89'
             'd8beb3d65a1aaf927285e6f055a9d1facd0f9c3fd851f91ba568389fb3137399'
             'c50d3019626183e753c53a997dc8a55938847543aa3178d4c51f377be741c693'
             '5e3a3c4711d964d5152a04059a2b5c1d14bb13dd29bce370120f60e85b476b6f'
             'bfae9e773edfd0ddbc617777fdd4c0609cba2b048be7afe40f97768e4eb6117e'
-            '547e092f6a20ebd15e486b31111145bc94b8709ec230da89c591963001378845')
+            '547e092f6a20ebd15e486b31111145bc94b8709ec230da89c591963001378845'
+            '10e5cf4317af304ed67e231cdb8b3dfdc36cd9f241ea58edfdfad5e2ea039b08'
+            '01e8ba57b46881d58bdea36d8b475ed0eed1ac88bdef4b54b45aefad22f7c3b2'
+            'ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f')
 
 prepare() {
   mkdir -p build
@@ -48,6 +54,9 @@ prepare() {
   patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-pipewire-0.3.patch # Port to pipewire 0.3
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-libxml-2.12.patch # Fix build with libxml 2.12
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-icu-74.patch # Fix build with ICU 74 - patch from Alpine
+  patch -p2 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-icu-75.patch # Fix build with ICU 75
+  patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-imp.patch # Fix build with python 3.12 - patch from Debian
+  patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-six.patch # Fix build with python 3.12 - patch from Debian
 }
 
 build() {
@@ -56,7 +65,7 @@ build() {
   export CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
 
   cd build
-  qmake ../kde-$_pkgfqn CONFIG+=force_debug_info -- \
+  qmake ../kde-$_pkgfqn CONFIG+=force_debug_info QMAKE_CXXFLAGS="$CXXFLAGS -std=gnu++17" -- \
     -proprietary-codecs \
     -system-ffmpeg \
     -webp \
@@ -79,7 +88,7 @@ package() {
   find "$pkgdir/usr/lib" -type f -name '*.prl' \
     -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
-  install -Dm644 "$srcdi../kde-$_pkgfqn/src/3rdparty/chromium/LICENSE "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE.chromium
+  install -Dm644 "$srcdir"/kde-$_pkgfqn/src/3rdparty/chromium/LICENSE "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE.chromium
 
   # Fix cmake dependency versions
   sed -e "s|$pkgver\ |$_basever |" -i "$pkgdir"/usr/lib/cmake/*/*Config.cmake
