@@ -4,7 +4,7 @@
 pkgname=qt5-webengine
 _basever=5.15.13
 pkgver=5.15.16
-pkgrel=7
+pkgrel=8
 arch=('x86_64')
 url='https://www.qt.io'
 license=('LGPL3' 'LGPL2.1' 'BSD')
@@ -39,7 +39,6 @@ sha256sums=('a47f420bd0549b11faf70c86e97c6b696f56fd586a545b6bab8f596121c4ba17'
             '61a7a775ff5a118d1a5cc2298db19fb8412be5d7d38dcad1ca199ef87685adf8'
             'ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f'
             '6672741b64d896dc555c8ee42ca2329c4f20d5f406095a69fe72da44b3a142f4')
-options=(!lto)
 
 prepare() {
   mkdir -p build

@@ -1,7 +1,7 @@
 pkgbase = qt5-webengine
 	pkgdesc = Provides support for web applications using the Chromium browser project
 	pkgver = 5.15.16
-	pkgrel = 7
+	pkgrel = 8
 	url = https://www.qt.io
 	arch = x86_64
 	groups = qt5
@@ -35,7 +35,6 @@ pkgbase = qt5-webengine
 	depends = libxtst
 	depends = ttf-font
 	optdepends = pipewire: WebRTC desktop sharing under Wayland
-	options = !lto
 	source = kde-qtwebengine::git+https://code.qt.io/qt/qtwebengine.git#tag=v5.15.16-lts
 	source = git+https://code.qt.io/qt/qtwebengine-chromium.git
 	source = qt5-webengine-python3.patch
