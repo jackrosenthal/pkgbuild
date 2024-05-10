@@ -25,7 +25,8 @@ source=(kde-$_pkgfqn::git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-l
         qt5-webengine-icu-74.patch
         qt5-webengine-icu-75.patch
         python3.12-imp.patch
-        python3.12-six.patch)
+        python3.12-six.patch
+        qt5-webengine-ninja-1.12.patch)
 sha256sums=('a47f420bd0549b11faf70c86e97c6b696f56fd586a545b6bab8f596121c4ba17'
             'SKIP'
             '0ad5d1660886f7bbf5108b071bf5d7bbbabf1cd1258ce9d4587a01dec4a1aa89'
@@ -34,9 +35,11 @@ sha256sums=('a47f420bd0549b11faf70c86e97c6b696f56fd586a545b6bab8f596121c4ba17'
             '5e3a3c4711d964d5152a04059a2b5c1d14bb13dd29bce370120f60e85b476b6f'
             'bfae9e773edfd0ddbc617777fdd4c0609cba2b048be7afe40f97768e4eb6117e'
             '547e092f6a20ebd15e486b31111145bc94b8709ec230da89c591963001378845'
-            '10e5cf4317af304ed67e231cdb8b3dfdc36cd9f241ea58edfdfad5e2ea039b08'
-            '01e8ba57b46881d58bdea36d8b475ed0eed1ac88bdef4b54b45aefad22f7c3b2'
-            'ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f')
+            '7cac28ba784d24b4abf6414079548ada165343af507ecd8e23cbe7e4f63ae52f'
+            '61a7a775ff5a118d1a5cc2298db19fb8412be5d7d38dcad1ca199ef87685adf8'
+            'ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f'
+            '6672741b64d896dc555c8ee42ca2329c4f20d5f406095a69fe72da44b3a142f4')
+options=(!lto)
 
 prepare() {
   mkdir -p build
@@ -57,6 +60,7 @@ prepare() {
   patch -p2 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-icu-75.patch # Fix build with ICU 75
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-imp.patch # Fix build with python 3.12 - patch from Debian
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-six.patch # Fix build with python 3.12 - patch from Debian
+  patch -p2 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-ninja-1.12.patch # Fix build with ninja 1.12
 }
 
 build() {
@@ -69,8 +73,8 @@ build() {
     -proprietary-codecs \
     -system-ffmpeg \
     -webp \
-    -spellchecker \
     -webengine-icu \
+    -spellchecker \
     -webengine-kerberos \
     -webengine-webrtc-pipewire
   make

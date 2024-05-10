@@ -72,3 +72,28 @@ index 345e45ce127..e686e5d691a 100644
  
  #include "absl/types/optional.h"
  
+diff --git a/chromium/third_party/blink/renderer/core/page/scrolling/text_fragment_selector_generator.cc b/chromium/third_party/blink/renderer/core/page/scrolling/text_fragment_selector_generator.cc
+index 8fcc799b795..bc69ddcf18c 100644
+--- a/chromium/third_party/blink/renderer/core/page/scrolling/text_fragment_selector_generator.cc
++++ b/chromium/third_party/blink/renderer/core/page/scrolling/text_fragment_selector_generator.cc
+@@ -15,6 +15,7 @@
+ #include "third_party/blink/renderer/core/page/scrolling/text_fragment_anchor_metrics.h"
+ #include "third_party/blink/renderer/core/page/scrolling/text_fragment_finder.h"
+ #include "third_party/blink/renderer/platform/text/text_boundaries.h"
++#include "absl/base/attributes.h"
+ 
+ namespace blink {
+ 
+diff --git a/chromium/third_party/abseil-cpp/absl/base/options.h b/chromium/third_party/abseil-cpp/absl/base/options.h
+index df506f0fae6..1de105fed4a 100644
+--- a/chromium/third_party/abseil-cpp/absl/base/options.h
++++ b/chromium/third_party/abseil-cpp/absl/base/options.h
+@@ -180,7 +180,7 @@
+ // absl::variant is a typedef of std::variant, use the feature macro
+ // ABSL_USES_STD_VARIANT.
+ 
+-#define ABSL_OPTION_USE_STD_VARIANT 2
++#define ABSL_OPTION_USE_STD_VARIANT 0
+ 
+ 
+ // ABSL_OPTION_USE_INLINE_NAMESPACE
