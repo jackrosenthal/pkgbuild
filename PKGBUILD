@@ -5,7 +5,7 @@
 _name=FreeRDP
 pkgname=freerdp2
 pkgver=2.11.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Free implementation of the Remote Desktop Protocol (RDP)"
 arch=(x86_64)
 url="https://www.freerdp.com/"
@@ -61,6 +61,10 @@ sha512sums=('7b89981a4d2773fdcf41f32d58ec7925765b3cedb7ebc77d54ded8c39f38d294f3a
 b2sums=('0b7365eccc625878c9543d8b6a92787b11e1c5463122e14536b2fb8ebc46d80b9e8b4274e6d5be8da0fe7a5a3578b907ff47267501b0fdc15dea64534a22f4a2')
 
 build() {
+  # gcc14 buildfix
+  export CFLAGS+=" -Wno-incompatible-pointer-types -Wno-int-conversion"
+  export CXXFLAGS+=" -Wno-incompatible-pointer-types -Wno-int-conversion"
+
   local cmake_options=(
     -B build
     -D CHANNEL_URBDRC_CLIENT=ON
