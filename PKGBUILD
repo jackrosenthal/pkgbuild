@@ -2,7 +2,7 @@
 
 pkgname=jellyfin-media-player
 pkgver=1.9.1
-_webver=10.8.13
+_webver=10.9.0
 pkgrel=5
 pkgdesc='Jellyfin Desktop Client'
 arch=('i686' 'x86_64')
@@ -11,11 +11,11 @@ url='https://github.com/jellyfin/jellyfin-media-player'
 depends=('mpv' 'libcec' 'sdl2' 'p8-platform' 'protobuf' 'qt5-webengine' 'qt5-x11extras' 'qt5-quickcontrols')
 makedepends=('cmake' 'git' 'python')
 source=("https://github.com/jellyfin/jellyfin-media-player/archive/refs/tags/v${pkgver}.tar.gz"
-        "jellyfin-web_${_webver}.tar.gz::https://repo.jellyfin.org/releases/server/portable/versions/stable/web/${_webver}/jellyfin-web_${_webver}_portable.tar.gz"
+        "jellyfin_${_webver}.tar.xz::https://repo.jellyfin.org/files/server/portable/stable/v${_webver}/any/jellyfin_${_webver}.tar.xz"
         "disable-update-check.patch"
         "fix-mpv-0_38_0.patch")
 sha256sums=('8d119bb78e897ace3041cf332114a79c51be4d8e0cc8c68f5745fd588c2b9bde'
-            'cbd00c3c3a56d7d17d63dc6060b5cbc011820a83cde64b7f9c93690fbac174d6'
+            'b041e01f4eedf06fbfe24cab7cc6a3e9c884fc9b823d6f5393ae0025f11bea74'
             'add2430dec35bef4fbf028273f8492cc8a530e9f6a3c2ae4b0a33d83e743aec1'
             '3cb05f527df63ce34b50099a5676ee65d2c5a902c47d238e355a615c8b439f66')
 
@@ -30,7 +30,7 @@ build() {
     cd "${srcdir}/jellyfin-media-player-${pkgver}"
     rm -rf build
     mkdir build
-    cp -r "${srcdir}/jellyfin-web_${_webver}" build/dist
+    cp -r "${srcdir}/jellyfin/jellyfin-web" build/dist
     cmake \
         -B build \
         -DCMAKE_BUILD_TYPE='Release' \
