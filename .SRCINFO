@@ -1,6 +1,6 @@
 pkgbase = bambustudio-bin
 	pkgdesc = PC Software for BambuLab's 3D printers
-	pkgver = 01.08.04.51
+	pkgver = 01.09.01.66
 	pkgrel = 1
 	url = https://github.com/bambulab/BambuStudio
 	arch = x86_64
@@ -18,14 +18,13 @@ pkgbase = bambustudio-bin
 	depends = wayland-protocols
 	depends = libxkbcommon
 	depends = ttf-harmonyos-sans
-	depends = gst-plugins-good
-	depends = gst-plugins-bad
+	depends = gst-libav
 	conflicts = bambustudio
 	conflicts = bambustudio-git
-	source = bambustudio-01.08.04.51.AppImage::https://github.com/bambulab/BambuStudio/releases/download/v01.08.04.51/BambuStudio_linux_ubuntu_v01.08.04.51_20240117.AppImage
+	source = bambustudio-01.09.01.66.AppImage::https://github.com/bambulab/BambuStudio/releases/download/v01.09.01.66/Bambu_Studio_linux_ubuntu-v01.09.01.66.AppImage
 	source = BambuStudio.desktop
 	source = bambu-studio
-	md5sums = 6c848332763a27193eea135327d8b5db
+	md5sums = 612e779d860c396eaa4ab203a8a896a5
 	md5sums = c2729c29cbd01844507e1f0562762191
 	md5sums = dfc63a9eabda3cc7172695bb1ba09c51
 
