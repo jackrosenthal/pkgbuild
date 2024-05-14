@@ -2,8 +2,8 @@
 # Contributor: Marius Lindvall <(firstname) {cat} varden {dog} info>
 
 pkgname=jellyfin-mpv-shim
-pkgver=2.6.0
-pkgrel=3
+pkgver=2.7.0
+pkgrel=1
 pkgdesc='Cast media from Jellyfin Mobile and Web apps to MPV'
 arch=(any)
 url='https://github.com/jellyfin/jellyfin-mpv-shim'
@@ -18,17 +18,8 @@ optdepends=(
   'mpv-shim-default-shaders: default shader pack'
   'python-pypresence: Discord Rich Presence integration'
 )
-source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz"
-        "$url/commit/8a9894e4763e451442944e23727e045a6ab2ed80.patch")
-b2sums=('13c6623b4a83f1c596034b14a3cef1d8c0bd7651024c3c9fcba4fdde332f6b350e34fa18d4de075953e46ac2ec33624bcfa0c43b8887c21d14de682d04830a07'
-        'fb25981f2a4b457254e61f89dac940f3560ee4ef0d78604499f3c0e9f0c8a61ca5393fbcd945e762d1ccbfa21fed682af8f2692d33b38444deda809471f04ced')
-
-prepare() {
-  cd jellyfin-mpv-shim-$pkgver
-
-  # patch for OSD not showing up in comination with mpv >=0.38
-  patch -p1 < ../8a9894e4763e451442944e23727e045a6ab2ed80.patch
-}
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
+b2sums=('bf43d5094e5f23980e565decfa64cfce597a4ede0b164d179cf2acebc6b0c3794e9289b08a177ee9f828fdba09a2b852f838af2ce1ac32193bdc60e42c10f8dc')
 
 build() {
   cd jellyfin-mpv-shim-$pkgver
