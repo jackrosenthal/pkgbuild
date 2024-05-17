@@ -2,7 +2,8 @@
 # Contributor: Jens Staal <staal1978@gmail.com>
 # Contributor : ackalker
 pkgname=openwatcom-v2
-pkgver=2.0_2024_03_01
+_build=2024_05_02
+pkgver=2.0_$_build
 pkgrel=1
 pkgdesc="The Open Watcom Fortran/C/C++ compiler, binary distribution -V2 fork"
 arch=('x86_64')
@@ -10,11 +11,11 @@ arch=('x86_64')
 url="https://github.com/open-watcom"
 license=('custom:OWPL-1')
 source=(
-'https://github.com/open-watcom/open-watcom-v2/releases/download/2024-03-01-Build/ow-snapshot.tar.xz'
+"ow-snapshot_$_build.tar.xz"::"https://github.com/open-watcom/open-watcom-v2/releases/download/${_build//_/-}-Build/ow-snapshot.tar.xz"
 'owsetenv.sh'
 )
-noextract=('ow-snapshot.tar.gz')
-md5sums=('bfd38da3e929655048fc8c0dd5077aae'
+noextract=("ow-snapshot_$_build.tar.xz")
+md5sums=('09fa7148f814d4c3e2559b8a43685a14'
          '2abd462742068d76a5cf1753b128ac94')
 options=(!strip)
 
@@ -24,7 +25,7 @@ build() {
 
 package() {
 	mkdir -p "${pkgdir}/opt/watcom"
-	bsdtar -xf "${srcdir}/ow-snapshot.tar.xz" -C "${pkgdir}/opt/watcom"
+	bsdtar -xf "${srcdir}/ow-snapshot_$_build.tar.xz" -C "${pkgdir}/opt/watcom"
 	rm -rf "${pkgdir}/opt/watcom/binw"
 	rm -rf "${pkgdir}/opt/watcom/binnt"
 	rm -rf "${pkgdir}/opt/watcom/binp"
