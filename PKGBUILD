@@ -4,7 +4,7 @@
 pkgname=openwatcom-v2
 _build=2024_05_02
 pkgver=2.0_$_build
-pkgrel=1
+pkgrel=2
 pkgdesc="The Open Watcom Fortran/C/C++ compiler, binary distribution -V2 fork"
 arch=('x86_64')
 #url="http://www.openwatcom.org"
@@ -26,7 +26,6 @@ build() {
 package() {
 	mkdir -p "${pkgdir}/opt/watcom"
 	bsdtar -xf "${srcdir}/ow-snapshot_$_build.tar.xz" -C "${pkgdir}/opt/watcom"
-	rm -rf "${pkgdir}/opt/watcom/binw"
 	rm -rf "${pkgdir}/opt/watcom/binnt"
 	rm -rf "${pkgdir}/opt/watcom/binp"
 	rm -rf "${pkgdir}/opt/watcom/binnt64"
