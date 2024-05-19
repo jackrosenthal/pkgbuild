@@ -7,12 +7,12 @@
 # Contributor: Denis 'GNUtoo' Carikli <GNUtoo@cyberdimension.org>
 
 pkgname=asterisk
-pkgver=21.2.0
+pkgver=21.3.1
 pkgrel=1
 pkgdesc='A complete PBX solution'
 arch=(x86_64 i686 aarch64 armv7h)
 url=https://www.asterisk.org
-license=(GPL)
+license=("GPL-2.0-only")
 depends=(alsa-lib
          curl
          jansson
@@ -145,7 +145,7 @@ source=("https://downloads.asterisk.org/pub/telephony/$pkgname/releases/$_archiv
         "$pkgname.logrotated"
         "$pkgname.tmpfiles"
         "fix-upnp.patch")
-sha256sums=('5737a976e9252e2d5e87d2e8176b1e07415057291c656b7547d0a79e0e8c3969'
+sha256sums=('cf59196b94851fbfdbcc63d1d6a8d2b83a4ae093c89c3d37b5d460b3a3d20f15'
             '38a53911647fb2308482179cba605ebf12345df37eed23eb4ea67bf0bf041486'
             'b97dc10a262621c95e4b75e024834712efd58561267b59b9171c959ecd9f7164'
             '1b6b489d4f71015bfc56ce739d92df7e9abdb349aed6f5a47dd9c18d84546c1b'
