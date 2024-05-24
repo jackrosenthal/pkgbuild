@@ -4,7 +4,7 @@
 pkgname=qt5-webengine
 _basever=5.15.13
 pkgver=5.15.17
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url='https://www.qt.io'
 license=('LGPL3' 'LGPL2.1' 'BSD')
@@ -18,24 +18,22 @@ _pkgfqn=${pkgname/5-/}
 source=(kde-$_pkgfqn::git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-lts
         git+https://code.qt.io/qt/qtwebengine-chromium.git
         qt5-webengine-ffmpeg5.patch
+        qt5-webengine-ffmpeg7.patch
         qt5-webengine-pipewire-0.3.patch
         qt5-webengine-icu-75.patch
         qt5-webengine-ninja-1.12.patch
         python3.12-imp.patch
         python3.12-six.patch
-        ffmpeg-7.patch
-        ffmpeg-7b.patch
         no-h264.patch)
 sha256sums=('c2488e6d6778cf9954fcc45e94acb762376581a99df7f889f13a93cefd356940'
             'SKIP'
             'c50d3019626183e753c53a997dc8a55938847543aa3178d4c51f377be741c693'
+            'cd8d3c4e2b8c352c7ff8ecc457c7551d59f7aa43806d41e75661b5b95ee33c37'
             '5e3a3c4711d964d5152a04059a2b5c1d14bb13dd29bce370120f60e85b476b6f'
             '7cac28ba784d24b4abf6414079548ada165343af507ecd8e23cbe7e4f63ae52f'
             '6672741b64d896dc555c8ee42ca2329c4f20d5f406095a69fe72da44b3a142f4'
             '1f4357708e985bb5aca61a7e5dc4c0c1285d2af00994bb49ff89ede78198e0d2'
             'ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f'
-            'd4d0d077169a71bac55b8455065fbd608d194dda4c06cd1cdf6b1a959fb01e65'
-            'd852831642aec200bb7bcbe0b0d3c0cb8151dc4164f4fb20d380a84759fb0459'
             'b8f65c5bd5f0ce5ee297d3642c9e0ef58fbc525e304386d05cfa950b66cf206b')
 
 prepare() {
@@ -54,8 +52,7 @@ prepare() {
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-imp.patch # Fix build with python 3.12 - patch from Debian
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-six.patch # Fix build with python 3.12 - patch from Debian
 # Fix build with ffmpeg 7 - OpenSUSE and Chromium patches
-  patch -p1 -d src/3rdparty/chromium -i "$srcdir"/ffmpeg-7.patch
-  patch -p1 -d src/3rdparty/chromium -i "$srcdir"/ffmpeg-7b.patch
+  patch -p1 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-ffmpeg7.patch
   patch -p1 -i ../no-h264.patch
 }
 

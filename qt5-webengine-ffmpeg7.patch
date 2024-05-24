@@ -268,3 +268,198 @@ index 6a56c675f7d..4615fdeb3fb 100644
  
    if (channel_layout == CHANNEL_LAYOUT_UNSUPPORTED) {
      DLOG(ERROR) << "Unsupported channel layout.";
+commit 62274859104bd828373ae406aa9309e610449ac5
+Author: Ted Meyer <tmathmeyer@chromium.org>
+Date:   Fri Mar 22 19:56:55 2024 +0000
+
+    Replace deprecated use of AVCodecContext::reordered_opaque
+    
+    We can use the AV_CODEC_FLAG_COPY_OPAQUE flag on the codec context
+    now to trigger timestamp propagation.
+    
+    Bug: 330573128
+    Change-Id: I6bc57241a35ab5283742aad8d42acb4dc5e85858
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5384308
+    Commit-Queue: Ted (Chromium) Meyer <tmathmeyer@chromium.org>
+    Reviewed-by: Dan Sanders <sandersd@chromium.org>
+    Cr-Commit-Position: refs/heads/main@{#1277051}
+
+diff --git a/media/filters/ffmpeg_video_decoder.cc b/media/filters/ffmpeg_video_decoder.cc
+index bd75477feeabb..8a658a58caac5 100644
+--- a/media/filters/ffmpeg_video_decoder.cc
++++ b/media/filters/ffmpeg_video_decoder.cc
+@@ -134,7 +134,7 @@ bool FFmpegVideoDecoder::IsCodecSupported(VideoCodec codec) {
+ }
+ 
+ FFmpegVideoDecoder::FFmpegVideoDecoder(MediaLog* media_log)
+-    : media_log_(media_log), state_(kUninitialized), decode_nalus_(false) {
++    : media_log_(media_log), state_(kUninitialized), decode_nalus_(false), timestamp_map_(128) {
+   DVLOG(1) << __func__;
+   thread_checker_.DetachFromThread();
+ }
+@@ -363,8 +363,10 @@ bool FFmpegVideoDecoder::FFmpegDecode(const DecoderBuffer& buffer) {
+     DCHECK(packet.data);
+     DCHECK_GT(packet.size, 0);
+ 
+-    // Let FFmpeg handle presentation timestamp reordering.
+-    codec_context_->reordered_opaque = buffer.timestamp().InMicroseconds();
++    const int64_t timestamp = buffer.timestamp().InMicroseconds();
++    const TimestampId timestamp_id = timestamp_id_generator_.GenerateNextId();
++    timestamp_map_.Put(timestamp_id, timestamp);
++    packet.opaque = reinterpret_cast<void*>(timestamp_id.GetUnsafeValue());
+   }
+   FFmpegDecodingLoop::DecodeStatus decode_status = decoding_loop_->DecodePacket(
+       packet, base::BindRepeating(&FFmpegVideoDecoder::OnNewFrame,
+@@ -423,8 +425,13 @@ bool FFmpegVideoDecoder::OnNewFrame(AVFrame* frame) {
+ 
+   scoped_refptr<VideoFrame> video_frame =
+       reinterpret_cast<VideoFrame*>(av_buffer_get_opaque(frame->buf[0]));
++  const auto ts_id = TimestampId(reinterpret_cast<size_t>(frame->opaque));
++  const auto ts_lookup = timestamp_map_.Get(ts_id);
++  if (ts_lookup == timestamp_map_.end()) {
++    return false;
++  }
+   video_frame->set_timestamp(
+-      base::TimeDelta::FromMicroseconds(frame->reordered_opaque));
++      base::TimeDelta::FromMicroseconds(std::get<1>(*ts_lookup)));
+   video_frame->metadata()->power_efficient = false;
+   output_cb_.Run(video_frame);
+   return true;
+@@ -498,8 +505,10 @@ bool FFmpegVideoDecoder::ConfigureDecoder(const VideoDecoderConfig& config,
+   codec_context_->thread_count = GetFFmpegVideoDecoderThreadCount(config);
+   codec_context_->thread_type =
+       FF_THREAD_SLICE | (low_delay ? 0 : FF_THREAD_FRAME);
++
+   codec_context_->opaque = this;
+   codec_context_->get_buffer2 = GetVideoBufferImpl;
++  codec_context_->flags |= AV_CODEC_FLAG_COPY_OPAQUE;
+ 
+   if (base::FeatureList::IsEnabled(kFFmpegAllowLists)) {
+     // Note: FFmpeg will try to free this string, so we must duplicate it.
+diff --git a/media/filters/ffmpeg_video_decoder.h b/media/filters/ffmpeg_video_decoder.h
+index d02cb89c3ddf7..0a2de1c623fff 100644
+--- a/media/filters/ffmpeg_video_decoder.h
++++ b/media/filters/ffmpeg_video_decoder.h
+@@ -7,6 +7,8 @@
+ #include <list>
+ #include <memory>
+ 
++#include "base/containers/mru_cache.h"
++#include "base/util/type_safety/id_type.h"
+ #include "base/callback.h"
+ #include "base/macros.h"
+ #include "base/memory/ref_counted.h"
+@@ -87,6 +89,20 @@ class MEDIA_EXPORT FFmpegVideoDecoder : public VideoDecoder {
+   // FFmpeg structures owned by this object.
+   std::unique_ptr<AVCodecContext, ScopedPtrAVFreeContext> codec_context_;
+ 
++  // The gist here is that timestamps need to be 64 bits to store microsecond
++  // precision. A 32 bit integer would overflow at ~35 minutes at this level of
++  // precision. We can't cast the timestamp to the void ptr object used by the
++  // opaque field in ffmpeg then, because it would lose data on a 32 bit build.
++  // However, we don't actually have 2^31 timestamped frames in a single
++  // playback, so it's fine to use the 32 bit value as a key in a map which
++  // contains the actual timestamps. Additionally, we've in the past set 128
++  // outstanding frames for re-ordering as a limit for cross-thread decoding
++  // tasks, so we'll do that here too with the LRU cache.
++  using TimestampId = util::IdType<int64_t, size_t, 0>;
++
++  TimestampId::Generator timestamp_id_generator_;
++  base::MRUCache<TimestampId, int64_t> timestamp_map_;
++
+   VideoDecoderConfig config_;
+ 
+   scoped_refptr<FrameBufferPool> frame_pool_;
+diff --git a/media/ffmpeg/ffmpeg_common.cc b/media/ffmpeg/ffmpeg_common.cc
+index 3331581a6fee6..69539fd6594ec 100644
+--- a/media/ffmpeg/ffmpeg_common.cc
++++ b/media/ffmpeg/ffmpeg_common.cc
+@@ -404,7 +404,9 @@ bool AVCodecContextToAudioDecoderConfig(const AVCodecContext* codec_context,
+ #if BUILDFLAG(USE_PROPRIETARY_CODECS)
+   // TODO(dalecurtis): Just use the profile from the codec context if ffmpeg
+   // ever starts supporting xHE-AAC.
+-  if (codec == kCodecAAC && codec_context->profile == FF_PROFILE_UNKNOWN) {
++  constexpr uint8_t kXHEAAc = 41;
++  if (codec == kCodecAAC && codec_context->profile == FF_PROFILE_UNKNOWN ||
++      codec_context->profile == kXHEAAc) {
+     // Errors aren't fatal here, so just drop any MediaLog messages.
+     NullMediaLog media_log;
+     mp4::AAC aac_parser;
+diff --git a/media/ffmpeg/ffmpeg_regression_tests.cc b/media/ffmpeg/ffmpeg_regression_tests.cc
+index 05dcb1cd62c75..866f446698947 100644
+--- a/media/ffmpeg/ffmpeg_regression_tests.cc
++++ b/media/ffmpeg/ffmpeg_regression_tests.cc
+@@ -90,16 +90,16 @@ FFMPEG_TEST_CASE(Cr62127,
+                  PIPELINE_ERROR_DECODE,
+                  PIPELINE_ERROR_DECODE);
+ FFMPEG_TEST_CASE(Cr93620, "security/93620.ogg", PIPELINE_OK, PIPELINE_OK);
+-FFMPEG_TEST_CASE(Cr100492,
+-                 "security/100492.webm",
+-                 DECODER_ERROR_NOT_SUPPORTED,
+-                 DECODER_ERROR_NOT_SUPPORTED);
++FFMPEG_TEST_CASE(Cr100492, "security/100492.webm", PIPELINE_OK, PIPELINE_OK);
+ FFMPEG_TEST_CASE(Cr100543, "security/100543.webm", PIPELINE_OK, PIPELINE_OK);
+ FFMPEG_TEST_CASE(Cr101458,
+                  "security/101458.webm",
+                  PIPELINE_ERROR_DECODE,
+                  PIPELINE_ERROR_DECODE);
+-FFMPEG_TEST_CASE(Cr108416, "security/108416.webm", PIPELINE_OK, PIPELINE_OK);
++FFMPEG_TEST_CASE(Cr108416,
++                 "security/108416.webm",
++                 PIPELINE_ERROR_DECODE,
++                 PIPELINE_ERROR_DECODE);
+ FFMPEG_TEST_CASE(Cr110849,
+                  "security/110849.mkv",
+                  DEMUXER_ERROR_COULD_NOT_OPEN,
+@@ -154,7 +154,10 @@ FFMPEG_TEST_CASE(Cr234630b,
+                  "security/234630b.mov",
+                  DEMUXER_ERROR_NO_SUPPORTED_STREAMS,
+                  DEMUXER_ERROR_NO_SUPPORTED_STREAMS);
+-FFMPEG_TEST_CASE(Cr242786, "security/242786.webm", PIPELINE_OK, PIPELINE_OK);
++FFMPEG_TEST_CASE(Cr242786,
++                 "security/242786.webm",
++                 PIPELINE_OK,
++                 PIPELINE_ERROR_DECODE);
+ // Test for out-of-bounds access with slightly corrupt file (detection logic
+ // thinks it's a MONO file, but actually contains STEREO audio).
+ FFMPEG_TEST_CASE(Cr275590,
+@@ -372,8 +375,8 @@ FFMPEG_TEST_CASE(WEBM_2,
+                  DEMUXER_ERROR_NO_SUPPORTED_STREAMS);
+ FFMPEG_TEST_CASE(WEBM_4,
+                  "security/out.webm.68798.1929",
+-                 DECODER_ERROR_NOT_SUPPORTED,
+-                 DECODER_ERROR_NOT_SUPPORTED);
++                 PIPELINE_OK,
++                 PIPELINE_OK);
+ FFMPEG_TEST_CASE(WEBM_5, "frame_size_change.webm", PIPELINE_OK, PIPELINE_OK);
+ 
+ // General MKV test cases.
+diff --git a/media/filters/ffmpeg_video_decoder.cc b/media/filters/ffmpeg_video_decoder.cc
+index 8a658a58caac5..9d6ed8aeb5c48 100644
+--- a/media/filters/ffmpeg_video_decoder.cc
++++ b/media/filters/ffmpeg_video_decoder.cc
+@@ -213,7 +213,6 @@ int FFmpegVideoDecoder::GetVideoBuffer(struct AVCodecContext* codec_context,
+   frame->width = coded_size.width();
+   frame->height = coded_size.height();
+   frame->format = codec_context->pix_fmt;
+-  frame->reordered_opaque = codec_context->reordered_opaque;
+ 
+   // Now create an AVBufferRef for the data just allocated. It will own the
+   // reference to the VideoFrame object.
+diff --git a/media/filters/audio_file_reader.cc b/media/filters/audio_file_reader.cc
+index e1be5aa9a5b13..951c003956fb5 100644
+--- a/media/filters/audio_file_reader.cc
++++ b/media/filters/audio_file_reader.cc
+@@ -243,10 +243,10 @@ bool AudioFileReader::OnNewFrame(
+   // silence from being output. In the case where we are also discarding some
+   // portion of the packet (as indicated by a negative pts), we further want to
+   // adjust the duration downward by however much exists before zero.
+-  if (audio_codec_ == kCodecAAC && frame->pkt_duration) {
++  if (audio_codec_ == kCodecAAC && frame->duration) {
+     const base::TimeDelta pkt_duration = ConvertFromTimeBase(
+         glue_->format_context()->streams[stream_index_]->time_base,
+-        frame->pkt_duration + std::min(static_cast<int64_t>(0), frame->pts));
++        frame->duration + std::min(static_cast<int64_t>(0), frame->pts));
+     const base::TimeDelta frame_duration = base::TimeDelta::FromSecondsD(
+         frames_read / static_cast<double>(sample_rate_));
+ 
