@@ -33,13 +33,13 @@
 # have been modified.
 
 pkgname=ventoy
-pkgver=1.0.97
+pkgver=1.0.98
 _grub_ver=2.04                  # (Jul 2019)
 #_unifont_ver=15.0.01            # FIXME see NOTE below
 _ipxe_ver=3fe683e               # (Sep 29 2019)
 _edk2_ver=stable201911          # (Dec 2019)
 _diet_ver=0.34                  # FIXME AUR pkg needs a patch, see below, build our own (64/32)
-_musl_ver=1.2.4                 # upstream uses 1.2.1, use repo for 64-bit, build our own 32-bit
+_musl_ver=1.2.5                 # upstream uses 1.2.1, use repo for 64-bit, build our own 32-bit
 _kern_hdrs_musl_ver=4.19.88     # for busybox 32-bit
 _fuse_ver=2.9.9                 # need a static lib built against musl, build our own (64/32)
 _exfat_ver=1.3.0                # (Sep 2018) old! FIXME see comments below for why we build our own
@@ -56,11 +56,11 @@ _busybox_ver=1.32.0             # (Jun 2020) old! FIXME
 _crypt_ver=1.7.5                # (Apr 2017) old! FIXME for veritysetup
 _lunzip_ver=1.11                # (Jan 2019) old! FIXME
 _wimboot_ver=2.7.3              # (Apr 2021) old! FIXME
-pkgrel=2
+pkgrel=1
 pkgdesc="A new bootable USB solution"
 arch=(x86_64)
 url="https://www.ventoy.net/"
-license=(GPL3)
+license=(GPL-3.0-or-later)
 depends=(bash dosfstools)
 makedepends=(
   acpica                # edk2
@@ -79,6 +79,7 @@ makedepends=(
   musl                  # vtoycli fuse fuseiso xzminidec busybox
   nasm                  # edk2
   python                # grub2 edk2
+  python-setuptools     # edk2 (python-3.12+)
   qt5-base              # GUI
   ttf-dejavu            # grub2
 )
@@ -89,7 +90,10 @@ optdepends=(
   'qt5-base: for Qt GUI'
 )
 conflicts=(ventoy-bin)
-options=(!buildflags)
+# A regression in latest pacman unsets MAKEFLAGS when using !buildflags.
+# https://gitlab.archlinux.org/archlinux/packaging/packages/pacman/-/issues/25
+# Workaround it for now by manually unsetting VARS. See (way down) below in build() function.
+#options=(!buildflags)
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/ventoy/Ventoy/archive/refs/tags/v$pkgver.tar.gz"
   https://ftp.gnu.org/gnu/grub/grub-"$_grub_ver".tar.xz
@@ -129,16 +133,16 @@ noextract=(
   cryptsetup-"$_crypt_ver".tar.xz
   wimboot-"$_wimboot_ver".tar.gz
 )
-sha256sums=('ad00cd7be3c17e1f39c53b96243e1bc249aa2125fab16e70062c247907ea21b1'
+sha256sums=('3ab7cf140b1f64157b4196b291ecfb9f87097cdcd7a7e6d5bf9e9ccf6b5fba8c'
             'e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d'
             'db2a9018392a3984d1e1e649bde0ffc19c90fa4d96b9fd2d4caaf9c1ca2af68b'
-            'SKIP'
+            '5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44'
             'c6f691aa91afbaab811a369fe729f61d8e5b58bb5ad79a45446c9ee849c1a60b'
             'SKIP' # GitHub cannot be trusted to maintain a stable patch checksum
             'SKIP' # GitHub cannot be trusted to maintain a stable patch checksum
             '7994ad5a63d00446da2e95da1f3f03355b272f096d7eb9830417ab14393b3ace'
             '313aa962c7f80a02f41758d90d6f67687c77c74a6126b060337f248bc1b637f6'
-            '7a35eae33d5372a7c0da1188de798726f68825513b7ae3ebe97aaaa52114f039'
+            'a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4'
             'd104397fc657ffb0f0bda46f54fd182b76a9ebc324149c183a4ff8c86a8db53d'
             'd0e69d5d608cc22ff4843791ad097f554dd32540ddc9bed7638cc6fea7c1b4b5'
             '689bcb4a639acd2d45e6fa0ff455f7f18edb2421d4f4f42909943775adc0e375'
@@ -406,6 +410,9 @@ _build_vtoycli() (
   (
     cd fat_io_lib/release
     rm -rfv ../{include,lib}
+
+    # GCC-14 build fix
+    sed -i '/fat_cache.h/a #include "fat_format.h"' fat_filelib.c
 
     musl-gcc -O2 -D_FILE_OFFSET_BITS=64 fat*.c -c
     ar -rc libfat_io_64.a ./*.o
@@ -710,6 +717,10 @@ _build_dmsetup() (
 #endif
 _EOF_
 
+  # GCC-14 build fixes
+  sed -i '/ctype.h/a #include <strings.h>' device-mapper.$_dm_ver/lib/libdm-report.c
+  sed -i '/langinfo.h/a #include <strings.h>' device-mapper.$_dm_ver/dmsetup/dmsetup.c
+
   cp -a device-mapper.$_dm_ver{,-32}
 
   (
@@ -962,7 +973,7 @@ _pack_ventoy() (
   # 3RD PARTY BINARIES ALERT! FIXME
 
   cd Ventoy-$pkgver
-  local _LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
+  local _LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now,-z,pack-relative-relocs"
 
   (
     cd IMG
@@ -1065,12 +1076,12 @@ _pack_ventoy() (
   # These files are taken from various projects. "?" denotes unverified/unknown origin
 
   local _efi_files=(
-    BOOTIA32.EFI        # SUISBD [1]
-    BOOTX64.EFI         # ? openSUSE ?
-    grub.efi            # SUISBD (grubx64.efi) [1]
-    grubia32.efi        # ?
-    mmia32.efi          # ? Fedora ?
-    MokManager.efi      # ? openSUSE ?
+    BOOTIA32.EFI        # shim 32-bit  ver 15.6         # SUISBD [1] based on Fedora
+    BOOTX64.EFI         # shim 64-bit  ver 15.7         # ? Ubuntu ?
+    grubx64.efi         # preloader 64-bit              # SUISBD [1]
+    grubia32.efi        # preloader 32-bit              # SUISBD [2]
+    mmia32.efi          # MokManager 32-bit  ver 15.6   # same length as SUISBD [1] (but 261 bytes different) based on Fedora
+    mmx64.efi           # MokManager 64-bit  ver 15.7   # ? Ubuntu ?
   )
 
   # This file is also from SUISBD
@@ -1080,6 +1091,7 @@ _pack_ventoy() (
     install -Dvt "$srcdir"/Ventoy-$pkgver/INSTALL/EFI/BOOT "${_efi_files[@]}"
   )
   # [1] https://github.com/ValdikSS/Super-UEFIinSecureBoot-Disk/releases/download/3-4/Super-UEFIinSecureBoot-Disk_minimal_v3-4.zip
+  # [2] https://github.com/ValdikSS/Super-UEFIinSecureBoot-Disk/releases/download/3-3/Super-UEFIinSecureBoot-Disk_minimal_v3-3.zip
 
   # More EFI stuff. Should be buildable with EDK2 FIXME
   # Refer "DOC/BuildVentoyFromSource.txt" Section 4.17
@@ -1237,6 +1249,9 @@ _create_img() (
 )
 
 build() {
+  # Workaround for abovementioned pacman regression.
+  unset CPPFLAGS CFLAGS DEBUG_CFLAGS CXXFLAGS DEBUG_CXXFLAGS LDFLAGS LTOFLAGS RUSTFLAGS DEBUG_RUSTFLAGS
+
   _build_grub
   _build_ipxe
   _build_edk2
