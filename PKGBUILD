@@ -2,7 +2,6 @@
 # Contributor:
 
 pkgname=python-matrix-nio
-_name=${pkgname#python-}
 pkgver=0.24.0
 pkgrel=4
 pkgdesc="Python Matrix client library, designed according to sans I/O principles"
@@ -19,8 +18,8 @@ depends=('python'
          'python-pycryptodome'
          'python-aiohttp-socks')
 makedepends=('python-build'
-         'python-installer'
-         'python-poetry-core')
+             'python-installer'
+             'python-poetry-core')
 checkdepends=('python-pytest'
               'python-pytest-isort'
               'python-pytest-cov'
@@ -43,25 +42,25 @@ optdepends=('python-olm: end-to-end encryption support'
             'python-cachetools: end-to-end encryption support'
             'python-atomicwrites: end-to-end encryption support')
 changelog="CHANGELOG.md"
-source=("$_name-$pkgver.tar.gz::https://api.github.com/repos/$_name/$_name/tarball/refs/tags/$pkgver")
+source=("$pkgname-$pkgver.tar.gz::https://api.github.com/repos/${pkgname#python-}/${pkgname#python-}/tarball/refs/tags/$pkgver")
 b2sums=('c93bdf9c5944c36aaeb5560600c99daf3a45f77291c655c2baaf5ac48e3d630cc85c42505aea89d2ff46d647a89736481883182d9b9f6c4c8284914e8463a36e')
 
 prepare() {
-    tar zxvf "$_name-$pkgver.tar.gz" --strip-components=1 --one-top-level
+    tar zxvf "$pkgname-$pkgver.tar.gz" --strip-components=1 --one-top-level
 }
 
 build() {
-    cd "$_name-$pkgver"
+    cd "$pkgname-$pkgver"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$pkgver"
+    cd "$pkgname-$pkgver"
     python -m pytest --benchmark-disable
 }
 
 package() {
-    cd "$_name-$pkgver"
+    cd "$pkgname-$pkgver"
     python -m installer --destdir="$pkgdir" dist/*.whl
     install -Dm644 LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

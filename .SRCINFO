@@ -39,7 +39,7 @@ pkgbase = python-matrix-nio
 	optdepends = python-peewee: end-to-end encryption support
 	optdepends = python-cachetools: end-to-end encryption support
 	optdepends = python-atomicwrites: end-to-end encryption support
-	source = matrix-nio-0.24.0.tar.gz::https://api.github.com/repos/matrix-nio/matrix-nio/tarball/refs/tags/0.24.0
+	source = python-matrix-nio-0.24.0.tar.gz::https://api.github.com/repos/matrix-nio/matrix-nio/tarball/refs/tags/0.24.0
 	b2sums = c93bdf9c5944c36aaeb5560600c99daf3a45f77291c655c2baaf5ac48e3d630cc85c42505aea89d2ff46d647a89736481883182d9b9f6c4c8284914e8463a36e
 
 pkgname = python-matrix-nio
