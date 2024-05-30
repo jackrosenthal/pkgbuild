@@ -2,7 +2,7 @@
 # Contributor: <contact@amadejpapez.com>
 
 pkgname=gau
-pkgver=2.2.1
+pkgver=2.2.3
 pkgrel=1
 pkgdesc="Fetch known URLs from AlienVault's Open Threat Exchange, the Wayback Machine, and Common Crawl"
 arch=(any)
@@ -11,7 +11,7 @@ license=(MIT)
 depends=(glibc)
 makedepends=(go)
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz")
-sha256sums=('31abcc1f12fc00078898d96bd32531cd3404a66147b40ab64b31c1d7027671f3')
+sha256sums=('02bb84bd73a385b4630a6c783f819f8339defc915df3a7d34cb872801d567c17')
 
 build() {
   export CGO_CPPFLAGS="${CPPFLAGS}"
