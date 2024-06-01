@@ -1,12 +1,13 @@
 pkgbase = ttf-century-schoolbook
 	pkgdesc = TTF version of the URW Century Schoolbook L font
-	pkgver = 1.0
-	pkgrel = 1
+	pkgver = r6.84beddf
+	pkgrel = 2
 	url = https://github.com/TimothyGu/Century-Schoolbook-L
 	arch = any
 	license = GPL2
 	makedepends = fontforge
-	source = https://github.com/TimothyGu/Century-Schoolbook-L/archive/84beddf324a808df318e504168587a8cd55f1123.tar.gz
+	makedepends = git
+	source = git+https://github.com/TimothyGu/Century-Schoolbook-L.git
 	md5sums = SKIP
 
 pkgname = ttf-century-schoolbook
