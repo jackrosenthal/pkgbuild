@@ -6,7 +6,7 @@
 
 pkgname=netatalk
 pkgver=3.2.0
-pkgrel=2
+pkgrel=3
 pkgdesc='Open-source implementation of the Apple Filing Protocol'
 url='https://netatalk.sourceforge.io'
 license=('GPL2')
@@ -49,6 +49,7 @@ build() {
     --with-acls=yes \
     --with-cracklib \
     --with-init-style=systemd \
+    --with-pam-confdir=/etc/pam.d \
     --with-tracker-pkgconfig-version=3.0
   make
 }

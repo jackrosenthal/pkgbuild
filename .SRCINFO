@@ -1,7 +1,7 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
 	pkgver = 3.2.0
-	pkgrel = 2
+	pkgrel = 3
 	url = https://netatalk.sourceforge.io
 	arch = x86_64
 	arch = i686
