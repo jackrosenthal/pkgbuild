@@ -1,11 +1,11 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
 	pkgver = 3.2.0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://netatalk.sourceforge.io
-	arch = pentium4
-	arch = i686
 	arch = x86_64
+	arch = i686
+	arch = pentium4
 	arch = armv6h
 	arch = armv7h
 	arch = aarch64
@@ -13,13 +13,16 @@ pkgbase = netatalk
 	depends = acl
 	depends = avahi>=0.6
 	depends = cracklib
+	depends = db
 	depends = dbus-glib
-	depends = dbus-python
 	depends = libevent
-	depends = mariadb-libs
+	depends = libgcrypt
+	depends = pam
 	depends = perl
-	depends = python
-	depends = tdb>=1.4.5
+	depends = perl-net-dbus
+	optdepends = mariadb-libs: mysql CNID backend support
+	optdepends = talloc: AFP Spotlight support
+	optdepends = tracker3: AFP Spotlight support
 	conflicts = netatalk-ddp
 	conflicts = netatalk2
 	backup = etc/afp.conf
