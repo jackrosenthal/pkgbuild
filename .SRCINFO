@@ -1,7 +1,7 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
 	pkgver = 3.2.0
-	pkgrel = 4
+	pkgrel = 5
 	url = https://netatalk.sourceforge.io
 	arch = x86_64
 	arch = i686
@@ -20,6 +20,7 @@ pkgbase = netatalk
 	depends = pam
 	depends = perl
 	depends = perl-net-dbus
+	optdepends = libwrap: TCP wrapper support
 	optdepends = mariadb-libs: mysql CNID backend support
 	optdepends = talloc: AFP Spotlight support
 	optdepends = tracker3: AFP Spotlight support
