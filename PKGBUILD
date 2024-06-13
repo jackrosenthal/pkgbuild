@@ -33,7 +33,7 @@
 # have been modified.
 
 pkgname=ventoy
-pkgver=1.0.98
+pkgver=1.0.99
 _grub_ver=2.04                  # (Jul 2019)
 #_unifont_ver=15.0.01            # FIXME see NOTE below
 _ipxe_ver=3fe683e               # (Sep 29 2019)
@@ -133,13 +133,13 @@ noextract=(
   cryptsetup-"$_crypt_ver".tar.xz
   wimboot-"$_wimboot_ver".tar.gz
 )
-sha256sums=('3ab7cf140b1f64157b4196b291ecfb9f87097cdcd7a7e6d5bf9e9ccf6b5fba8c'
+sha256sums=('2557ccdeaf8b0e517087afb63f65c4e2a32ef3f15bd196b7f828d93d586ca7b9'
             'e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d'
             'db2a9018392a3984d1e1e649bde0ffc19c90fa4d96b9fd2d4caaf9c1ca2af68b'
             '5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44'
             'c6f691aa91afbaab811a369fe729f61d8e5b58bb5ad79a45446c9ee849c1a60b'
-            'SKIP' # GitHub cannot be trusted to maintain a stable patch checksum
-            'SKIP' # GitHub cannot be trusted to maintain a stable patch checksum
+            'SKIP' # Cannot rely on GitHub to maintain a stable patch checksum
+            'SKIP' # Cannot rely on GitHub to maintain a stable patch checksum
             '7994ad5a63d00446da2e95da1f3f03355b272f096d7eb9830417ab14393b3ace'
             '313aa962c7f80a02f41758d90d6f67687c77c74a6126b060337f248bc1b637f6'
             'a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4'
@@ -1077,11 +1077,11 @@ _pack_ventoy() (
 
   local _efi_files=(
     BOOTIA32.EFI        # shim 32-bit  ver 15.6         # SUISBD [1] based on Fedora
-    BOOTX64.EFI         # shim 64-bit  ver 15.7         # ? Ubuntu ?
-    grubx64.efi         # preloader 64-bit              # SUISBD [1]
+    BOOTX64.EFI         # shim 64-bit  ver 15.7         # ? SUSE Linux Enterprise ?
+    grub.efi            # preloader 64-bit              # SUISBD [1]
     grubia32.efi        # preloader 32-bit              # SUISBD [2]
-    mmia32.efi          # MokManager 32-bit  ver 15.6   # same length as SUISBD [1] (but 261 bytes different) based on Fedora
-    mmx64.efi           # MokManager 64-bit  ver 15.7   # ? Ubuntu ?
+    mmia32.efi          # MokManager 32-bit  ver 15.6   # same length as SUISBD [1] (but 261 bytes differ) based on Fedora
+    MokManager.efi      # MokManager 64-bit  ver 15.7   # ? SUSE Linux Enterprise ?
   )
 
   # This file is also from SUISBD
