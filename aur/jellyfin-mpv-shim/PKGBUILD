@@ -2,8 +2,8 @@
 # Contributor: Marius Lindvall <(firstname) {cat} varden {dog} info>
 
 pkgname=jellyfin-mpv-shim
-pkgver=2.7.0
-pkgrel=3
+pkgver=2.8.0
+pkgrel=1
 pkgdesc='Cast media from Jellyfin Mobile and Web apps to MPV'
 arch=(any)
 url='https://github.com/jellyfin/jellyfin-mpv-shim'
@@ -20,8 +20,8 @@ optdepends=(
 )
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz"
         "shaderpack.patch")
-b2sums=('bf43d5094e5f23980e565decfa64cfce597a4ede0b164d179cf2acebc6b0c3794e9289b08a177ee9f828fdba09a2b852f838af2ce1ac32193bdc60e42c10f8dc'
-        'f17877dd7d15447e39b9bad01e1364a95a8a73113eca638c16180efaabf9da2e53dad3ef219a80e34d51eaa787f58e7f0e06de5463dcd175152ad45717ca79be')
+b2sums=('72eadc434fd09706cd617752487f39686775274ac20b45085aa26490fba6d43d37ec0f6984a91f4001df40e5b31253c17a978f9a9ec8e5ea14bc3ab8015001d9'
+        'e44c324eb4fb420a103a8dcbd657976f16cb9d236d8accd4b5276f7f82ecd832dbcf99373659e99082b5b906b1ef3b972a2f87935d5c62e6177b4472b95edba6')
 
 
 prepare() {
