@@ -6,7 +6,7 @@
 
 pkgname=netatalk
 pkgver=3.2.0
-pkgrel=5
+pkgrel=6
 pkgdesc='Open-source implementation of the Apple Filing Protocol'
 url='https://netatalk.sourceforge.io'
 license=('GPL2')
@@ -22,7 +22,7 @@ depends=('acl'
          'db'
          'dbus-glib'
          'libevent'
-         'libgcrypt'
+         'libgcrypt<1.11'
          'pam'
          'perl'
          'perl-net-dbus')

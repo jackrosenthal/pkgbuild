@@ -1,7 +1,7 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
 	pkgver = 3.2.0
-	pkgrel = 5
+	pkgrel = 6
 	url = https://netatalk.sourceforge.io
 	arch = x86_64
 	arch = i686
@@ -16,7 +16,7 @@ pkgbase = netatalk
 	depends = db
 	depends = dbus-glib
 	depends = libevent
-	depends = libgcrypt
+	depends = libgcrypt<1.11
 	depends = pam
 	depends = perl
 	depends = perl-net-dbus
