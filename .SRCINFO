@@ -1,7 +1,7 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
 	pkgver = 3.2.0
-	pkgrel = 6
+	pkgrel = 7
 	url = https://netatalk.sourceforge.io
 	arch = x86_64
 	arch = i686
@@ -16,7 +16,7 @@ pkgbase = netatalk
 	depends = db
 	depends = dbus-glib
 	depends = libevent
-	depends = libgcrypt<1.11
+	depends = libgcrypt
 	depends = pam
 	depends = perl
 	depends = perl-net-dbus
@@ -29,6 +29,8 @@ pkgbase = netatalk
 	backup = etc/afp.conf
 	backup = etc/extmap.conf
 	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-3-2-0/netatalk-3.2.0.tar.xz
+	source = libgcrypt_1_11.patch
 	md5sums = 2894607a1fc93b9031d27896e775f7f9
+	md5sums = c5e2567b179041ba291f7dd570fe620e
 
 pkgname = netatalk

@@ -6,13 +6,15 @@
 
 pkgname=netatalk
 pkgver=3.2.0
-pkgrel=6
+pkgrel=7
 pkgdesc='Open-source implementation of the Apple Filing Protocol'
 url='https://netatalk.sourceforge.io'
 license=('GPL2')
 
-source=(https://github.com/Netatalk/${pkgname}/releases/download/${pkgname}-${pkgver//./-}/${pkgname}-${pkgver}.tar.xz)
-md5sums=('2894607a1fc93b9031d27896e775f7f9')
+source=(https://github.com/Netatalk/${pkgname}/releases/download/${pkgname}-${pkgver//./-}/${pkgname}-${pkgver}.tar.xz
+        'libgcrypt_1_11.patch')
+md5sums=('2894607a1fc93b9031d27896e775f7f9'
+         'c5e2567b179041ba291f7dd570fe620e')
 
 arch=('x86_64' 'i686' 'pentium4' 'armv6h' 'armv7h' 'aarch64')
 
@@ -22,7 +24,7 @@ depends=('acl'
          'db'
          'dbus-glib'
          'libevent'
-         'libgcrypt<1.11'
+         'libgcrypt'
          'pam'
          'perl'
          'perl-net-dbus')
@@ -37,6 +39,11 @@ conflicts=('netatalk-ddp'
 
 backup=('etc/afp.conf'
         'etc/extmap.conf')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 < ../../libgcrypt_1_11.patch
+}
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
