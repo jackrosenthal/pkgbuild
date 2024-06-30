@@ -56,7 +56,7 @@ _busybox_ver=1.32.0             # (Jun 2020) old! FIXME
 _crypt_ver=1.7.5                # (Apr 2017) old! FIXME for veritysetup
 _lunzip_ver=1.11                # (Jan 2019) old! FIXME
 _wimboot_ver=2.7.3              # (Apr 2021) old! FIXME
-pkgrel=1
+pkgrel=2
 pkgdesc="A new bootable USB solution"
 arch=(x86_64)
 url="https://www.ventoy.net/"
@@ -917,23 +917,27 @@ _build_lunzip() (
 _build_verity() (
   echo ":: verity"
   # Refer "cryptsetup/cryptsetup-build.txt"
-  # Needed for *experimental* FydeOS/CloudReady support.
+  # Needed for *experimental* FydeOS/CloudReady (ChromeOS) support.
 
   cd Ventoy-$pkgver/cryptsetup
   tar -xf "$srcdir"/cryptsetup-$_crypt_ver.tar.xz
   cp -a cryptsetup-$_crypt_ver{,-32}
 
-  (
-    rm -v veritysetup64
-    cd cryptsetup-$_crypt_ver
-    ./configure --enable-static --host=x86_64-pc-linux-gnu
-    make
-    cd src
-    gcc -Wall -O2 -o veritysetup veritysetup-utils_crypt.o veritysetup-utils_loop.o veritysetup-utils_tools.o \
-      veritysetup-veritysetup.o -lpopt -ldevmapper -lgcrypt -luuid .././lib/.libs/libcryptsetup.a
-    strip --strip-all veritysetup
-    cp -av veritysetup ../../veritysetup64
-  )
+  # 30 Jun 2024. Ugh, this now fails to build because latest libgcrypt-1.11.0
+  # has removed libgcrypt-config. Just use the upstream provided 64-bit binary
+  # for now. The ChromeOS support is experimental anyway. FIXME
+
+  # (
+  #   rm -v veritysetup64
+  #   cd cryptsetup-$_crypt_ver
+  #   ./configure --enable-static --host=x86_64-pc-linux-gnu
+  #   make
+  #   cd src
+  #   gcc -Wall -O2 -o veritysetup veritysetup-utils_crypt.o veritysetup-utils_loop.o veritysetup-utils_tools.o \
+  #     veritysetup-veritysetup.o -lpopt -ldevmapper -lgcrypt -luuid .././lib/.libs/libcryptsetup.a
+  #   strip --strip-all veritysetup
+  #   cp -av veritysetup ../../veritysetup64
+  # )
 
   # Ugh, this needs multilib (lib32-e2fsprogs lib32-popt lib32-libgcrypt) and
   # a 32-bit libdevmapper which doesn't actually exist in the repo. Just use the
