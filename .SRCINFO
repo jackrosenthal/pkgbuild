@@ -1,7 +1,7 @@
 pkgbase = python-pygame
 	pkgdesc = Python game library
-	pkgver = 2.5.2
-	pkgrel = 2
+	pkgver = 2.6.0
+	pkgrel = 1
 	url = http://www.pygame.org
 	arch = x86_64
 	license = LGPL
@@ -19,8 +19,8 @@ pkgbase = python-pygame
 	depends = sdl2_image
 	depends = portmidi
 	optdepends = python-numpy: for examples
-	source = https://pypi.io/packages/source/p/pygame/pygame-2.5.2.tar.gz
-	sha256sums = c1b89eb5d539e7ac5cf75513125fb5f2f0a2d918b1fd6e981f23bf0ac1b1c24a
-	b2sums = 1275a19361406464d6af0f10d3ff44a96c756711537ded06af3a6cd43c5ceb3edac0461e82c5744385938159bdeabd6eb8feed513e193263a354fc3553304c3f
+	source = https://pypi.io/packages/source/p/pygame/pygame-2.6.0.tar.gz
+	sha256sums = 722d33ae676aa8533c1f955eded966411298831346b8d51a77dad22e46ba3e35
+	b2sums = d2c0af1aa6c785709c3239bc274ecb82c3c1f5f9c9b3857098acf6f5a3f0075e0425224d4a36a68221ab2c7dbed01c648b51e158b8a9c87e7606179f1fb131b8
 
 pkgname = python-pygame
