@@ -1,6 +1,6 @@
 pkgbase = xsane
 	pkgver = 0.999
-	pkgrel = 6
+	pkgrel = 7
 	url = https://gitlab.com/sane-project/frontend/xsane
 	arch = x86_64
 	license = GPL2
