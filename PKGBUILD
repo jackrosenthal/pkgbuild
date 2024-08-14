@@ -1,4 +1,5 @@
-# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+# Maintainer : Peter Theobald <dev@petertheobald.de>
+# Contributor: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: Sarah Hay <sarahhay@mb.sympatico.ca>
 
 pkgbase=xsane
@@ -13,12 +14,14 @@ source=(http://http.debian.net/debian/pool/main/x/$pkgname/${pkgname}_$pkgver.or
 	xsane-0.995-xdg-open.patch
 	0165-xsane-0.999-lcms2.patch
 	0001-lcms2_configure.patch
-        xsane-preview-selection.patch)
+        xsane-preview-selection.patch
+        configure-add-stdlib-to-conftest.patch)
 sha512sums=('73ec961fce1a86b5d6f5bac0995d222785eb4b077dc8e72492b092d2bf4500455426e80e4d27233721cd38ec84f77fb9f92190a6afe45bdaf7ffd1ee50b431ed'
             'ed1c1b0fab10b456f7dc6befd6f91eb8d3e1bae0f1be3abf71d334d4a2ae8f8335ba37fdd73f336f7c5f45916df917dc77fd792e6b849a87bde95babc698bf39'
             '557913adab90b2ba051a2988bdbfc600ca6a33f099810f5f867c8d8b2c5a45b0468dd8a1a1593ff33d149b4a5917b24d716b54ae2605b3a2e19053e02e5b64c6'
             'a8b5e0466c1306b8df68d814a3f02bc74e4d470aa42b9e0eebad41d2e274ff74328a837dd9a0b5ca59e4df63ecbb53b268f6d4948a690d9346c5399bb5b3d1e4'
-            '001b021ddf0f92e2bbab0211cfe92c54b785e94e7c92102caedd8d4ce34c833847157174a4d800d8859ba8d05300db74b8af352e5347d2883e17bca57454e96d')
+            '001b021ddf0f92e2bbab0211cfe92c54b785e94e7c92102caedd8d4ce34c833847157174a4d800d8859ba8d05300db74b8af352e5347d2883e17bca57454e96d'
+            '04ea857a34a9400bc7c030563a942309d106893c6314dd099bf053227672fca9879314015be912538a7f89a414d3f0a24e7f45bfc51a0b621ed27dcc1c91a4e8')
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -28,6 +31,7 @@ prepare() {
   patch -Np1 -i "${srcdir}/0165-xsane-0.999-lcms2.patch"
   patch -Np1 -i "${srcdir}/0001-lcms2_configure.patch"
   patch -p1 -i ../xsane-preview-selection.patch # Fix selection preview
+  patch -p1 -i "${srcdir}/configure-add-stdlib-to-conftest.patch" # Fix failing build of conftest by adding stdlib.h to test program
 }
 
 build() {
