@@ -1,6 +1,6 @@
 # Maintainer: Lili1228 <aur at lili dot lgbt>
 pkgname=86box-roms
-pkgver=4.2
+pkgver=4.2.1
 pkgrel=1
 pkgdesc='ROMs for the 86Box emulator'
 arch=('any')
@@ -8,7 +8,7 @@ url='https://github.com/86Box/roms'
 license=('custom')
 options=('!strip')
 source=("https://github.com/86Box/roms/archive/refs/tags/v${pkgver}.tar.gz")
-sha512sums=('652388640d80ae4a81497419b438026a3173e858c7399ac99631e5f179024fecfa41c6b3cd053522c6c6369a9005247770183285e5711ac3c829353e708f6747')
+sha512sums=('188e1ebd8bef19d3e3d56260bd9340b3d583d55932ee2fbc5a4c6a4760b05adacef104e58b873dc79d87d6fb270356e569bf63a25956daedc2d84e5d16a9468f')
 
 package() {
     cd "${srcdir}/roms-${pkgver}"
