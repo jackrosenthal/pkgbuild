@@ -6,7 +6,7 @@
 
 pkgname=minipro
 pkgver=0.7.1
-pkgrel=1
+pkgrel=2
 
 pkg_name_ver="${pkgname}-${pkgver}"
 pkgdesc="Open source chip programming utility for autoelectric.cn MiniPro TL866xx series (TL866CS, TL866A, and TL866II+)"
@@ -17,10 +17,12 @@ license=("GPL-3.0-only")
 makedepends=()
 depends=("libusb")
 optdepends=("srecord: Motorola srecord format")
-source=(${pkgname}.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/archive/${pkgver}/${pkg_name_ver}.tar.gz)
+#source=(${pkgname}.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/archive/${pkgver}/${pkg_name_ver}.tar.gz)
+source=(${pkgname}.src.tgz::https://661.org/files/${pkgname}/${pkg_name_ver}.tar.gz)
 conflicts=("minipro")
 provides=("minipro")
-sha256sums=('dbabd96b377ebf988b093658aeda658ed2a8a6b2097d491d2c620a01993860fc')
+# https://661.org/files/minipro/checksums.txt
+sha256sums=('714214fc4e3ee37c36ff3b9ae68f65984cba727110c1151d389559e02603654e')
 
 
 prepare()
