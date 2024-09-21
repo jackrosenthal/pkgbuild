@@ -1,7 +1,7 @@
 pkgbase = minipro
 	pkgdesc = Open source chip programming utility for autoelectric.cn MiniPro TL866xx series (TL866CS, TL866A, and TL866II+)
 	pkgver = 0.7.1
-	pkgrel = 1
+	pkgrel = 2
 	url = https://gitlab.com/DavidGriffith/minipro
 	arch = i686
 	arch = x86_64
@@ -10,7 +10,7 @@ pkgbase = minipro
 	optdepends = srecord: Motorola srecord format
 	provides = minipro
 	conflicts = minipro
-	source = minipro.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/archive/0.7.1/minipro-0.7.1.tar.gz
-	sha256sums = dbabd96b377ebf988b093658aeda658ed2a8a6b2097d491d2c620a01993860fc
+	source = minipro.src.tgz::https://661.org/files/minipro/minipro-0.7.1.tar.gz
+	sha256sums = 714214fc4e3ee37c36ff3b9ae68f65984cba727110c1151d389559e02603654e
 
 pkgname = minipro
