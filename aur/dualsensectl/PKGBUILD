@@ -1,5 +1,5 @@
 pkgname=dualsensectl
-pkgver=0.4
+pkgver=0.5
 pkgrel=1
 pkgdesc='Tool for controlling Sony PlayStation 5 DualSense controller on Linux'
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('GPL2')
 depends=('dbus' 'hidapi')
 makedepends=('make' 'gcc')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/nowrep/dualsensectl/archive/refs/tags/v${pkgver}.tar.gz")
-sha512sums=('bb82b49835e6ccd5bc78d36b16acdd0aa15dc8a27564afba4c0132915150f22fa1011850449e068f008b24567b863ea6dc6585d726a33b164a93d82990095790')
+sha512sums=('0d700293c72615fd0aeddc774be09844498d4ca530d9f49d45ce3137ffe7408490fc6efddf6ccaf91253e3d9c7a63b36ebce0680d449d1900bdfa276fa618206')
 
 build() {
     make -C "$pkgname-$pkgver"
