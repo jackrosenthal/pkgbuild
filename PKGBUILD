@@ -6,7 +6,7 @@
 
 pkgname=netatalk
 pkgver=3.2.10
-pkgrel=1
+pkgrel=2
 pkgdesc='Open-source implementation of the Apple Filing Protocol'
 url='https://netatalk.io'
 license=('GPL2')
@@ -30,7 +30,7 @@ depends=('acl'
 optdepends=('libwrap: TCP wrapper support'
             'mariadb-libs: MySQL CNID backend support'
             'talloc: AFP Spotlight support'
-            'tinysparql: AFP Spotlight support')
+            'tracker3: AFP Spotlight support')
 
 conflicts=('netatalk-ddp'
            'netatalk2')
