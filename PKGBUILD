@@ -4,7 +4,7 @@
 pkgname=qt5-webengine
 _basever=5.15.15
 pkgver=5.15.17
-pkgrel=7
+pkgrel=8
 arch=('x86_64')
 url='https://www.qt.io'
 license=('LGPL3' 'LGPL2.1' 'BSD')
@@ -24,7 +24,7 @@ source=(kde-$_pkgfqn::git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-l
         qt5-webengine-ninja-1.12.patch
         python3.12-imp.patch
         python3.12-six.patch)
-sha256sums=('c2488e6d6778cf9954fcc45e94acb762376581a99df7f889f13a93cefd356940'
+sha256sums=('0a1fcf99032ac7e8c17ced5841ef9ba3c67103bc047963be133b59ec0071943c'
             'SKIP'
             'c50d3019626183e753c53a997dc8a55938847543aa3178d4c51f377be741c693'
             '82a56cfc3e278617e11093078abe672a73c6fdaad98a2c8604ad8f22bc879ce5'
