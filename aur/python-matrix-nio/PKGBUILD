@@ -2,7 +2,7 @@
 # Contributor: Jonas Witschel <diabonas@archlinux.org>
 
 pkgname=python-matrix-nio
-pkgver=0.25.1
+pkgver=0.25.2
 pkgrel=1
 pkgdesc="Python Matrix client library, designed according to sans I/O principles"
 arch=("any")
@@ -47,7 +47,7 @@ optdepends=('python-atomicwrites: end-to-end encryption support'
             'python-olm: end-to-end encryption support')
 changelog="CHANGELOG.md"
 source=("$pkgname-$pkgver.tar.gz::https://api.github.com/repos/${pkgname#python-}/${pkgname#python-}/tarball/refs/tags/$pkgver")
-b2sums=('7dea3723300ef7b45e8670a105b6bcc5e131cd501f0b03737ca9a7c9d3337f92178a1e554c9e58f9d95b13477b318a02066cb5de8932ea879c0e85169e4a7099')
+b2sums=('f634d12f0d7e3325a1a8fae1bcc5346caa98009b5766049502daf0113ef8bf9e27a99207e12af80232c9837cae62ba4003a9d30a67929d4dabb8d89937894f60')
 
 prepare() {
     tar zxvf "$pkgname-$pkgver.tar.gz" --strip-components=1 --one-top-level
