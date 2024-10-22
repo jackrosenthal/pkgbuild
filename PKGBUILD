@@ -1,6 +1,6 @@
 # Maintainer: Mark Collins <tera_1225 hat hotmail.com>
 pkgname=matrix-commander
-pkgver=7.7.0
+pkgver=7.7.1
 pkgrel=1
 pkgdesc="Simple CLI-based Matrix client"
 arch=('any')
@@ -35,7 +35,7 @@ optdepends=(
 provides=()
 conflicts=()
 source=("${pkgname}-${pkgver}::https://files.pythonhosted.org/packages/source/${pkgname::1}/${pkgname}/${pkgname/-/_}-${pkgver}.tar.gz")
-sha256sums=('8f2446dca490f486d9c96eb6a4a9e70519973783b3be0a863307a38bcef504b1')
+sha256sums=('8be2deacf803f51e8941f3da017101326b32cd1ace6a52e5934b2553b0569340')
 
 build() {
   cd "${srcdir}/${pkgname/-/_}-${pkgver}"
