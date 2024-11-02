@@ -1,10 +1,11 @@
 # Maintainer: Raphael Nestler <raphael.nestler@gmail.com>
+# Contributor: Chloe Colman <chloe.colman7@gmail.com>
 # Contributor: Sampson Crowley <sampsonsprojects@gmail.com>
 # Contributor: Rhys Kenwell <redrield+aur@gmail.com>
 # Github Contributors: https://github.com/SampsonCrowley/arch_packages/contributors.md
 
 pkgname=heroku-cli
-pkgver=9.3.0
+pkgver=9.3.2
 pkgrel=1
 pkgdesc="CLI to manage Heroku apps and services with forced auto-update removed"
 arch=('any')
@@ -15,8 +16,8 @@ makedepends=('yarn' 'git' 'npm')
 optdepends=('git: Deploying to Heroku')
 conflicts=('heroku-cli-bin' 'heroku-client-standalone' 'heroku-toolbelt' 'ruby-heroku')
 source=("git+https://github.com/heroku/cli.git#commit=v${pkgver}")
-sha256sums=('9b4b3744b618c52a0038db469e663d2b8723d8d72609a4941fb70a9ba5689051')
-sha512sums=('91bf9ec53b7360eab26e8d8e44f0398ee7ec00469cb6a809fc0ad0ef255faf686de3bd2dfdb684671a20dfea810eccc88078672c04d853d0e4f306f5d82668b2')
+sha256sums=('6d153bc7c9d0777a5dc05a7036768c185fda12897b443bafab7193b6617eeaae')
+sha512sums=('39f9333b7690001c7e81429897725f268c3b1fda0b187f19003c391a9b344556ce196ae3490abcfe87919523e82978c4aa8fa28eeb6a2e47b6675df6ce4c8b99')
 options=('!strip')
 provides=('heroku' 'heroku-cli')
 
