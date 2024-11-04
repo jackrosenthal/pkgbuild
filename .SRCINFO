@@ -1,7 +1,7 @@
 pkgbase = ventoy
 	pkgdesc = A new bootable USB solution
 	pkgver = 1.0.99
-	pkgrel = 2
+	pkgrel = 3
 	url = https://www.ventoy.net/
 	arch = x86_64
 	license = GPL-3.0-or-later
@@ -67,7 +67,7 @@ pkgbase = ventoy
 	source = wimboot-binutils-2.42-fix.patch
 	sha256sums = 2557ccdeaf8b0e517087afb63f65c4e2a32ef3f15bd196b7f828d93d586ca7b9
 	sha256sums = e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d
-	sha256sums = db2a9018392a3984d1e1e649bde0ffc19c90fa4d96b9fd2d4caaf9c1ca2af68b
+	sha256sums = 789851a70038c9ed2db61181cd1c20243b41b246a8efe77f2af8a41fb22a52c9
 	sha256sums = 5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44
 	sha256sums = c6f691aa91afbaab811a369fe729f61d8e5b58bb5ad79a45446c9ee849c1a60b
 	sha256sums = SKIP
