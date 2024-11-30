@@ -2,7 +2,7 @@
 # Maintainer: goll <adrian.goll+aur[at]gmail>
 pkgname=bambustudio-bin
 pkgver=01.10.01.50
-pkgrel=1
+pkgrel=2
 pkgdesc="PC Software for BambuLab's 3D printers"
 arch=("x86_64")
 url="https://github.com/bambulab/BambuStudio"
