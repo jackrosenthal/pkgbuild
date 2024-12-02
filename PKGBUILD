@@ -2,7 +2,7 @@
 # Maintainer: goll <adrian.goll+aur[at]gmail>
 pkgname=bambustudio-bin
 pkgver=01.10.01.50
-pkgrel=2
+pkgrel=3
 pkgdesc="PC Software for BambuLab's 3D printers"
 arch=("x86_64")
 url="https://github.com/bambulab/BambuStudio"
@@ -15,7 +15,7 @@ source=("bambustudio-${pkgver}.AppImage::https://github.com/bambulab/BambuStudio
 	"bambu-studio")
 md5sums=('9a2bb8e9e92873a4023a67ee6a05c74f'
          'c2729c29cbd01844507e1f0562762191'
-         'dfc63a9eabda3cc7172695bb1ba09c51')
+         '32b62c7c318962820a615c3ef3813935')
 
 package() {
     cd "$srcdir"
