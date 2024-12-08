@@ -1,2 +1,2 @@
 #!/bin/bash
-exec "/opt/bambustudio-bin/AppRun" "$1"
+exec "/opt/bambustudio-bin/AppRun" "$@"
