@@ -1,8 +1,8 @@
 pkgbase = ttf-harmonyos-sans
-	pkgdesc = HarmonyOS Sans 字体
+	pkgdesc = HarmonyOS Sans Fonts.华为鸿蒙字体
 	pkgver = 2024.06.19
-	pkgrel = 1
-	url = https://developer.harmonyos.com/cn/design/resource
+	pkgrel = 2
+	url = https://developer.huawei.com/consumer/cn/design/resource/
 	arch = any
 	license = LicenseRef-custom
 	conflicts = harmonyos-sans
