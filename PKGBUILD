@@ -1,64 +1,37 @@
-# Maintainer: Jaime Martínez Rincón <jaime(at)jamezrin(dot)name>
+# Maintainer: Antti Ellilä <antti@antti.codes>
 
 pkgname=httptoolkit
-pkgver=1.17.2
-pkgrel=2
+pkgver=1.19.1
+pkgrel=1
 epoch=1
 pkgdesc="Beautiful, cross-platform & open-source HTTP(S) proxy, analyzer and client."
 arch=("x86_64")
-url="https://httptoolkit.tech/"
-license=('GPL3')
+url="https://httptoolkit.com/"
+license=('AGPL-3.0-or-later')
 
-# ci.yml specifies node 18 as of version 1.14.3
-_node_version=18
-
-# package.json specifies electron 22.3.24 as of version 1.14.3
-_electron_version=22
+# package.json specifies electron 29 as of version 1.14.11
+_electron_version=29
 
 depends=("electron${_electron_version}" python)
-makedepends=(git nvm)
-checkdepends=()
-optdepends=()
+makedepends=(git npm)
 
-provides=()
-conflicts=(httptoolkit-bin)
-replaces=()
-backup=()
-options=()
-install=
-changelog=
 _pkgrepo="https://github.com/httptoolkit/httptoolkit-desktop"
-source=("${pkgname}::git+${_pkgrepo}.git#tag=v${pkgver}"
+source=("$pkgname-$pkgver.tar.gz::${_pkgrepo}/archive/refs/tags/v${pkgver}.zip"
         'httptoolkit.desktop')
-noextract=()
-md5sums=('SKIP'
-         'faf640796c9ad59c3fe56dac09b19767')
-validpgpkeys=()
 
-_ensure_local_nvm() {
-    if type nvm &>/dev/null; then
-        nvm deactivate
-        nvm unload
-    fi
-    unset npm_config_prefix
-    export NVM_DIR=${srcdir}/.nvm
-    . /usr/share/nvm/init-nvm.sh
-}
+sha256sums=('93eab08140b97512be43010bff01e711389187da00be3dfb0499dded31960eda'
+            'e8a8fd3ce7983753d3c990402c079a7876aad9b08e1822b5494ce4abdfc1a544')
 
+_archive_name="httptoolkit-desktop"
 prepare() {
-    cd "${srcdir}/${pkgname}"
-    _ensure_local_nvm
-    nvm ls "$_node_version" &>/dev/null ||
-        nvm install "$_node_version"
-    nvm exec "$_node_version" \
-        npm install --no-save --no-audit --no-progress --no-fund
+    cd "${srcdir}/${_archive_name}-${pkgver}"
+    npm install --no-save --no-audit --no-progress --no-fund
 }
 
 build() {
-    cd "${srcdir}/${pkgname}"
-    _ensure_local_nvm
-    nvm exec "$_node_version" npm run build:src
-    nvm exec "$_node_version" npm run build:electron -- \
+    cd "${srcdir}/${_archive_name}-${pkgver}"
+    npm run build:src
+    npm run build:electron -- \
         -c.electronDist=/usr/lib/electron${_electron_version} \
         -c.electronVersion="$(cat /usr/lib/electron${_electron_version}/version)" \
         --linux dir
@@ -71,10 +44,10 @@ package() {
     install -d "${pkgdir}/usr/share/licenses"
     install -d "${pkgdir}/usr/share/applications"
 
-    cp -r "${srcdir}/${pkgname}/dist/linux-unpacked/"* "${pkgdir}/opt/${pkgname}"
-    cp "${srcdir}/${pkgname}/src/icons/icon.png" "${pkgdir}/opt/${pkgname}/icon.png"
-    install -Dm644 "${srcdir}/${pkgname}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-    install -Dm644 "${srcdir}/${pkgname}/src/icons/icon.png" "${pkgdir}/usr/share/icons/${pkgname}.png"
+    cp -r "${srcdir}/${_archive_name}-${pkgver}/dist/linux-unpacked/"* "${pkgdir}/opt/${pkgname}"
+    cp "${srcdir}/${_archive_name}-${pkgver}/src/icons/icon.png" "${pkgdir}/opt/${pkgname}/icon.png"
+    install -Dm644 "${srcdir}/${_archive_name}-${pkgver}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    install -Dm644 "${srcdir}/${_archive_name}-${pkgver}/src/icons/icon.png" "${pkgdir}/usr/share/icons/${pkgname}.png"
     install -Dm644 "${srcdir}/${pkgname}.desktop" "${pkgdir}/usr/share/applications"
     _electron=${pkgdir}/opt/${pkgname}/${pkgname}
     echo "Deleting Electron binary ($(du -h "$_electron" | awk '{print $1}'))"
