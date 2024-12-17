@@ -1,7 +1,7 @@
 pkgbase = python-matrix-nio
 	pkgdesc = Python Matrix client library, designed according to sans I/O principles
 	pkgver = 0.25.2
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/matrix-nio/matrix-nio
 	changelog = CHANGELOG.md
 	arch = any
@@ -28,8 +28,8 @@ pkgbase = python-matrix-nio
 	makedepends = python-sphinx
 	makedepends = python-setuptools
 	makedepends = python-wheel
-	makedepends = tar
 	makedepends = python-poetry-core
+	makedepends = tar
 	depends = python
 	depends = python-aiohttp
 	depends = python-aiofiles
@@ -43,6 +43,7 @@ pkgbase = python-matrix-nio
 	optdepends = python-cachetools: end-to-end encryption support
 	optdepends = python-peewee: end-to-end encryption support
 	optdepends = python-olm: end-to-end encryption support
+	noextract = python-matrix-nio-0.25.2.tar.gz
 	source = python-matrix-nio-0.25.2.tar.gz::https://api.github.com/repos/matrix-nio/matrix-nio/tarball/refs/tags/0.25.2
 	b2sums = f634d12f0d7e3325a1a8fae1bcc5346caa98009b5766049502daf0113ef8bf9e27a99207e12af80232c9837cae62ba4003a9d30a67929d4dabb8d89937894f60
 
