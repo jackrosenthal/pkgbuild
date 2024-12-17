@@ -3,7 +3,7 @@
 
 pkgname=python-matrix-nio
 pkgver=0.25.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Python Matrix client library, designed according to sans I/O principles"
 arch=("any")
 url="https://github.com/matrix-nio/matrix-nio"
@@ -63,17 +63,17 @@ prepare() {
 }
 
 build() {
-    cd "$pkgname-$pkgver"
+    cd "$pkgname-$pkgver" || exit
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$pkgname-$pkgver"
-    PYTHONPATH="$PWD/src" python -m pytest --benchmark-disable
+    cd "$pkgname-$pkgver" || exit
+    PYTHONPATH="$PWD/src" pytest --benchmark-disable
 }
 
 package() {
-    cd "$pkgname-$pkgver"
+    cd "$pkgname-$pkgver" || exit
     python -m installer --destdir="$pkgdir" dist/*.whl
     install -vDm644 README.md -t "$pkgdir/usr/share/$pkgname/"
     install -vDm644 LICENSE.md -t "$pkgdir/usr/share/licenses/$pkgname/"
