@@ -3,7 +3,7 @@
 
 pkgname=python-matrix-nio
 pkgver=0.25.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Python Matrix client library, designed according to sans I/O principles"
 arch=("any")
 url="https://github.com/matrix-nio/matrix-nio"
