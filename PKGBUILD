@@ -1,7 +1,8 @@
 # Maintainer: Antti Ellilä <antti@antti.codes>
+# Contributor: Jaime Martínez Rincón <jaime(at)jamezrin(dot)name>
 
 pkgname=httptoolkit
-pkgver=1.19.1
+pkgver=1.19.3
 pkgrel=1
 epoch=1
 pkgdesc="Beautiful, cross-platform & open-source HTTP(S) proxy, analyzer and client."
@@ -9,17 +10,17 @@ arch=("x86_64")
 url="https://httptoolkit.com/"
 license=('AGPL-3.0-or-later')
 
-# package.json specifies electron 29 as of version 1.14.11
-_electron_version=29
+# package.json specifies electron 31 as of version 1.19.3
+_electron_version=31
 
 depends=("electron${_electron_version}" python)
 makedepends=(git npm)
 
 _pkgrepo="https://github.com/httptoolkit/httptoolkit-desktop"
-source=("$pkgname-$pkgver.tar.gz::${_pkgrepo}/archive/refs/tags/v${pkgver}.zip"
+source=("$pkgname-$pkgver.tar.gz::${_pkgrepo}/archive/refs/tags/v${pkgver}.tar.gz"
         'httptoolkit.desktop')
 
-sha256sums=('93eab08140b97512be43010bff01e711389187da00be3dfb0499dded31960eda'
+sha256sums=('decc972e84ec8a22d77bad82017aa0b6cb88de8a0056757474f8906a2483f02d'
             'e8a8fd3ce7983753d3c990402c079a7876aad9b08e1822b5494ce4abdfc1a544')
 
 _archive_name="httptoolkit-desktop"
