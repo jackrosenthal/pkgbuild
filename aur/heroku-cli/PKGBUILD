@@ -12,7 +12,7 @@ arch=('any')
 url="https://devcenter.heroku.com/articles/heroku-cli"
 license=('custom' 'ISC')
 depends=('nodejs')
-makedepends=('yarn' 'git' 'npm')
+makedepends=('yarn' 'git' 'npm' 'jq')
 optdepends=('git: Deploying to Heroku')
 conflicts=('heroku-cli-bin' 'heroku-client-standalone' 'heroku-toolbelt' 'ruby-heroku')
 source=("git+https://github.com/heroku/cli.git#commit=v${pkgver}")
@@ -44,6 +44,8 @@ prepare() {
     # final installation
     mv package heroku
     pushd heroku
+      jq '.engines.node=">=20"' package.json > package.json.new
+      mv package.json.new package.json
       yarn --prod
     popd
 
