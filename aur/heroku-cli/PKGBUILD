@@ -25,6 +25,7 @@ prepare() {
   pushd "$srcdir"
 
     pushd "cli"
+      rm .tool-versions
       pushd packages/cli
         # remove forced auto-update plugin
         sed -i "/oclif\/plugin-update/d" ./package.json
