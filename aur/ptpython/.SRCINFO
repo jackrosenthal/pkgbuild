@@ -1,7 +1,7 @@
 pkgbase = ptpython
 	pkgdesc = Python REPL build on top of prompt_toolkit
 	pkgver = 3.0.29
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/prompt-toolkit/ptpython
 	arch = any
 	license = BSD
