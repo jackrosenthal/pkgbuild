@@ -56,7 +56,7 @@ _busybox_ver=1.32.0             # (Jun 2020) old! FIXME
 _crypt_ver=1.7.5                # (Apr 2017) old! FIXME for veritysetup
 _lunzip_ver=1.11                # (Jan 2019) old! FIXME
 _wimboot_ver=2.7.3              # (Apr 2021) old! FIXME
-pkgrel=3
+pkgrel=4
 pkgdesc="A new bootable USB solution"
 arch=(x86_64)
 url="https://www.ventoy.net/"
@@ -135,7 +135,7 @@ noextract=(
 )
 sha256sums=('2557ccdeaf8b0e517087afb63f65c4e2a32ef3f15bd196b7f828d93d586ca7b9'
             'e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d'
-            '789851a70038c9ed2db61181cd1c20243b41b246a8efe77f2af8a41fb22a52c9'
+            'SKIP' # Cannot rely on Savannah to maintain a stable patch checksum
             '5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44'
             'c6f691aa91afbaab811a369fe729f61d8e5b58bb5ad79a45446c9ee849c1a60b'
             'SKIP' # Cannot rely on GitHub to maintain a stable patch checksum
