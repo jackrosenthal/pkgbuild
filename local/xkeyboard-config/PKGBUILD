@@ -18,7 +18,7 @@ source=("git+https://github.com/jackrosenthal/xkeyboard-config#commit=${_commit}
 sha256sums=('SKIP')
 
 build() {
-  arch-meson ${pkgname}-${pkgver} build \
+  arch-meson "${pkgname}" build \
     -D xkb-base="/usr/share/X11/xkb" \
     -D compat-rules=true \
     -D xorg-rules-symlinks=true
@@ -36,5 +36,5 @@ check() {
 package() {
   DESTDIR="$pkgdir" ninja -C build install
   install -m755 -d "${pkgdir}/var/lib/xkb"
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 $pkgname-$pkgver/COPYING
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 "${pkgname}/COPYING"
 }
