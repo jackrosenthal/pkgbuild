@@ -15,8 +15,7 @@ replaces=('xkbdata')
 conflicts=('xkbdata')
 # https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config
 source=("git+https://github.com/jackrosenthal/xkeyboard-config#commit=${_commit}")
-sha256sums=('SKIP' 'SKIP')
-validpgpkeys=('FFB4CCD275AAA422F5F9808E0661D98FC933A145') # Sergey Udaltsov <sergey.udaltsov@gmail.com>
+sha256sums=('SKIP')
 
 build() {
   arch-meson ${pkgname}-${pkgver} build \

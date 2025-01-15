@@ -14,8 +14,6 @@ pkgbase = xkeyboard-config
 	conflicts = xkbdata
 	replaces = xkbdata
 	source = git+https://github.com/jackrosenthal/xkeyboard-config#commit=6e09d436008cf04ae00e0338ec4325d93987b2f9
-	validpgpkeys = FFB4CCD275AAA422F5F9808E0661D98FC933A145
-	sha256sums = SKIP
 	sha256sums = SKIP
 
 pkgname = xkeyboard-config
