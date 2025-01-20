@@ -44,7 +44,7 @@ pkgbase = netatalk
 	backup = etc/papd.conf
 	backup = etc/pam.d/netatalk
 	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-4-1-0/netatalk-4.1.0.tar.xz
-	source = dbd.patch
+	source = bdb.patch
 	md5sums = b1f4ac9cdbaacf738123070fcd8bb17a
 	md5sums = df0445e8149a7dfa3b12979d6be78a27
 
