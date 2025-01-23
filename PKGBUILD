@@ -33,7 +33,7 @@
 # have been modified.
 
 pkgname=ventoy
-pkgver=1.0.99
+pkgver=1.1.00
 _grub_ver=2.04                  # (Jul 2019)
 #_unifont_ver=15.0.01            # FIXME see NOTE below
 _ipxe_ver=3fe683e               # (Sep 29 2019)
@@ -56,7 +56,7 @@ _busybox_ver=1.32.0             # (Jun 2020) old! FIXME
 _crypt_ver=1.7.5                # (Apr 2017) old! FIXME for veritysetup
 _lunzip_ver=1.11                # (Jan 2019) old! FIXME
 _wimboot_ver=2.7.3              # (Apr 2021) old! FIXME
-pkgrel=4
+pkgrel=1
 pkgdesc="A new bootable USB solution"
 arch=(x86_64)
 url="https://www.ventoy.net/"
@@ -133,7 +133,7 @@ noextract=(
   cryptsetup-"$_crypt_ver".tar.xz
   wimboot-"$_wimboot_ver".tar.gz
 )
-sha256sums=('2557ccdeaf8b0e517087afb63f65c4e2a32ef3f15bd196b7f828d93d586ca7b9'
+sha256sums=('1ed530453ec32944f522fa05bfccf566fb42ae4c75937c58107ea0c2bddf75c7'
             'e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d'
             'SKIP' # Cannot rely on Savannah to maintain a stable patch checksum
             '5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44'
@@ -1081,11 +1081,11 @@ _pack_ventoy() (
 
   local _efi_files=(
     BOOTIA32.EFI        # shim 32-bit  ver 15.6         # SUISBD [1] based on Fedora
-    BOOTX64.EFI         # shim 64-bit  ver 15.7         # ? SUSE Linux Enterprise ?
+    BOOTX64.EFI         # shim 64-bit  ver 15.8         # ? SUSE Linux Enterprise ?
     grub.efi            # preloader 64-bit              # SUISBD [1]
     grubia32.efi        # preloader 32-bit              # SUISBD [2]
     mmia32.efi          # MokManager 32-bit  ver 15.6   # same length as SUISBD [1] (but 261 bytes differ) based on Fedora
-    MokManager.efi      # MokManager 64-bit  ver 15.7   # ? SUSE Linux Enterprise ?
+    MokManager.efi      # MokManager 64-bit  ver 15.8   # ? SUSE Linux Enterprise ?
   )
 
   # This file is also from SUISBD
