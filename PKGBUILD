@@ -4,7 +4,7 @@
 pkgname=qt5-webengine
 _basever=5.15.16
 pkgver=5.15.18
-pkgrel=5
+pkgrel=6
 arch=('x86_64')
 url='https://www.qt.io'
 license=('LGPL3' 'LGPL2.1' 'BSD')
@@ -51,6 +51,8 @@ prepare() {
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-six.patch # Fix build with python 3.12 - patch from Debian
 # Fix build with ffmpeg 7 - Chromium patches
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-ffmpeg7.patch
+# Fix build with python 3.13
+  sed -e '/import pipes/d' -i src/3rdparty/chromium/build/android/gyp/util/build_utils.py
 }
 
 build() {
