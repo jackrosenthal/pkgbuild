@@ -33,7 +33,7 @@
 # have been modified.
 
 pkgname=ventoy
-pkgver=1.1.00
+pkgver=1.1.01
 _grub_ver=2.04                  # (Jul 2019)
 #_unifont_ver=15.0.01            # FIXME see NOTE below
 _ipxe_ver=3fe683e               # (Sep 29 2019)
@@ -133,7 +133,7 @@ noextract=(
   cryptsetup-"$_crypt_ver".tar.xz
   wimboot-"$_wimboot_ver".tar.gz
 )
-sha256sums=('1ed530453ec32944f522fa05bfccf566fb42ae4c75937c58107ea0c2bddf75c7'
+sha256sums=('61a3c1eda7947406df00e198a6c108e3eb8963c1d4fcf7ea97ab62eb8a88d63f'
             'e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d'
             'SKIP' # Cannot rely on Savannah to maintain a stable patch checksum
             '5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44'
@@ -1006,10 +1006,6 @@ _pack_ventoy() (
     # For some unknown reason this is the only binary built with uclibc.
     # Please see: https://github.com/ventoy/Ventoy/issues/2183
     cp -avt cpio_x86/ventoy/busybox cpio_x86.upstream/ventoy/busybox/64h
-
-    # patch for device-mapper kernel modules FIXME
-    # Refer "DMPATCH/readme.txt"
-    cp -avt cpio_x86/ventoy/tool cpio_x86.upstream/ventoy/tool/dm_patch_*
 
     sh mkcpio.sh
     install -Dvm 644 -t ../INSTALL/ventoy ventoy.cpio ventoy_x86.cpio
