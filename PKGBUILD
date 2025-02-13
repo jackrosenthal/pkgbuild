@@ -33,7 +33,7 @@
 # have been modified.
 
 pkgname=ventoy
-pkgver=1.1.01
+pkgver=1.1.02
 _grub_ver=2.04                  # (Jul 2019)
 #_unifont_ver=15.0.01            # FIXME see NOTE below
 _ipxe_ver=3fe683e               # (Sep 29 2019)
@@ -90,10 +90,7 @@ optdepends=(
   'qt5-base: for Qt GUI'
 )
 conflicts=(ventoy-bin)
-# A regression in latest pacman unsets MAKEFLAGS when using !buildflags.
-# https://gitlab.archlinux.org/archlinux/packaging/packages/pacman/-/issues/25
-# Workaround it for now by manually unsetting VARS. See (way down) below in build() function.
-#options=(!buildflags)
+options=(!buildflags)
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/ventoy/Ventoy/archive/refs/tags/v$pkgver.tar.gz"
   https://ftp.gnu.org/gnu/grub/grub-"$_grub_ver".tar.xz
@@ -133,7 +130,7 @@ noextract=(
   cryptsetup-"$_crypt_ver".tar.xz
   wimboot-"$_wimboot_ver".tar.gz
 )
-sha256sums=('61a3c1eda7947406df00e198a6c108e3eb8963c1d4fcf7ea97ab62eb8a88d63f'
+sha256sums=('5730c4ccdd955226220f4152f6968b86e0ff68f446f31f79f3aed264d5897222'
             'e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d'
             'SKIP' # Cannot rely on Savannah to maintain a stable patch checksum
             '5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44'
@@ -1249,9 +1246,6 @@ _create_img() (
 )
 
 build() {
-  # Workaround for abovementioned pacman regression.
-  unset CPPFLAGS CFLAGS DEBUG_CFLAGS CXXFLAGS DEBUG_CXXFLAGS LDFLAGS LTOFLAGS RUSTFLAGS DEBUG_RUSTFLAGS
-
   _build_grub
   _build_ipxe
   _build_edk2
