@@ -1,5 +1,5 @@
 pkgname=dualsensectl
-pkgver=0.5
+pkgver=0.7
 pkgrel=1
 pkgdesc='Tool for controlling Sony PlayStation 5 DualSense controller on Linux'
 arch=('x86_64')
@@ -9,19 +9,17 @@ license=('GPL2')
 depends=('dbus' 'hidapi')
 makedepends=('make' 'gcc')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/nowrep/dualsensectl/archive/refs/tags/v${pkgver}.tar.gz")
-sha512sums=('0d700293c72615fd0aeddc774be09844498d4ca530d9f49d45ce3137ffe7408490fc6efddf6ccaf91253e3d9c7a63b36ebce0680d449d1900bdfa276fa618206')
+sha512sums=('d04b12c004f2f92134b04c2b6495f4b12d51c75c237a9a5f0df7733e013b4623ccb229f3f1be4037b0a5f5cadaf72285e6665313fcfbb3e5cee044fc440da020')
 
 build() {
-    make -C "$pkgname-$pkgver"
+    cd "$pkgname-$pkgver"
+    arch-meson build
+    meson compile -C build
 }
 
 package() {
-    make -C "$pkgname-$pkgver" DESTDIR="$pkgdir" install
-}
-
-install() {
-    $(CC) main.c -o $(TARGET) $(DEFINES) $(CFLAGS) $(LIBS)
-    install -D -m 755 -p $(TARGET) $(DESTDIR)/usr/bin/$(TARGET)
-    install -D -m 755 -p completion/$(TARGET) $(DESTDIR)/usr/share/bash-completion/completions/$(TARGET)
-    install -D -m 755 -p completion/_$(TARGET) $(DESTDIR)/usr/share/zsh/site-functions/_$(TARGET)
+    cd "$pkgname-$pkgver"
+    meson install -C build --destdir "$pkgdir"
+    install -D -m 755 -p completion/dualsensectl $pkgdir/usr/share/bash-completion/completions/dualsensectl
+    install -D -m 755 -p completion/_dualsensectl $pkgdir/usr/share/zsh/site-functions/_dualsensectl
 }
