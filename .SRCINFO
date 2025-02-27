@@ -10,7 +10,6 @@ pkgbase = windowtolayer
 	arch = armv7h
 	arch = aarch64
 	license = GPL-3.0-or-later
-	makedepends = git
 	makedepends = rust
 	makedepends = cargo
 	provides = windowtolayer
