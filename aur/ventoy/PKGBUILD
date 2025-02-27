@@ -33,7 +33,7 @@
 # have been modified.
 
 pkgname=ventoy
-pkgver=1.1.04
+pkgver=1.1.05
 _grub_ver=2.04                  # (Jul 2019)
 #_unifont_ver=15.0.01            # FIXME see NOTE below
 _ipxe_ver=3fe683e               # (Sep 29 2019)
@@ -130,7 +130,7 @@ noextract=(
   cryptsetup-"$_crypt_ver".tar.xz
   wimboot-"$_wimboot_ver".tar.gz
 )
-sha256sums=('c1f522e5842d14227c1b74ddd68e5cf4ad2ccd1bf5814beba5e4bb71331c1628'
+sha256sums=('ad383a5970eefecf36afd171aab2987322c9fdd8a532702e198ba75c64133c99'
             'e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d'
             'SKIP' # Cannot rely on Savannah to maintain a stable patch checksum
             '5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44'
