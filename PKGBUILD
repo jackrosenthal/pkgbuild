@@ -10,8 +10,6 @@ url='https://gitlab.freedesktop.org/mstoeckl/windowtolayer'
 source=("https://gitlab.freedesktop.org/mstoeckl/$pkgname/-/archive/v$pkgver/$pkgname-v$pkgver.tar.gz")
 sha256sums=('5bc3357aac0988f128503700d4e11ddd4aab0e730f8280630eab912210fbaa38')
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
-provides=('windowtolayer')
-conflicts=('windowtolayer')
 
 prepare() {
 	cd "$pkgname-v$pkgver"

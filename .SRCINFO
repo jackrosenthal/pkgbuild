@@ -12,8 +12,6 @@ pkgbase = windowtolayer
 	license = GPL-3.0-or-later
 	makedepends = rust
 	makedepends = cargo
-	provides = windowtolayer
-	conflicts = windowtolayer
 	source = https://gitlab.freedesktop.org/mstoeckl/windowtolayer/-/archive/v0.2.0/windowtolayer-v0.2.0.tar.gz
 	sha256sums = 5bc3357aac0988f128503700d4e11ddd4aab0e730f8280630eab912210fbaa38
 
