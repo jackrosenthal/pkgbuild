@@ -7,7 +7,7 @@ pkgdesc='A fork of the swaylock screen locker for Wayland supporting custom wall
 license=('MIT')
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 makedepends=('meson' 'ninja' 'scdoc')
-depends=('glibc' 'wayland' 'cairo' 'pam' 'libxkbcommon' 'systemd-libs' 'glib2' 'gdk-pixbuf2')
+depends=('glibc' 'wayland' 'cairo' 'pam' 'libxkbcommon' 'systemd-libs' 'glib2' 'gdk-pixbuf2' 'swaybg')
 optdepends=(
   'mpvpaper: to implement video backgrounds'
   'windowtolayer: to use a terminal as background'
