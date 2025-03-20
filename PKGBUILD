@@ -6,12 +6,12 @@
 
 pkgname=heroku-cli
 pkgver=10.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="CLI to manage Heroku apps and services with forced auto-update removed"
 arch=('any')
 url="https://devcenter.heroku.com/articles/heroku-cli"
 license=('custom' 'ISC')
-depends=('nodejs')
+depends=('nodejs>=20.18' 'nodejs<21')
 makedepends=('yarn' 'git' 'npm')
 optdepends=('git: Deploying to Heroku')
 conflicts=('heroku-cli-bin' 'heroku-client-standalone' 'heroku-toolbelt' 'ruby-heroku')
