@@ -1,6 +1,6 @@
 pkgbase = swaylock-plugin
 	pkgdesc = A fork of the swaylock screen locker for Wayland supporting custom wallpaper drawing programs
-	pkgver = 1.8.1
+	pkgver = 1.8.2
 	pkgrel = 1
 	url = https://github.com/mstoeckl/swaylock-plugin
 	arch = i686
@@ -24,7 +24,7 @@ pkgbase = swaylock-plugin
 	depends = swaybg
 	optdepends = mpvpaper: to implement video backgrounds
 	optdepends = windowtolayer: to use a terminal as background
-	source = https://github.com/mstoeckl/swaylock-plugin/archive/refs/tags/v1.8.1.tar.gz
-	sha256sums = d02d540305944b350b21d2875d891a2d6288a059c70312ad0aca43d91bfc8cfb
+	source = https://github.com/mstoeckl/swaylock-plugin/archive/refs/tags/v1.8.2.tar.gz
+	sha256sums = 8ac27f421550169d8d3d9523772d69fb405fedd0e6a73169495d05da8fb6ab47
 
 pkgname = swaylock-plugin
