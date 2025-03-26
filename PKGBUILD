@@ -2,36 +2,39 @@
 # Contributor: Stunts <f.pinamartins[at]gmail.com>
 # Contributor: Phil Schaf <flying-sheep[at]web.de>
 # Contributor: Carl George < arch at cgtx dot us >
+# Maintainer: Mohamed Amine Zghal (medaminezghal) <medaminezghal at outlook dot com>
 
-_pkgname=async-timeout
-pkgname=python-async-timeout
-pkgver=4.0.3
-pkgrel=6
-pkgdesc='Asyncio-compatible timeout class'
+_name=async-timeout
+pkgname=python-${_name}
+pkgver=5.0.1
+pkgrel=1
+pkgdesc='Timeout context manager for asyncio programs.'
 url='https://github.com/aio-libs/async-timeout'
 arch=('any')
 license=('Apache-2.0')
-depends=('python')
+depends=('python>=3.8')
 makedepends=('python-setuptools' 'python-build' 'python-installer' 'python-wheel')
-checkdepends=('python-pytest' 'python-pytest-asyncio' 'python-pytest-aiohttp')
-source=(https://github.com/aio-libs/async-timeout/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz)
-sha256sums=('c63f1252d5fa878fdceb7a6894f1df6a73f92546e52a0b7999a5de429fd64ff8')
-sha512sums=('cb5913647e99783ab6ef07901808baa09d7221fc5f1c6e49e7a3e35bf8b627a866277c6503418a00913c1a8f841514b0878a9469719ed7623d9d199de8df9ae8')
+checkdepends=('python-pytest' 'python-pytest-asyncio' 'python-pytest-cov')
+source=("https://files.pythonhosted.org/packages/source/${_name:0:1}/${_name}/${_name//-/_}-${pkgver}.tar.gz")
+sha256sums=('d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3')
 
 build() {
-  cd ${_pkgname}-${pkgver}
+  cd ${_name//-/_}-${pkgver}
   python -m build --wheel --no-isolation
 }
 
-check() {
-  cd ${_pkgname}-${pkgver}
-  PYTHONPATH=. pytest --override-ini="addopts=" tests
+check(){
+  local pytest_options=(
+    -vv
+    --override-ini="addopts="
+  )
+  cd "${srcdir}"/${_name//-/_}-${pkgver}
+  python -m venv --system-site-packages test-env
+  test-env/bin/python -m installer dist/*.whl
+  test-env/bin/python -m pytest "${pytest_options[@]}" tests
 }
-
 
 package() {
-  cd ${_pkgname}-${pkgver}
+  cd ${_name//-/_}-${pkgver}
   python -m installer --destdir="$pkgdir" dist/*.whl
 }
-
-# vim: ts=2 sw=2 et:
