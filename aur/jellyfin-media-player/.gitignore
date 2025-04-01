@@ -2,5 +2,5 @@
 !.SRCINFO
 !.gitignore
 !PKGBUILD
-!*.patch
 !/.nvchecker.toml
+!/fix-cmake-4.patch
