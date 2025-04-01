@@ -1,0 +1,26 @@
+pkgbase = dahdi
+	pkgdesc = DAHDI drivers for Asterisk (Digium, OpenVox, Allo and Yeastar cards)
+	pkgver = 3.4.0
+	pkgrel = 1
+	url = http://www.asterisk.org
+	install = dahdi.install
+	arch = x86_64
+	license = GPL2
+	makedepends = libusb
+	makedepends = linux
+	makedepends = linux-headers
+	source = https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/releases/dahdi-linux-complete-3.4.0+3.4.0.tar.gz
+	source = dahdi.service
+	source = 5358829a0902fd472f79a56d895db71da2aa03a4.patch
+	source = bd560c7f139e574fb52222bceacd4a8b5d218d46.patch
+	source = 020-fix-undefined-reference-to-get_ver.patch
+	sha256sums = 5af87c00ea2d54ddfec26fc2c099e4f72f36efcbc33507520fdd6e79709a6cf4
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+
+pkgname = dahdi
+	depends = libusb
+	depends = linux=6.13.8.arch1
+	depends = perl

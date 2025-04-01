@@ -1,0 +1,52 @@
+_kernelver=$(pacman -Q linux | cut -f2 -d ' ')
+_linuxver=${_kernelver%-*}
+
+pkgname=dahdi
+_releasename="dahdi-linux-complete"
+pkgver=3.4.0
+pkgrel=1
+pkgdesc='DAHDI drivers for Asterisk (Digium, OpenVox, Allo and Yeastar cards)'
+arch=(x86_64)
+url=http://www.asterisk.org
+license=(GPL2)
+makedepends=(
+  libusb
+  linux
+  linux-headers
+)
+install="dahdi.install"
+_tarname="${_releasename}-${pkgver}+${pkgver}"
+_srcdirname="${_releasename}-${pkgver}+${pkgver}"
+source=("https://downloads.asterisk.org/pub/telephony/${_releasename}/releases/${_tarname}.tar.gz"
+        "dahdi.service"
+        "5358829a0902fd472f79a56d895db71da2aa03a4.patch"
+        "bd560c7f139e574fb52222bceacd4a8b5d218d46.patch"
+        "020-fix-undefined-reference-to-get_ver.patch")
+sha256sums=('5af87c00ea2d54ddfec26fc2c099e4f72f36efcbc33507520fdd6e79709a6cf4'
+            'SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+prepare() {
+  patch -d "${_srcdirname}/linux" -Np1 -i "${PWD}/5358829a0902fd472f79a56d895db71da2aa03a4.patch"
+  patch -d "${_srcdirname}/linux" -Np1 -i "${PWD}/bd560c7f139e574fb52222bceacd4a8b5d218d46.patch"
+  patch -d "${_srcdirname}/tools" -Np1 -i "${PWD}/020-fix-undefined-reference-to-get_ver.patch"
+}
+
+build() {
+  cd "${_srcdirname}"
+  make DESTDIR="${pkgdir}" all
+}
+
+package() {
+  depends=(
+    libusb
+    "linux=${_linuxver//-/.}"
+    perl
+  )
+
+  cd "${_srcdirname}"
+  make DESTDIR="${pkgdir}" install
+
+  find linux/drivers -name "*.ko" \
+    -exec gzip "{}" \; \
+    -exec install -Dm0644 "{}.gz" "${pkgdir}/usr/lib/modules/${_kernelver}/extramodules/{}.gz" \;
+}
