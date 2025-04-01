@@ -13,6 +13,7 @@ makedepends=(
   libusb
   linux
   linux-headers
+  perl
 )
 install="dahdi.install"
 _tarname="${_releasename}-${pkgver}+${pkgver}"

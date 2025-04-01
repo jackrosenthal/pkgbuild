@@ -9,6 +9,7 @@ pkgbase = dahdi
 	makedepends = libusb
 	makedepends = linux
 	makedepends = linux-headers
+	makedepends = perl
 	source = https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/releases/dahdi-linux-complete-3.4.0+3.4.0.tar.gz
 	source = dahdi.service
 	source = 5358829a0902fd472f79a56d895db71da2aa03a4.patch
