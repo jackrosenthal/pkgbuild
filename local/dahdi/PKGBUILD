@@ -33,6 +33,7 @@ prepare() {
 }
 
 build() {
+  export PATH="/usr/bin/core_perl:${PATH}"
   cd "${_srcdirname}"
   make DESTDIR="${pkgdir}" all
 }
@@ -44,6 +45,7 @@ package() {
     perl
   )
 
+  export PATH="/usr/bin/core_perl:${PATH}"
   cd "${_srcdirname}"
   make DESTDIR="${pkgdir}" install
 
