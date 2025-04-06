@@ -1,7 +1,7 @@
 pkgbase = dahdi
 	pkgdesc = DAHDI drivers for Asterisk (Digium, OpenVox, Allo and Yeastar cards)
 	pkgver = 3.4.0
-	pkgrel = 1
+	pkgrel = 2
 	url = http://www.asterisk.org
 	install = dahdi.install
 	arch = x86_64
