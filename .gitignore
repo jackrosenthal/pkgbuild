@@ -3,4 +3,5 @@
 !.gitignore
 !PKGBUILD
 !/.nvchecker.toml
+!/disable-update-check.patch
 !/fix-cmake-4.patch
