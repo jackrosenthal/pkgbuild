@@ -1,6 +1,6 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
-	pkgver = 4.2.0
+	pkgver = 4.2.1
 	pkgrel = 1
 	url = https://netatalk.io
 	arch = x86_64
@@ -44,7 +44,7 @@ pkgbase = netatalk
 	backup = etc/extmap.conf
 	backup = etc/papd.conf
 	backup = etc/pam.d/netatalk
-	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-4-2-0/netatalk-4.2.0.tar.xz
-	md5sums = 697771106e4582fa2f4bcaad2c240708
+	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-4-2-1/netatalk-4.2.1.tar.xz
+	md5sums = 8d8f90dab2aca75a0db64c9a9fe96820
 
 pkgname = netatalk
