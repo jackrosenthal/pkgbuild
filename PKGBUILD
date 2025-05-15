@@ -15,10 +15,18 @@
 # Use CMAKE_FLAGS=xxx:yyy:zzz to define extra CMake flags
 [[ -v CMAKE_FLAGS ]] && mapfile -t -d: _cmake_flags < <(echo -n "$CMAKE_FLAGS")
 
+# cherry pick commits form current master
+_backports=(
+903434699 # add cmake minimum policy for qhull
+be26273c9 # add cmake minimum policy for nexus
+13de6ebbd # add cmake minimum policy for levmar
+61823b4b8 # update embree to 4.3.3
+)
+
 pkgname=meshlab
 pkgver=2023.12
 _pkgver_vcg=${pkgver}
-pkgrel=4
+pkgrel=5
 pkgdesc="System for processing and editing of unstructured 3D models arising in 3D scanning (qt5 version)"
 arch=('i686' 'x86_64')
 url="https://www.meshlab.net"
@@ -36,6 +44,7 @@ sha256sums=('SKIP'
             'SKIP')
 
 prepare() {
+  git -C "$srcdir/meshlab" cherry-pick -v -n "${_backports[@]}"
   prepare_submodule
 }
 
