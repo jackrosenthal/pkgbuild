@@ -35,6 +35,9 @@ build()
 {
   cd "${srcdir}/${pkg_name_ver}"
 
+  export CFLAGS+=" -std=gnu11"
+  export CXXFLAGS+=" -std=gnu11"
+
   # MAKEFLAGS="-j1": temporary hack to prevent parallel compile - see link:  https://gitlab.com/DavidGriffith/minipro/-/commit/b2fd68da00154608bcaacde01845466e51795a7d
   #make PREFIX="/usr" MAKEFLAGS="-j1"
   make PREFIX="/usr"
