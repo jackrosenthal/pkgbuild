@@ -12,6 +12,6 @@ pkgbase = minipro
 	provides = minipro
 	conflicts = minipro
 	source = minipro-0.7.3.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/archive/0.7.3/minipro-0.7.3.tar.gz
-	sha256sums = 49e7ddd448c12e1235631720bfbbe03dee3758ce717c16258a297112fb2a5eea
+	sha256sums = b99d0cdac3c97e30426b995fe541db0709c9759b74681274609b24629e73176e
 
 pkgname = minipro

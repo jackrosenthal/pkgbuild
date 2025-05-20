@@ -23,7 +23,7 @@ source=(${pkg_name_ver}.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/arch
 conflicts=("minipro")
 provides=("minipro")
 # https://661.org/files/minipro/checksums.txt
-sha256sums=('49e7ddd448c12e1235631720bfbbe03dee3758ce717c16258a297112fb2a5eea')
+sha256sums=('b99d0cdac3c97e30426b995fe541db0709c9759b74681274609b24629e73176e')
 
 
 prepare()
