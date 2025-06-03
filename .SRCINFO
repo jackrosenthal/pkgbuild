@@ -1,7 +1,7 @@
 pkgbase = ventoy
 	pkgdesc = A new bootable USB solution
 	pkgver = 1.1.05
-	pkgrel = 2
+	pkgrel = 3
 	url = https://www.ventoy.net/
 	arch = x86_64
 	license = GPL-3.0-or-later
@@ -51,7 +51,7 @@ pkgbase = ventoy
 	source = https://github.com/tianocore/edk2/archive/refs/tags/edk2-stable201911.zip
 	source = ventoy-fix-ucs-2-lookup-on-python-3.9.patch::https://github.com/tianocore/edk2/commit/5d864834.patch
 	source = ventoy-fix-array.array.tostring-removal-in-python-3.9.patch::https://github.com/tianocore/edk2/commit/43bec9ea.patch
-	source = https://www.fefe.de/dietlibc/dietlibc-0.34.tar.xz
+	source = https://github.com/ventoy/vtoytoolchain/releases/download/1.0/dietlibc-0.34.tar.xz
 	source = dietlibc-headers-fix.patch::https://salsa.debian.org/debian/dietlibc/-/raw/master/debian/patches/bugfixes/newer-linux-headers.diff
 	source = https://musl.libc.org/releases/musl-1.2.5.tar.gz
 	source = musl-CVE-2025-26519-fix1.patch::https://www.openwall.com/lists/musl/2025/02/13/1/1
