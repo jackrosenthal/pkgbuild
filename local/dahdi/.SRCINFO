@@ -23,5 +23,5 @@ pkgbase = dahdi
 
 pkgname = dahdi
 	depends = libusb
-	depends = linux=6.14.3.arch1
+	depends = linux=6.14.9.arch1
 	depends = perl
