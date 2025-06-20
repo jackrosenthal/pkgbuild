@@ -4,7 +4,7 @@
 
 pkgname=wd719x-firmware
 pkgver=1
-pkgrel=8
+pkgrel=9
 pkgdesc="Firmware for Western Digital WD7193, WD7197, and WD7296 SCSI cards"
 arch=('any')
 url="https://github.com/mijailr/wd719x-firmware"
@@ -25,5 +25,5 @@ build() {
 }
 
 package() {
-  install -Dt -m644 "${pkgdir}/usr/lib/firmware" wd719x-risc.bin wd719x-wcs.bin
+  install -m644 -Dt "${pkgdir}/usr/lib/firmware" wd719x-risc.bin wd719x-wcs.bin
 }
