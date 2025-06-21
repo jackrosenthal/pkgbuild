@@ -1,7 +1,7 @@
 # Maintainer: Mark Collins <tera_1225 hat hotmail.com>
 pkgname=matrix-commander
-pkgver=8.0.4
-pkgrel=2
+pkgver=8.0.5
+pkgrel=1
 pkgdesc="Simple CLI-based Matrix client"
 arch=('any')
 url="https://github.com/8go/matrix-commander"
@@ -15,7 +15,7 @@ depends=(
   "bash"
   "python"
   "python-aiohttp"
-  "python-async-timeout"
+  "python-async-timeout" # AUR
   "python-aiofiles"
   "python-emoji"
   "python-markdown"
@@ -35,7 +35,7 @@ optdepends=(
 provides=()
 conflicts=()
 source=("${pkgname}-${pkgver}::https://files.pythonhosted.org/packages/source/${pkgname::1}/${pkgname}/${pkgname/-/_}-${pkgver}.tar.gz")
-sha256sums=('464f7a4e3a632f5f13f831b882484d91552e3868292a63b9671cc1562f513fef')
+sha256sums=('fd1517f037dabd6fc9cbe31952eaa0fd2aa1435aa3118ead2b8898f648647422')
 
 build() {
   cd "${srcdir}/${pkgname/-/_}-${pkgver}"
