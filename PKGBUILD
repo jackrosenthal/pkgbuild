@@ -11,7 +11,7 @@ pkgdesc="CLI to manage Heroku apps and services with forced auto-update removed"
 arch=('any')
 url="https://devcenter.heroku.com/articles/heroku-cli"
 license=('custom' 'ISC')
-depends=('nodejs>=20.18' 'nodejs<21')
+depends=('nodejs>=20.18' 'nodejs<23')
 makedepends=('yarn' 'git' 'npm')
 optdepends=('git: Deploying to Heroku')
 conflicts=('heroku-cli-bin' 'heroku-client-standalone' 'heroku-toolbelt' 'ruby-heroku')
@@ -28,6 +28,9 @@ prepare() {
       pushd packages/cli
         # remove forced auto-update plugin
         sed -i "/oclif\/plugin-update/d" ./package.json
+
+        # Allow to use nodejs 22
+        sed -i 's/"node": "20.x"/"node": ">=20 <23"/g' ./package.json
 
         # install dependencies, must be done with yarn as of 7.60
         yarn install
