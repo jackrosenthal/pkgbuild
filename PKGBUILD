@@ -2,9 +2,9 @@
 # Contributor: Tai Chi Minh Ralph Eastwood <tcmreastwood@gmail.com>
 pkgname=dict-gcide
 _major_debver=0.48
-_debver="${_major_debver}.5+nmu3"
-pkgver=0.53
-pkgrel=4
+_debver="${_major_debver}.5+nmu4"
+pkgver=0.54
+pkgrel=1
 pkgdesc="GNU version of the Collaborative International Dictionary of English for dictd et al."
 arch=('any')
 url="https://gcide.gnu.org.ua/"
@@ -19,18 +19,18 @@ source=('fixes.sed'
         'check.sed'
         "https://deb.debian.org/debian/pool/main/d/${pkgname}/${pkgname}_${_debver}.tar.xz"
         "https://ftp.gnu.org/gnu/gcide/gcide-${pkgver}.tar.xz"{,.sig})
-sha512sums=('487dc4dcdc5c7bbd7e75e729c88b2ab9d8e4f2ebe91d54ff806a12606c0fd08adeedb43c31547cbc9bb2875673fefb59072c062562facd70dd0b2904195242c0'
-            'e7c6766b51ef92c4d8669394b6a71f8c4d7249ac63a1eb940f0a3017cb5ff6841f0f4bce7a60ffbcf180801d92b068db6ca46afd1dceac06a9c37c59dcddbfb3'
-            '1304bdce3776355fcd7827cebbf670ae34377bda78b04bf271ba10a25d92e33f6ec69644e168c30a6ec47808ebacc461de47d9494a5a2a5894d58c21be045973'
-            'f5fe730c90c23ac83cc521805bdd31ed09a8eabf7e7f3e7263af36456469c62bf10c399990696bc4017ec2dfa8121d49e38cd653d5b5602a590ee751287c2b15'
-            '0eb641cdc8186757bb7e221753c9a42f28ead25b72b18cacebf2326ee239c0e5ab2d41b61928371168ff2c8a298aeaa93d50656d8165ae155699c1d359e4918f'
+sha512sums=('c62453bd7ec9fb435b357238d8dd8874b604c2470c3831882ba4331571d4fd35c7e26567c71e828dd698741c7bc87d5e0b09c2548ac27c1b6749fc17e11bff72'
+            '9b87c3e0f7647f97db79c5d6ba108d2e450427a3f65d02523d1f942b2a4cce82cf7a1adc0a51ede453476a74b3c03ab861a55de61005425b3416523e4aa1290d'
+            '369063665be3e8662223bd55fc7c4c87edd14ccd47fae5a586625895798cfc1c189bd3c4b3386079ff0c4c457545a48ec084630fc61b39409179c690772f2fde'
+            '71134c69ece86226233c0693af1d8c776df469bbf3d4969f4a8a883061da2e23eafda2ad395648350ee3fe56f271abd20d7d3fd37c34f0401200317ed1a249be'
+            '9bda8bc2e30a529bafeb3fcdd2f315025209fa2e609da707caf7b4a273221a7617a10b58d2b635e1ae980e01a790a4e09bb74ec54d6e09c9014e72b30d33b1e6'
             'SKIP')
-validpgpkeys=('325F650C4C2B6AD58807327A3602B07F55D0C732')
+validpgpkeys=('4BE4E62655488EB92ABB468F79FFD94BFCE230B1')
 
 
 prepare()
 {
-	cd "${pkgname}-${_debver}"
+	cd "$pkgname"
 
 	sed -Ei \
 		"s/\"(The Collaborative International Dictionary of English) v.${_major_debver}\"/\"\\1 v.${pkgver}\"/" \
@@ -43,7 +43,7 @@ prepare()
 
 build()
 {
-	cd ${pkgname}-${_debver}
+	cd "$pkgname"
 
 	autoreconf -fis
 	./configure
@@ -67,7 +67,7 @@ build()
 
 check()
 {
-	errors="$(./check.sed < "${pkgname}-${_debver}/pre_webfmt.data")"
+	errors="$(./check.sed < "${pkgname}/pre_webfmt.data")"
 
 	if test -n "$errors"
 	then
@@ -82,7 +82,7 @@ package()
 {
 	install -m 0755 -d "${pkgdir}/usr/share/dictd"
 	install -m 0644 -t "${pkgdir}/usr/share/dictd/" \
-		"${pkgname}-${_debver}"/gcide.{dict.dz,index}
+		"${pkgname}"/gcide.{dict.dz,index}
 
 	install -m 0755 -d "${pkgdir}/usr/share/doc/dict-gcide"
 	install -m 0644 -t "${pkgdir}/usr/share/doc/dict-gcide/" \
