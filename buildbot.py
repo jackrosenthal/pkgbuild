@@ -77,6 +77,9 @@ class PkgBase:
             pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}")
             pkgs.discard(f"{pkg.name}={self.epoch}:{self.pkgver}-{self.pkgrel}")
 
+        # Empty package specified by amdgpu-pro-installer.
+        pkgs.discard("")
+
         return {ALTERNATIVES.get(pkg, pkg) for pkg in pkgs}
 
     def fmt_version(self):
