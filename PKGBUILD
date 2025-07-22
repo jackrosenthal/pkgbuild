@@ -5,12 +5,12 @@
 pkgbase="ptpython"
 pkgname="ptpython"
 pkgver="3.0.30"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Python REPL build on top of prompt_toolkit"
 arch=("any")
 url="https://github.com/prompt-toolkit/ptpython"
 license=("BSD")
-makedepends=("python-wheel")
+makedepends=(python-build python-installer python-wheel python-setuptools)
 depends=(
     "python-jedi>=0.9.0"
     "python-prompt_toolkit>=3.0.3"
@@ -31,11 +31,11 @@ prepare() {
 
 build() {
     cd "${srcdir}/${pkgbase}-${pkgver}"
-    python -m build
+    python -m build --wheel --no-isolation
 }
 
 package() {
     cd "${srcdir}/${pkgbase}-${pkgver}"
-    python -m installer --destdir="${pkgdir}" dist/${pkgbase}-${pkgver}-py3-none-any.whl
+    python -m installer --destdir="${pkgdir}" dist/${pkgbase}-${pkgver}-*.whl
     install -D --mode 644 --target-directory "$pkgdir/usr/share/licenses/$pkgname" LICENSE
 }
