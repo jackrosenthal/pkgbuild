@@ -33,4 +33,4 @@ path = [
     "qt5-webengine-pipewire-0.3.patch",
 ]
 SPDX-FileCopyrightText = "qt5-webengine contributors"
-SPDX-License-Identifier = "TODO-Choose-a-license"
+SPDX-License-Identifier = "BSD-3-Clause"
