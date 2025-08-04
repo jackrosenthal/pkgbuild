@@ -5,7 +5,7 @@
 #
 
 pkgname=minipro
-pkgver=0.7.3
+pkgver=0.7.4
 pkgrel=1
 
 pkg_name_ver="${pkgname}-${pkgver}"
@@ -23,7 +23,7 @@ source=(${pkg_name_ver}.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/arch
 conflicts=("minipro")
 provides=("minipro")
 # https://661.org/files/minipro/checksums.txt
-sha256sums=('b99d0cdac3c97e30426b995fe541db0709c9759b74681274609b24629e73176e')
+sha256sums=('dce22dade7fe4a5ad8435b12789144b00c6084e66573b6741402be9f08a53331')
 
 
 prepare()
