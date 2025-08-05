@@ -6,7 +6,7 @@
 
 pkgname=minipro
 pkgver=0.7.4
-pkgrel=1
+pkgrel=2
 
 pkg_name_ver="${pkgname}-${pkgver}"
 pkgdesc="Open source chip programming utility for autoelectric.cn MiniPro TL866xx series (TL866CS, TL866A, and TL866II+)"
@@ -17,13 +17,12 @@ license=("GPL-3.0-only")
 makedepends=()
 depends=("libusb" "libb64")
 optdepends=("srecord: Motorola srecord format")
-source=(${pkg_name_ver}.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/archive/${pkgver}/${pkg_name_ver}.tar.gz)
-#source=(${pkgname}.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/archive/${pkgver}/${pkg_name_ver}.tar.gz)
-#source=(${pkgname}.src.tgz::https://661.org/files/${pkgname}/${pkg_name_ver}.tar.gz)
+#source=(${pkg_name_ver}.src.tgz::https://gitlab.com/DavidGriffith/minipro/-/archive/${pkgver}/${pkg_name_ver}.tar.gz)
+source=(${pkg_name_ver}.src.tgz::https://661.org/files/${pkgname}/${pkg_name_ver}.tar.gz)
 conflicts=("minipro")
 provides=("minipro")
 # https://661.org/files/minipro/checksums.txt
-sha256sums=('dce22dade7fe4a5ad8435b12789144b00c6084e66573b6741402be9f08a53331')
+sha256sums=('023004fe711cfc9359fa517f5bbf86257f80c4eff7423829b056e3fd4a9d03c9')
 
 
 prepare()
