@@ -2,7 +2,7 @@
 
 pkgname=bstring
 pkgver=1.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Better String Library'
 url='https://mike.steinert.ca/bstring'
 license=('BSD-3-Clause')
@@ -26,7 +26,7 @@ backup=()
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}" || exit 1
   autoreconf -i
-  ./configure
+  ./configure --prefix=/usr
   make
 }
 
