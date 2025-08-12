@@ -1,6 +1,6 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
-	pkgver = 4.2.4
+	pkgver = 4.3.0
 	pkgrel = 1
 	url = https://netatalk.io
 	arch = x86_64
@@ -35,6 +35,7 @@ pkgbase = netatalk
 	optdepends = libcups: Network printer queues support
 	optdepends = libtirpc: Quota support
 	optdepends = rpcsvc-proto: Quota support
+	optdepends = sqlite3: SQLite CNID backend support
 	optdepends = libwrap: TCP wrappers support
 	optdepends = cracklib: Weak password detection
 	conflicts = netatalk-ddp
@@ -44,7 +45,7 @@ pkgbase = netatalk
 	backup = etc/extmap.conf
 	backup = etc/papd.conf
 	backup = etc/pam.d/netatalk
-	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-4-2-4/netatalk-4.2.4.tar.xz
-	md5sums = d654060d7ff646402ea05d9aeaa52562
+	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-4-3-0/netatalk-4.3.0.tar.xz
+	md5sums = c7ca0f798102eb97a8e4e26766412a74
 
 pkgname = netatalk
