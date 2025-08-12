@@ -15,6 +15,7 @@ pkgbase = netatalk
 	makedepends = unicode-character-database
 	depends = acl
 	depends = bash
+	depends = bstring
 	depends = db5.3
 	depends = glib2
 	depends = glibc
