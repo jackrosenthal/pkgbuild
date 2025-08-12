@@ -34,8 +34,10 @@ pkgbase = guacamole-server
 	replaces = libguac-client-rdp
 	backup = etc/guacamole/guacd.conf
 	source = http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.6.0/source/guacamole-server-1.6.0.tar.gz
+	source = https://github.com/apache/guacamole-server/commit/2e2a33621d673345e7b9d22c9388be80c6d77598.patch
 	source = guacd.conf
 	md5sums = 3738aa1137e9af2750a4620c568964d5
+	md5sums = 4544b6b1e9999b9ef9157c20ef9e173c
 	md5sums = ab0ac97ad76d16be73768f89abb6ee7e
 
 pkgname = guacamole-server

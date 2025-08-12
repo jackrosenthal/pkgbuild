@@ -21,21 +21,22 @@ optdepends=('libssh: for ssh protocol support'
 install=$pkgname.install
 
 source=("http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/${pkgver}/source/${pkgname}-${pkgver}.tar.gz"
+		"https://github.com/apache/guacamole-server/commit/2e2a33621d673345e7b9d22c9388be80c6d77598.patch"
         "guacd.conf")
 
 backup=('etc/guacamole/guacd.conf')
 
 md5sums=('3738aa1137e9af2750a4620c568964d5'
+         '4544b6b1e9999b9ef9157c20ef9e173c'
          'ab0ac97ad76d16be73768f89abb6ee7e')
 
 prepare() {
 	cd "$srcdir"/$pkgname-$pkgver
+        patch -p1 -i ../2e2a33621d673345e7b9d22c9388be80c6d77598.patch
 }
 
 build() {
 	cd "$srcdir"/$pkgname-$pkgver
-        export CFLAGS="${CFLAGS} -w"
-        export LDFLAGS="${LDFLAGS} -w"
 	export PKG_CONFIG_PATH='/usr/lib/ffmpeg4.4/pkgconfig'
 	#./configure --prefix=/usr --sbindir=/usr/bin --with-systemd-dir=/usr/lib/systemd/system CPPFLAGS="-Wno-error=pedantic -Wno-error=deprecated-declarations"
 	./configure --prefix=/usr --sbindir=/usr/bin --with-systemd-dir=/usr/lib/systemd/system CPPFLAGS="-Wno-error=pedantic"
