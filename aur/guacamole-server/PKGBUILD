@@ -9,11 +9,10 @@ arch=('i686' 'x86_64' 'armv7h')
 url="http://guacamole.sourceforge.net/"
 license=('GPL3')
 replaces=('guacd' 'libguac' 'libguac-client-ssh' 'libguac-client-vnc' 'libguac-client-rdp')
-depends=('pango' 'openssl' 'libvorbis' 'libwebp' 'ffmpeg4.4')
+depends=('pango' 'openssl' 'libvorbis' 'libwebp' 'ffmpeg4.4' 'freerdp2')
 makedepends=('libpulse' 'libvorbis' 'openssl' 'libssh' 'libvncserver' 'pango' 'libtelnet')
 optdepends=('libssh: for ssh protocol support'
 'libvncserver: for vnc protocol support'
-'freerdp2: for rdp protocol support'
 'libpulse: for pulseaudio support'
 'libtelnet: for telnet protocol support'
 'monospace: any monospace font such as terminus-font, ttf-inconsolata or ttf-fira-mono. Without it, SSH will not work'
@@ -35,6 +34,8 @@ prepare() {
 
 build() {
 	cd "$srcdir"/$pkgname-$pkgver
+        export CFLAGS="${CFLAGS} -w"
+        export LDFLAGS="${LDFLAGS} -w"
 	export PKG_CONFIG_PATH='/usr/lib/ffmpeg4.4/pkgconfig'
 	#./configure --prefix=/usr --sbindir=/usr/bin --with-systemd-dir=/usr/lib/systemd/system CPPFLAGS="-Wno-error=pedantic -Wno-error=deprecated-declarations"
 	./configure --prefix=/usr --sbindir=/usr/bin --with-systemd-dir=/usr/lib/systemd/system CPPFLAGS="-Wno-error=pedantic"
