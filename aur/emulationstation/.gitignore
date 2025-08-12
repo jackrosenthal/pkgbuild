@@ -1,7 +1,0 @@
-pkg/*
-src/*
-*.zst
-*.xz
-*.gz
-*.zip
-*.lock
