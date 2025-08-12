@@ -1,6 +1,6 @@
 pkgbase = httptoolkit
 	pkgdesc = Beautiful, cross-platform & open-source HTTP(S) proxy, analyzer and client.
-	pkgver = 1.20.1
+	pkgver = 1.22.0
 	pkgrel = 1
 	epoch = 1
 	url = https://httptoolkit.com/
@@ -10,9 +10,9 @@ pkgbase = httptoolkit
 	makedepends = npm
 	depends = electron31
 	depends = python
-	source = httptoolkit-1.20.1.tar.gz::https://github.com/httptoolkit/httptoolkit-desktop/archive/refs/tags/v1.20.1.tar.gz
+	source = httptoolkit-1.22.0.tar.gz::https://github.com/httptoolkit/httptoolkit-desktop/archive/refs/tags/v1.22.0.tar.gz
 	source = httptoolkit.desktop
-	sha256sums = f9ff153ed51ce1422d0e350e91ffb4a9c485ed0f84caa79b0a342f85fd6478bf
+	sha256sums = 902bb75378aab842168b1de51614801f943b092cde7b3e747cc7fa179b3fca12
 	sha256sums = e8a8fd3ce7983753d3c990402c079a7876aad9b08e1822b5494ce4abdfc1a544
 
 pkgname = httptoolkit
