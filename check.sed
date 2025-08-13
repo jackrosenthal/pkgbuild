@@ -1,5 +1,8 @@
 #!/usr/bin/env -S sed -nEf
 
+# SPDX-FileCopyrightText: 2018 Einhard Leichtfuß <alguien@respiranto.de>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Small sed script to find (possible) problems.
 # Particularly to be used on update to a new gcide version.
 #
