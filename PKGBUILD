@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2015,2017-2019,2021,2023-2025 Einhard Leichtfuß <alguien@respiranto.de>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Maintainer: Einhard Leichtfuß <alguien@respiranto.de>
 # Contributor: Tai Chi Minh Ralph Eastwood <tcmreastwood@gmail.com>
 pkgname=dict-gcide
