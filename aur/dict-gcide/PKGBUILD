@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2015,2017-2019,2021,2023-2025 Einhard Leichtfuß <alguien@respiranto.de>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Maintainer: Einhard Leichtfuß <alguien@respiranto.de>
 # Contributor: Tai Chi Minh Ralph Eastwood <tcmreastwood@gmail.com>
 pkgname=dict-gcide
@@ -19,9 +22,9 @@ source=('fixes.sed'
         'check.sed'
         "https://deb.debian.org/debian/pool/main/d/${pkgname}/${pkgname}_${_debver}.tar.xz"
         "https://ftp.gnu.org/gnu/gcide/gcide-${pkgver}.tar.xz"{,.sig})
-sha512sums=('c62453bd7ec9fb435b357238d8dd8874b604c2470c3831882ba4331571d4fd35c7e26567c71e828dd698741c7bc87d5e0b09c2548ac27c1b6749fc17e11bff72'
-            '9b87c3e0f7647f97db79c5d6ba108d2e450427a3f65d02523d1f942b2a4cce82cf7a1adc0a51ede453476a74b3c03ab861a55de61005425b3416523e4aa1290d'
-            '369063665be3e8662223bd55fc7c4c87edd14ccd47fae5a586625895798cfc1c189bd3c4b3386079ff0c4c457545a48ec084630fc61b39409179c690772f2fde'
+sha512sums=('0f566251255388691c936f52e7e57489ad01ce1901a90ddffb11072e24353a329e7369f6dba8cc4c42c4ce08b414df4abb0aad93becad9afe05f5138f92be38d'
+            'ecbe9834f7eaac8ea72a27fc6821d55c0d44da942aea203e7db2b4feb6a0cdcab2c9f08270680a63a533ef42e1bac60a02cc4f5ef94ddc09c1adab9aa299ad31'
+            '70817060470e14298a58f326db106604b31499eecfd71fe6c0298941f654692d40dc8f2d0e79f73ebd1bb1579b471a51e3a7ae219d3268d03b751f7e24dfa215'
             '71134c69ece86226233c0693af1d8c776df469bbf3d4969f4a8a883061da2e23eafda2ad395648350ee3fe56f271abd20d7d3fd37c34f0401200317ed1a249be'
             '9bda8bc2e30a529bafeb3fcdd2f315025209fa2e609da707caf7b4a273221a7617a10b58d2b635e1ae980e01a790a4e09bb74ec54d6e09c9014e72b30d33b1e6'
             'SKIP')

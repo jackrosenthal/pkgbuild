@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2015 Einhard Leichtfuß <alguien@respiranto.de>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 pkgname=dict-gcide
 basename=gcide
 dictd_conf=/etc/dict/dictd.conf

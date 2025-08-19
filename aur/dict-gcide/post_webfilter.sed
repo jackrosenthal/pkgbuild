@@ -1,5 +1,8 @@
 #!/usr/bin/env -S sed -Ef
 
+# SPDX-FileCopyrightText: 2017, 2018, 2025 Einhard Leichtfuß <alguien@respiranto.de>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Fix/adjust some syntax s.t. the parser (`webfmt`) can work with it (and
 # produce decent output).
 #
