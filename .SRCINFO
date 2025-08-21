@@ -1,7 +1,7 @@
 pkgbase = ventoy
 	pkgdesc = A new bootable USB solution
-	pkgver = 1.1.05
-	pkgrel = 3
+	pkgver = 1.1.07
+	pkgrel = 1
 	url = https://www.ventoy.net/
 	arch = x86_64
 	license = GPL-3.0-or-later
@@ -30,7 +30,6 @@ pkgbase = ventoy
 	optdepends = parted: for preferred CLI partitioner
 	optdepends = polkit: for GUI privilege escalation
 	optdepends = qt5-base: for Qt GUI
-	conflicts = ventoy-bin
 	noextract = grub-2.04.tar.xz
 	noextract = edk2-stable201911.zip
 	noextract = fuse-2.9.9.tar.gz
@@ -44,7 +43,7 @@ pkgbase = ventoy
 	noextract = cryptsetup-1.7.5.tar.xz
 	noextract = wimboot-2.7.3.tar.gz
 	options = !buildflags
-	source = ventoy-1.1.05.tar.gz::https://github.com/ventoy/Ventoy/archive/refs/tags/v1.1.05.tar.gz
+	source = ventoy-1.1.07.tar.gz::https://github.com/ventoy/Ventoy/archive/refs/tags/v1.1.07.tar.gz
 	source = https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
 	source = ventoy-grub-fix-build-with-binutils-2.36.patch::https://git.savannah.gnu.org/cgit/grub.git/patch/configure.ac?id=b9827513
 	source = git+https://github.com/ipxe/ipxe.git#commit=3fe683e
@@ -68,7 +67,7 @@ pkgbase = ventoy
 	source = https://mirrors.edge.kernel.org/pub/linux/utils/cryptsetup/v1.7/cryptsetup-1.7.5.tar.xz
 	source = wimboot-2.7.3.tar.gz::https://github.com/ipxe/wimboot/archive/v2.7.3.tar.gz
 	source = wimboot-binutils-2.42-fix.patch
-	sha256sums = ad383a5970eefecf36afd171aab2987322c9fdd8a532702e198ba75c64133c99
+	sha256sums = 65f744e694447300ee41c9310ed0855f47af4260c2ea47b5c7e274872bdb5560
 	sha256sums = e5292496995ad42dabe843a0192cf2a2c502e7ffcc7479398232b10a472df77d
 	sha256sums = SKIP
 	sha256sums = 5ee49d23d376aeea24269f7605fcaa7fbd326c04cda4e31b8eb7fa15a540ef44
