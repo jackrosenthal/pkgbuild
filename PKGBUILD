@@ -2,7 +2,7 @@
 # Contributor: Jaime Martínez Rincón <jaime(at)jamezrin(dot)name>
 
 pkgname=httptoolkit
-pkgver=1.22.0
+pkgver=1.22.1
 pkgrel=1
 epoch=1
 pkgdesc="Beautiful, cross-platform & open-source HTTP(S) proxy, analyzer and client."
@@ -20,7 +20,7 @@ _pkgrepo="https://github.com/httptoolkit/httptoolkit-desktop"
 source=("$pkgname-$pkgver.tar.gz::${_pkgrepo}/archive/refs/tags/v${pkgver}.tar.gz"
         'httptoolkit.desktop')
 
-sha256sums=('902bb75378aab842168b1de51614801f943b092cde7b3e747cc7fa179b3fca12'
+sha256sums=('d72307208cf84cfbf3118db72dfddc504ed74f0381ff417985bd5d1cd912438b'
             'e8a8fd3ce7983753d3c990402c079a7876aad9b08e1822b5494ce4abdfc1a544')
 
 _archive_name="httptoolkit-desktop"
