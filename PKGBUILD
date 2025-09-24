@@ -102,6 +102,10 @@ build() {
     -W no-dev
   )
 
+  # Fix build with CMake 4.0; proper fix rejected upstream
+  # (https://github.com/FreeRDP/FreeRDP/issues/11707).
+  cmake_options+=(-D CMAKE_POLICY_VERSION_MINIMUM=3.5)
+
   cmake "${cmake_options[@]}"
   cmake --build build --verbose
 }
