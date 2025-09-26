@@ -25,6 +25,7 @@ SPDX-License-Identifier = "0BSD"
 path = [
     "1ef7b9e3.patch",
     "d0c5b1ae.patch",
+    "ffmpeg-8.patch",
 ]
 SPDX-FileCopyrightText = "freerdp2 contributors"
 SPDX-License-Identifier = "Apache-2.0"
