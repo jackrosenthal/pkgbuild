@@ -33,7 +33,7 @@ url="https://www.meshlab.net"
 license=('GPL2')
 depends=('bzip2' 'cgal' 'glew' 'glu' 'openssl' 'qt5-base' 'qt5-declarative' 'qt5-script' 'qt5-xmlpatterns' 'xerces-c'
          'gmp' 'mpfr' 'mesa' 'qhull')
-makedepends=('boost' 'cmake' 'eigen' 'ninja' 'git' 'muparser' 'lib3ds' 'openctm-tools' 'patchelf' 'gcc13')
+makedepends=('boost' 'cmake' 'eigen' 'ninja' 'git' 'muparser' 'lib3ds' 'openctm-tools' 'patchelf')
 optdepends=('lib3ds: for Autodesk`s 3D-Studio r3 and r4 .3DS file support'
             'muparser: for filer_func plugins'
             'openctm-tools: for compressed triangle mesh file format')
@@ -52,8 +52,8 @@ prepare() {
 build() {
   _cmake_flags+=( '-DCMAKE_INSTALL_PREFIX=/usr'
                   '-DCMAKE_BUILD_TYPE=Release'
-                  '-DCMAKE_C_COMPILER=gcc-13'
-                  '-DCMAKE_CXX_COMPILER=g++-13'
+                  '-DCMAKE_C_COMPILER=gcc'
+                  '-DCMAKE_CXX_COMPILER=g++'
                 )
   cmake "${_cmake_flags[@]}" -G Ninja -B "${srcdir}/build" -S "${srcdir}/meshlab"
 # Fix gcc:13 build
