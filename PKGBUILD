@@ -37,13 +37,15 @@ optdepends=('lib3ds: for Autodesk`s 3D-Studio r3 and r4 .3DS file support'
             'muparser: for filer_func plugins'
             'openctm-tools: for compressed triangle mesh file format')
 source=("$pkgname::git+https://github.com/cnr-isti-vclab/meshlab.git#tag=MeshLab-${pkgver}"
+        lib3mf.patch
         )
 sha256sums=('c9df509edc216bf2876ddee3be2b6624e685ae546a00a6f05caef29f3f986c3a'
-            )
+            '41fdc7c5ecab23a7b161e1aba2001ffdae713bbb13188b9bbc170c1dea959408')
 
 prepare() {
   git -C "$srcdir/meshlab" cherry-pick -v -n "${_backports[@]}"
   prepare_submodule
+  git -C "$srcdir/meshlab" apply -v "$srcdir"/lib3mf.patch
 }
 
 

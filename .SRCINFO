@@ -33,6 +33,8 @@ pkgbase = meshlab
 	optdepends = muparser: for filer_func plugins
 	optdepends = openctm-tools: for compressed triangle mesh file format
 	source = meshlab::git+https://github.com/cnr-isti-vclab/meshlab.git#tag=MeshLab-2025.07
+	source = lib3mf.patch
 	sha256sums = c9df509edc216bf2876ddee3be2b6624e685ae546a00a6f05caef29f3f986c3a
+	sha256sums = 41fdc7c5ecab23a7b161e1aba2001ffdae713bbb13188b9bbc170c1dea959408
 
 pkgname = meshlab
