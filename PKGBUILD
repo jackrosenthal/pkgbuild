@@ -25,7 +25,6 @@ be26273c9 # add cmake minimum policy for nexus
 
 pkgname=meshlab
 pkgver=2025.07
-_pkgver_vcg=${pkgver}
 pkgrel=1
 pkgdesc="System for processing and editing of unstructured 3D models arising in 3D scanning (qt5 version)"
 arch=('i686' 'x86_64')
@@ -38,10 +37,9 @@ optdepends=('lib3ds: for Autodesk`s 3D-Studio r3 and r4 .3DS file support'
             'muparser: for filer_func plugins'
             'openctm-tools: for compressed triangle mesh file format')
 source=("$pkgname::git+https://github.com/cnr-isti-vclab/meshlab.git#tag=MeshLab-${pkgver}"
-        "vcglib::git+https://github.com/cnr-isti-vclab/vcglib.git#tag=${_pkgver_vcg}"
         )
 sha256sums=('c9df509edc216bf2876ddee3be2b6624e685ae546a00a6f05caef29f3f986c3a'
-            'SKIP')
+            )
 
 prepare() {
   git -C "$srcdir/meshlab" cherry-pick -v -n "${_backports[@]}"
@@ -72,7 +70,6 @@ package() {
 # Call prepare_submodule in prepare() function
 
 prepare_submodule() {
-  git -C "$srcdir/meshlab" config submodule.src/vcglib.url "$srcdir/vcglib"
   git -C "$srcdir/meshlab" -c protocol.file.allow=always submodule update --init
 }
 
