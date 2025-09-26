@@ -56,8 +56,6 @@ build() {
                   '-DCMAKE_CXX_COMPILER=g++'
                 )
   cmake "${_cmake_flags[@]}" -G Ninja -B "${srcdir}/build" -S "${srcdir}/meshlab"
-# Fix gcc:13 build
-  sed -i '1 i\#include <cstdint>' "${srcdir}"/meshlab/src/external/downloads/{nexus-master/src/corto/include/corto/tunstall.h,libE57Format-2.3.0/include/E57Format.h}
 # shellcheck disable=SC2046 # allow MAKEFLAGS to split when passing multiple flags.
  ninja $(grep -oP -- '-+[A-z]+ ?[0-9]*'<<<"${MAKEFLAGS:--j1}") -C "${srcdir}/build"
 }
