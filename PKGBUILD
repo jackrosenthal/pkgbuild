@@ -6,7 +6,7 @@
 pkgbase='xsane'
 pkgname=('xsane' 'xsane-gimp')
 pkgver='0.999'
-pkgrel='7'
+pkgrel='8'
 arch=('x86_64')
 url='https://gitlab.com/sane-project/frontend/xsane'
 license=('GPL2')
@@ -18,6 +18,7 @@ source=(
   '0001-lcms2_configure.patch'
   'xsane-preview-selection.patch'
   'configure-add-stdlib-to-conftest.patch'
+  'fix-func_arg_mismatch.patch'
 )
 sha512sums=(
   '73ec961fce1a86b5d6f5bac0995d222785eb4b077dc8e72492b092d2bf4500455426e80e4d27233721cd38ec84f77fb9f92190a6afe45bdaf7ffd1ee50b431ed'
@@ -26,6 +27,7 @@ sha512sums=(
   'a8b5e0466c1306b8df68d814a3f02bc74e4d470aa42b9e0eebad41d2e274ff74328a837dd9a0b5ca59e4df63ecbb53b268f6d4948a690d9346c5399bb5b3d1e4'
   '001b021ddf0f92e2bbab0211cfe92c54b785e94e7c92102caedd8d4ce34c833847157174a4d800d8859ba8d05300db74b8af352e5347d2883e17bca57454e96d'
   '04ea857a34a9400bc7c030563a942309d106893c6314dd099bf053227672fca9879314015be912538a7f89a414d3f0a24e7f45bfc51a0b621ed27dcc1c91a4e8'
+  'ebf917385e180434167b45db0f31f967158548dd60624b1412f1ec40e4895284aa420e76c96c82f5cf9d198b306a06b27e65b548d117032521e5dd2c09df8b38'
 )
 
 prepare() {
@@ -37,6 +39,7 @@ prepare() {
   patch -Np1 -i "$srcdir/0001-lcms2_configure.patch"
   patch -p1 -i "$srcdir/xsane-preview-selection.patch" # Fix selection preview
   patch -p1 -i "$srcdir/configure-add-stdlib-to-conftest.patch" # Fix failing build of conftest by adding stdlib.h to test program
+  patch -p1 -i "$srcdir/fix-func_arg_mismatch.patch" # Fixes build failure, patch provided by AUR user jprjr
 }
 
 build() {
