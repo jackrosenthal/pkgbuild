@@ -5,7 +5,7 @@
 _name=FreeRDP
 pkgname=freerdp2
 pkgver=2.11.7
-pkgrel=4
+pkgrel=5
 pkgdesc="Free implementation of the Remote Desktop Protocol (RDP)"
 arch=(x86_64)
 url="https://www.freerdp.com/"
