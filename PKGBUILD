@@ -2,12 +2,13 @@
 
 pkgname=jellyfin-media-player
 pkgver=1.12.0
-pkgrel=3
+pkgrel=4
 pkgdesc='Jellyfin Desktop Client'
 arch=('i686' 'x86_64')
 license=('GPL')
 url='https://github.com/jellyfin/jellyfin-media-player'
-depends=('mpv' 'libcec' 'sdl2' 'p8-platform' 'protobuf' 'qt5-webengine' 'qt5-x11extras' 'qt5-quickcontrols')
+# icu76 should be added as a dept to qt5-webengine instead. adding here as a dirty workaround
+depends=('mpv' 'libcec' 'sdl2' 'icu76' 'p8-platform' 'protobuf' 'qt5-webengine' 'qt5-x11extras' 'qt5-quickcontrols')
 makedepends=('cmake' 'git' 'python')
 source=("https://github.com/jellyfin/jellyfin-media-player/archive/refs/tags/v${pkgver}.tar.gz"
         "disable-update-check.patch"
