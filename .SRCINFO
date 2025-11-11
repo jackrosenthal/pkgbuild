@@ -43,6 +43,7 @@ pkgbase = qt5-webengine
 	source = qt5-webengine-ninja-1.12.patch
 	source = qt5-webengine-gcc-15.patch
 	source = python3.12-six.patch
+	source = qt5-webengine-icu-78.patch
 	sha256sums = 10ae73fd623eff84af2921ea2c83c723d9a847e23abbc8d862d0dc346382ef9b
 	sha256sums = SKIP
 	sha256sums = 5e3a3c4711d964d5152a04059a2b5c1d14bb13dd29bce370120f60e85b476b6f
@@ -50,5 +51,6 @@ pkgbase = qt5-webengine
 	sha256sums = 6672741b64d896dc555c8ee42ca2329c4f20d5f406095a69fe72da44b3a142f4
 	sha256sums = 813851a1c7de9947afab28b7f3cb26ca739254521f12c21f76a6a3ec164def24
 	sha256sums = ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f
+	sha256sums = f5cf66e4006ca81def2625088e7dd2fc925a0a617b4b88d1a19f030b60b9ad96
 
 pkgname = qt5-webengine

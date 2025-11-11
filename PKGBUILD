@@ -21,14 +21,16 @@ source=(kde-$_pkgfqn::git+https://code.qt.io/qt/qtwebengine.git#tag=v${pkgver}-l
         qt5-webengine-icu-75.patch
         qt5-webengine-ninja-1.12.patch
         qt5-webengine-gcc-15.patch
-        python3.12-six.patch)
+        python3.12-six.patch
+        qt5-webengine-icu-78.patch)
 sha256sums=('10ae73fd623eff84af2921ea2c83c723d9a847e23abbc8d862d0dc346382ef9b'
             'SKIP'
             '5e3a3c4711d964d5152a04059a2b5c1d14bb13dd29bce370120f60e85b476b6f'
             '7cac28ba784d24b4abf6414079548ada165343af507ecd8e23cbe7e4f63ae52f'
             '6672741b64d896dc555c8ee42ca2329c4f20d5f406095a69fe72da44b3a142f4'
             '813851a1c7de9947afab28b7f3cb26ca739254521f12c21f76a6a3ec164def24'
-            'ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f')
+            'ac87ec55ee5cbcf2d520e1ea433d041c0bf754271a17f859edbb9976f192ce3f'
+            'f5cf66e4006ca81def2625088e7dd2fc925a0a617b4b88d1a19f030b60b9ad96')
 
 prepare() {
   mkdir -p build
@@ -44,6 +46,7 @@ prepare() {
   patch -p2 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-ninja-1.12.patch # Fix build with ninja 1.12
   patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-six.patch # Fix build with python 3.12 - patch from Debian
   patch -p1 -i "$srcdir"/qt5-webengine-gcc-15.patch # Fix build with GCC 15 (Fedora)
+  patch -Np1 -i "$srcdir"/qt5-webengine-icu-78.patch # Fix build with ICU78
 # Fix build with python 3.13
   sed -e '/import pipes/d' -i src/3rdparty/chromium/build/android/gyp/util/build_utils.py
 }
