@@ -49,6 +49,9 @@ prepare() {
   patch -Np1 -i "$srcdir"/qt5-webengine-icu-78.patch # Fix build with ICU78
 # Fix build with python 3.13
   sed -e '/import pipes/d' -i src/3rdparty/chromium/build/android/gyp/util/build_utils.py
+  # Force building with the bundled re2 version (gwuensch, https://bugs.gentoo.org/913923#c3)
+  sed -e 's/\(use_system_re2=\)true/\1false/' -i 'src/core/config/linux.pri'
+
 }
 
 build() {
