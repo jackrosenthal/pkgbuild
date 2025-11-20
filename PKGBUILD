@@ -55,7 +55,7 @@ sha256sums=('33cd20f4a87874f34ef3f9c8d767e006498acc3e6cff89a9c64a9e3387bbfaa5'
 if : ; then
   # I can't find any archive links on code.qt.io so we use the github mirror.
   _srcdir="qtwebengine-${pkgver}-lts"
-  source[0]="${_srcdir}.tgz::https://github.com/qt/qtwebengine/archive/refs/tags/v${_srcdir#*-}-lts.tar.gz"
+  source[0]="${_srcdir}.tgz::https://github.com/qt/qtwebengine/archive/refs/tags/v${_srcdir#*-}.tar.gz"
   #_srcdir='qtwebengine'
   #source[0]="git+https://github.com/qt/${_srcdir}.git#tag=v${pkgver}-lts"
   _srcdir87='qtwebengine-chromium-87-based'
