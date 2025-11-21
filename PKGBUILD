@@ -17,10 +17,10 @@ license+=('Apache-2.0' 'EPL-1.0' 'GPL-2.0-only' 'LGPL-2.1-only' 'LGPL-2.1-or-lat
 pkgdesc='Provides support for web applications using the Chromium browser project'
 depends=('qt5-webchannel' 'qt5-location' 'libxcomposite' 'libxrandr' 'pciutils' 'libxdamage'
          'libevent' 'snappy' 'nss' 'libxslt' 'minizip' 'libvpx' 'libxtst')
-#depends+=('ffmpeg' 'libxss' 'ttf-font')
+#depends+=('ffmpeg' 'ttf-font')
 depends+=('qt5-base' 'qt5-tools' 'qt5-declarative' 'gcc-libs' 'glib2' 'glibc' 'alsa-lib' 'dbus' 'expat' 'fontconfig' 'freetype2' 'harfbuzz' 'icu' 'lcms2' 'libglvnd' 'libjpeg-turbo' 'libpng' 'libwebp' 'libx11' 'libxcb' 'libxext' 'libxfixes' 'libxkbcommon' 'libxml2' 'libxrender' 'nspr' 'opus' 'zlib')
 makedepends=('git' 'python' 'gperf' 'jsoncpp' 'ninja' 'poppler' 'pipewire' 'nodejs' 'python-html5lib')
-makedepends+=('perl' 'libxcursor' 'libxkbfile' 'libpulse')
+makedepends+=('perl' 'libxcursor' 'libxkbfile' 'libpulse' 'libxss')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland')
 groups=('qt5')
 _srcdir="kde-${pkgname/5-/}"

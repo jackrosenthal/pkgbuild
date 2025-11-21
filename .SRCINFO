@@ -30,6 +30,7 @@ pkgbase = qt5-webengine
 	makedepends = libxcursor
 	makedepends = libxkbfile
 	makedepends = libpulse
+	makedepends = libxss
 	depends = qt5-webchannel
 	depends = qt5-location
 	depends = libxcomposite
