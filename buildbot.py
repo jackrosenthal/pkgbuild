@@ -24,8 +24,6 @@ git_lock = threading.Lock()
 SKIP_CHECK_PKGS = []
 ALTERNATIVES = {
     "cargo": "rust",
-    "electron12": "electron12-bin",
-    "electron22": "electron22-bin",
 }
 
 logger = logging.getLogger(__name__)
@@ -465,10 +463,66 @@ def update(jobs=8):
             future.result()
 
 
+def depgraph():
+    """Print a dependency graph starting from packages nothing depends on."""
+    packages = list(find_packages())
+
+    # Build dependency map: package -> set of packages it depends on (within tree)
+    pkg_deps = {}
+    all_local_pkgs = set()
+
+    for pkgbase in packages:
+        for pkg in pkgbase.packages:
+            all_local_pkgs.add(pkg.name)
+
+    for pkgbase in packages:
+        build_deps = pkgbase.get_build_dependencies(check=True)
+        # Filter to only dependencies that are in our local tree
+        local_deps = build_deps & all_local_pkgs
+
+        for pkg in pkgbase.packages:
+            pkg_deps[pkg.name] = set(local_deps)
+
+    def get_transitive_deps(pkg_name, visited=None):
+        """Get all transitive dependencies of a package."""
+        if visited is None:
+            visited = set()
+        if pkg_name in visited:
+            return set()
+        visited.add(pkg_name)
+
+        result = set()
+        for dep in pkg_deps.get(pkg_name, set()):
+            result.add(dep)
+            result.update(get_transitive_deps(dep, visited.copy()))
+        return result
+
+    def get_minimal_deps(deps):
+        """Filter out transitive dependencies, keeping only minimal set."""
+        minimal_deps = set(deps)
+        for dep in deps:
+            minimal_deps -= get_transitive_deps(dep)
+        return minimal_deps
+
+    def print_tree(pkgs, indent=0, visited=None):
+        """Recursively print packages and their dependencies."""
+        if visited is None:
+            visited = set()
+
+        minimal_pkgs = sorted(get_minimal_deps(pkgs) - visited)
+
+        for pkg in minimal_pkgs:
+            visited.add(pkg)
+            print("\t" * indent + pkg)
+            print_tree(pkg_deps.get(pkg, set()), indent + 1, visited.copy())
+
+    print_tree(set(pkg_deps.keys()))
+
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
     parser = argh.ArghParser()
-    parser.add_commands([import_from_aur, update, plan_builds, dockerbuild, publish])
+    parser.add_commands([import_from_aur, update, plan_builds, dockerbuild, publish, depgraph])
 
     parser.dispatch()
 
