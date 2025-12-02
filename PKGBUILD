@@ -3,7 +3,7 @@
 
 pkgname=httptoolkit
 pkgver=1.24.0
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="Beautiful, cross-platform & open-source HTTP(S) proxy, analyzer and client."
 arch=("x86_64")
@@ -20,7 +20,7 @@ _pkgrepo="https://github.com/httptoolkit/httptoolkit-desktop"
 source=("$pkgname-$pkgver.tar.gz::${_pkgrepo}/archive/refs/tags/v${pkgver}.tar.gz"
         'httptoolkit.desktop')
 
-sha256sums=('1c9f7cdaacf68760c2a5e61e7e49f5620983758950e9b33365ed18d57dacb33f'
+sha256sums=('873c0736d0f8e69825b1d4e173c24a16af49b3118d4c7cabbc72fa695a4efa24'
             'e8a8fd3ce7983753d3c990402c079a7876aad9b08e1822b5494ce4abdfc1a544')
 
 _archive_name="httptoolkit-desktop"
