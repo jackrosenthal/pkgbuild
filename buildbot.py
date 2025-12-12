@@ -15,6 +15,7 @@ from pathlib import Path
 import argh
 import tqdm
 
+AUR_GITHUB_MIRROR = "https://github.com/archlinux/aur.git"
 REPO_NAME = "jmr"
 REPO_URL = "https://archlinux-jmr.s3.us-west-004.backblazeb2.com/$repo/$arch"
 S3_UPLOADS = f"s3://archlinux-jmr/{REPO_NAME}/x86_64/"
@@ -47,7 +48,7 @@ class PkgBase:
     depends: set = dataclasses.field(default_factory=set)
     makedepends: set = dataclasses.field(default_factory=set)
     checkdepends: set = dataclasses.field(default_factory=set)
-    aursrc: str = ""
+    aur: bool = False
     packages: list = dataclasses.field(default_factory=list)
     path: pathlib.Path = dataclasses.field(default_factory=pathlib.Path)
     path_abs: pathlib.Path = dataclasses.field(default_factory=pathlib.Path)
@@ -169,7 +170,7 @@ def load_package_from_dir(path):
     except ValueError:
         pkgbase.path = path
     if path.parent.name == "aur":
-        pkgbase.aursrc = f"https://aur.archlinux.org/{pkgbase.name}"
+        pkgbase.aur = True
     return pkgbase
 
 
@@ -415,13 +416,13 @@ def publish(workdir: str):
     )
 
 
-def aur_merge(remote):
+def aur_merge(name):
     here = pathlib.Path(__file__).parent
 
     with tempfile.TemporaryDirectory() as tmp_git:
         tmp_git = pathlib.Path(tmp_git)
         subprocess.run(
-            ["git", "clone", remote, tmp_git],
+            ["git", "clone", "--branch", name, "--single-branch", AUR_GITHUB_MIRROR, tmp_git],
             check=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.PIPE,
@@ -449,7 +450,7 @@ def aur_merge(remote):
 
 def import_from_aur(*pkgnames):
     for name in pkgnames:
-        remote = f"https://aur.archlinux.org/{name}"
+        remote = f"https://aur.archlinux.org/{name}.git"
         aur_merge(remote)
 
 
@@ -457,8 +458,8 @@ def update(jobs=8):
     with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as executor:
         futures = []
         for package in find_packages():
-            if package.aursrc:
-                futures.append(executor.submit(aur_merge, package.aursrc))
+            if package.aur:
+                futures.append(executor.submit(aur_merge, package.name))
         for future in tqdm.tqdm(futures):
             future.result()
 
