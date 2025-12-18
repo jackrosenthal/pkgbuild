@@ -1,14 +1,14 @@
 pkgbase = upscayl-bin
 	pkgdesc = Free and Open Source AI Image Upscaler
 	pkgver = 2.15.0
-	pkgrel = 6
+	pkgrel = 7
 	url = https://github.com/upscayl/upscayl
 	arch = x86_64
 	license = AGPL-3.0-only
 	makedepends = unzip
 	depends = libvips
 	depends = openjpeg2
-	depends = electron36
+	depends = electron39
 	depends = nodejs
 	depends = vulkan-driver
 	provides = upscayl
