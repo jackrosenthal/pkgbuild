@@ -2,4 +2,4 @@
 
 export ELECTRON_IS_DEV=0
 
-electron36 /usr/share/upscayl/app.asar "$@"
+electron39 /usr/share/upscayl/app.asar "$@"
