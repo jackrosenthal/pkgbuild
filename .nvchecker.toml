@@ -1,0 +1,4 @@
+[dualsensectl]
+source = "git"
+git = "https://github.com/nowrep/dualsensectl.git"
+prefix = "v"
