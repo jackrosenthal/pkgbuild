@@ -450,8 +450,7 @@ def aur_merge(name):
 
 def import_from_aur(*pkgnames):
     for name in pkgnames:
-        remote = f"https://aur.archlinux.org/{name}.git"
-        aur_merge(remote)
+        aur_merge(name)
 
 
 def update(jobs=8):
