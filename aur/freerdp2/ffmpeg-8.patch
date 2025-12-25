@@ -1,0 +1,31 @@
+diff -rup FreeRDP-2.11.7.orig/libfreerdp/codec/dsp_ffmpeg.c FreeRDP-2.11.7/libfreerdp/codec/dsp_ffmpeg.c
+--- FreeRDP-2.11.7.orig/libfreerdp/codec/dsp_ffmpeg.c	2025-09-26 10:18:38.373572548 -0400
++++ FreeRDP-2.11.7/libfreerdp/codec/dsp_ffmpeg.c	2025-09-26 10:19:51.044831603 -0400
+@@ -263,7 +263,7 @@ static BOOL ffmpeg_open_context(FREERDP_
+ 			break;
+ 
+ 		case AV_CODEC_ID_AAC:
+-			context->context->profile = FF_PROFILE_AAC_MAIN;
++			context->context->profile = AV_PROFILE_AAC_MAIN;
+ 			break;
+ 
+ 		default:
+diff -rup FreeRDP-2.11.7.orig/libfreerdp/codec/h264_ffmpeg.c FreeRDP-2.11.7/libfreerdp/codec/h264_ffmpeg.c
+--- FreeRDP-2.11.7.orig/libfreerdp/codec/h264_ffmpeg.c	2025-09-26 10:18:38.373621911 -0400
++++ FreeRDP-2.11.7/libfreerdp/codec/h264_ffmpeg.c	2025-09-26 10:23:18.446840689 -0400
+@@ -100,7 +100,6 @@ static void libavcodec_destroy_encoder(H
+ 
+ 	if (sys->codecEncoderContext)
+ 	{
+-		avcodec_close(sys->codecEncoderContext);
+ #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55, 69, 100)
+ 		avcodec_free_context(&sys->codecEncoderContext);
+ #else
+@@ -430,7 +429,6 @@ static void libavcodec_uninit(H264_CONTE
+ 
+ 	if (sys->codecDecoderContext)
+ 	{
+-		avcodec_close(sys->codecDecoderContext);
+ #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55, 69, 100)
+ 		avcodec_free_context(&sys->codecDecoderContext);
+ #else
