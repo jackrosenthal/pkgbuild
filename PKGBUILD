@@ -3,7 +3,7 @@
 
 pkgname=guacamole-server
 pkgver=1.6.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Guacamole proxy daemon"
 arch=('i686' 'x86_64' 'armv7h')
 url="http://guacamole.sourceforge.net/"
@@ -27,10 +27,17 @@ source=("http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/${p
 backup=('etc/guacamole/guacd.conf')
 
 md5sums=('3738aa1137e9af2750a4620c568964d5'
-         'ab0ac97ad76d16be73768f89abb6ee7e')
+         'ab0ac97ad76d16be73768f89abb6ee7e'
+         '4544b6b1e9999b9ef9157c20ef9e173c')
+
+# Patches/Commits/Pull requests
+source+=("https://github.com/apache/guacamole-server/pull/591/commits/2e2a33621d673345e7b9d22c9388be80c6d77598.patch")
 
 prepare() {
 	cd "$srcdir"/$pkgname-$pkgver
+	for patch in ../*patch; do
+	    patch -Np1 -i $patch
+	done
 }
 
 build() {
