@@ -467,6 +467,15 @@ def depgraph():
     """Print a dependency graph starting from packages nothing depends on."""
     packages = list(find_packages())
 
+    # Get installed packages
+    result = subprocess.run(
+        ["pacman", "-Qq"],
+        stdout=subprocess.PIPE,
+        check=True,
+        encoding="utf-8",
+    )
+    installed_pkgs = set(result.stdout.splitlines())
+
     # Build dependency map: package -> set of packages it depends on (within tree)
     pkg_deps = {}
     all_local_pkgs = set()
@@ -497,6 +506,12 @@ def depgraph():
             result.update(get_transitive_deps(dep, visited.copy()))
         return result
 
+    # Find packages needed by installed packages
+    needed_by_installed = set()
+    for pkg in pkg_deps:
+        if pkg in installed_pkgs:
+            needed_by_installed.update(get_transitive_deps(pkg))
+
     def get_minimal_deps(deps):
         """Filter out transitive dependencies, keeping only minimal set."""
         minimal_deps = set(deps)
@@ -513,7 +528,12 @@ def depgraph():
 
         for pkg in minimal_pkgs:
             visited.add(pkg)
-            print("\t" * indent + pkg)
+            if pkg in installed_pkgs:
+                print("\t" * indent + f"\033[1;34m{pkg}\033[0m")
+            elif pkg in needed_by_installed:
+                print("\t" * indent + f"\033[33m{pkg}\033[0m")
+            else:
+                print("\t" * indent + f"\033[31m{pkg}\033[0m")
             print_tree(pkg_deps.get(pkg, set()), indent + 1, visited.copy())
 
     print_tree(set(pkg_deps.keys()))
