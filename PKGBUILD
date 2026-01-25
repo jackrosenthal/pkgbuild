@@ -6,7 +6,7 @@
 
 pkgname=netatalk
 pkgver=4.4.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Open-source implementation of the Apple Filing Protocol'
 url='https://netatalk.io'
 license=('GPL-2.0-or-later')
@@ -49,8 +49,8 @@ optdepends=('localsearch: AFP Spotlight support'
             'libwrap: TCP wrappers support'
             'cracklib: Weak password detection')
 
-conflicts=('netatalk-ddp'
-           'netatalk2')
+replaces=('netatalk-ddp'
+          'netatalk2')
 
 backup=('etc/afp.conf'
         'etc/atalkd.conf'
