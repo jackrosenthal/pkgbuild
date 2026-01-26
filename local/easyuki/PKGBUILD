@@ -1,0 +1,29 @@
+pkgname=easyuki
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="Go CLI tool for stateless EFI system partitions with mkinitcpio UKI images"
+arch=('x86_64' 'aarch64')
+url="https://github.com/jackrosenthal/easyuki"
+license=('MIT')
+depends=('mkinitcpio')
+makedepends=('go')
+options=('!debug')
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('3bf7fa2684c0f8ee8955675a2cdfe4d500322924bcf4b551d07364b7e8815b55')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  export CGO_ENABLED=0
+  go build -trimpath -ldflags="-s -w" -o easyuki ./
+}
+
+check() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  go test ./ ./cmd/... ./internal/...
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  install -Dm755 easyuki "${pkgdir}/usr/bin/easyuki"
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
