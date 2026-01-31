@@ -1,14 +1,15 @@
 # Maintainer: Johan Förberg <johan@forberg.se>
 pkgname=ttf-century-schoolbook
 pkgver=r6.84beddf
-pkgrel=2
+pkgrel=3
 pkgdesc='TTF version of the URW Century Schoolbook L font'
 arch=('any')
 url='https://github.com/TimothyGu/Century-Schoolbook-L'
 license=('GPL2')
 makedepends=('fontforge' 'git')
-source=('git+https://github.com/TimothyGu/Century-Schoolbook-L.git')
-md5sums=('SKIP')
+_commit=84beddf324a808df318e504168587a8cd55f1123
+source=("git+https://github.com/TimothyGu/Century-Schoolbook-L.git#commit=$_commit")
+sha256sums=('e5167af090b49096dfa58159e42711758147c27758bf778836445c9a05819062')
 
 pkgver() {
     cd "$srcdir/Century-Schoolbook-L"
