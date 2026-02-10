@@ -7,7 +7,7 @@
 # Contributor: Denis 'GNUtoo' Carikli <GNUtoo@cyberdimension.org>
 
 pkgname=asterisk
-pkgver=23.1.0
+pkgver=23.2.2
 pkgrel=1
 pkgdesc='A complete PBX solution'
 arch=(x86_64 i686 aarch64 armv7h)
@@ -65,6 +65,7 @@ _confs=(acl.conf
         cel_tds.conf
         chan_dahdi.conf
         chan_mobile.conf
+        chan_websocket.conf
         cli.conf
         cli_aliases.conf
         cli_permissions.conf
@@ -101,6 +102,7 @@ _confs=(acl.conf
         musiconhold.conf
         ooh323.conf
         phoneprov.conf
+        phoneprov_users.conf
         pjproject.conf
         pjsip.conf
         pjsip_notify.conf
@@ -145,7 +147,7 @@ source=("https://downloads.asterisk.org/pub/telephony/$pkgname/releases/$_archiv
         "$pkgname.logrotated"
         "$pkgname.tmpfiles"
         "fix-upnp.patch")
-sha256sums=('04a05b555b27a7f5cc4f86d301190d7ee2cd4621490d262aed8613495b44316a'
+sha256sums=('dfba245e993d500a4a04a7e859e5e60d9623e769b403919254a140ec1d52aa71'
             '38a53911647fb2308482179cba605ebf12345df37eed23eb4ea67bf0bf041486'
             'b97dc10a262621c95e4b75e024834712efd58561267b59b9171c959ecd9f7164'
             '1b6b489d4f71015bfc56ce739d92df7e9abdb349aed6f5a47dd9c18d84546c1b'
