@@ -6,7 +6,7 @@ pkgname=${_pkgname}-bin
 
 pkgdesc="A tool for reverse engineering Android .apk files"
 
-pkgver=2.12.1
+pkgver=3.0.0
 pkgrel=1
 
 arch=(any)
@@ -19,9 +19,9 @@ depends=("java-runtime>=8")
 provides=("${_pkgname}")
 conflicts=("${_pkgname}" "${_pkgname}-git")
 
-source=("https://github.com/iBotPeaches/Apktool/releases/download/v${pkgver}/apktool_${pkgver}.jar"
+source=("https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_${pkgver}.jar"
   "apktool")
-sha256sums=('66cf4524a4a45a7f56567d08b2c9b6ec237bcdd78cee69fd4a59c8a0243aeafa'
+sha256sums=('06fed946b272eb777fdb6dc0bbef0e13e0d393144ee367a510acba18b41597b9'
   '48a5c9d664c88c8beac4a85461e84437d104a42dac6334322a3bafca12b63bae')
 
 noextract=("apktool_${pkgver}.jar")
