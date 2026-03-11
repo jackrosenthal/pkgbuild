@@ -1,7 +1,7 @@
 # Maintainer: Manuel Stoeckl <com dоt mstoeckl аt wppkgb>
 # SPDX-License-Identifier: 0BSD
 pkgname=swaylock-plugin
-pkgver=1.8.5
+pkgver=1.8.6
 pkgrel=1
 pkgdesc='A fork of the swaylock screen locker for Wayland supporting custom wallpaper drawing programs'
 license=('MIT')
@@ -17,7 +17,7 @@ optdepends=(
 )
 url="https://github.com/mstoeckl/swaylock-plugin"
 source=("https://github.com/mstoeckl/swaylock-plugin/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=("7664a37a22a0b64dbbf37a0c936ce69466f422442adf920b5d28da51d691d05d")
+sha256sums=("a1748db513eebb61c024eb5d29ccdb4ee4da86e7cbb3bf62ba73e5505d47e78f")
 build() {
     arch-meson "$pkgname-$pkgver" build
     meson compile -C build
