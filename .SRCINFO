@@ -1,7 +1,7 @@
 pkgbase = ventoy
 	pkgdesc = A new bootable USB solution
 	pkgver = 1.1.10
-	pkgrel = 3
+	pkgrel = 4
 	url = https://www.ventoy.net/
 	arch = x86_64
 	license = GPL-3.0-or-later

@@ -56,7 +56,7 @@ _busybox_ver=1.32.0             # (Jun 2020) old! FIXME
 _crypt_ver=1.7.5                # (Apr 2017) old! FIXME for veritysetup
 _lunzip_ver=1.11                # (Jan 2019) old! FIXME
 _wimboot_ver=2.7.3              # (Apr 2021) old! FIXME
-pkgrel=3
+pkgrel=4
 pkgdesc="A new bootable USB solution"
 arch=(x86_64)
 url="https://www.ventoy.net/"
@@ -297,7 +297,7 @@ _build_grub() (
   cp -a SRC/grub-$_grub_ver SRC/grub-i386-pc
 
   mkdir -pv ../INSTALL/{EFI/BOOT,grub/i386-pc}
-  local _conf_args=(--prefix="$_VT_GRUB_DIR"/INSTALL --disable-werror)
+  local _conf_args=(--prefix="$_VT_GRUB_DIR"/INSTALL --disable-werror ac_cv_prog_cc_c23=no)
 
   _build_grub-x86_64-efi() (
     cd SRC/grub-x86_64-efi
