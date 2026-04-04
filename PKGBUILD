@@ -1,15 +1,16 @@
 # Maintainer: Jack Chen <redchenjs@live.com>
 
 pkgname=upd72020x-fw
-pkgver=1.0.0
-pkgrel=3
+pkgver=1.1.0
+pkgrel=1
 epoch=1
 pkgdesc="Renesas uPD720201 / uPD720202 USB 3.0 chipsets firmware"
 arch=('any')
-url="https://github.com/denisandroid/uPD72020x-Firmware"
+url="https://git.disroot.org/glektarssza/aur-upd72020x-fw"
 license=('custom')
+# https://git.disroot.org/glektarssza/aur-upd72020x-fw/releases/download/v1.0.0-3/uPD72020x-Firmware-1.0.0.tar.gz
 source=(
-    "uPD72020x-Firmware-$pkgver.tar.gz::https://web.archive.org/web/20240316231746if_/https://codeload.github.com/denisandroid/uPD72020x-Firmware/tar.gz/refs/tags/$pkgver"
+    "uPD72020x-Firmware-$pkgver.tar.gz::https://git.disroot.org/glektarssza/aur-upd72020x-fw/releases/download/v1.0.0-3/uPD72020x-Firmware-1.0.0.tar.gz"
     "remove.hook"
 )
 sha512sums=(
