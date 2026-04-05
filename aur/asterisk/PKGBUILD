@@ -8,7 +8,7 @@
 
 pkgname=asterisk
 pkgver=23.2.2
-pkgrel=1
+pkgrel=2
 pkgdesc='A complete PBX solution'
 arch=(x86_64 i686 aarch64 armv7h)
 url=https://www.asterisk.org
@@ -17,6 +17,7 @@ depends=(alsa-lib
          curl
          jansson
          libedit
+         libsrtp
          libvorbis
          libxml2
          libxslt
@@ -28,7 +29,6 @@ makedepends=(gsm
 optdepends=(dahdi
             gsm
             libpri
-            libsrtp
             libss7
             lua51
             openr2
