@@ -1,11 +1,11 @@
 pkgbase = bambustudio-appimage
 	pkgdesc = PC Software for BambuLab and other 3D printers
 	pkgver = 2.5.2
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/bambulab/BambuStudio
 	arch = x86_64
 	license = AGPL-3.0
-	depends = webkit2gtk
+	depends = webkit2gtk-4.1
 	provides = bambustudio
 	conflicts = bambustudio
 	conflicts = bambustudio-git
