@@ -6,12 +6,12 @@
 
 pkgname=heroku-cli
 pkgver=11.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="CLI to manage Heroku apps and services with forced auto-update removed"
 arch=('any')
 url="https://devcenter.heroku.com/articles/heroku-cli"
 license=('ISC')
-depends=('nodejs>=22.22' 'nodejs<23')
+depends=('nodejs>=22.22')
 makedepends=('git' 'npm')
 optdepends=('git: Deploying to Heroku')
 conflicts=('heroku-cli-bin' 'heroku-client-standalone' 'heroku-toolbelt' 'ruby-heroku')
@@ -42,7 +42,9 @@ package() {
   install -dm755 "$_installdir"
   install -dm755 "$pkgdir/usr/bin"
 
-  cp -r "$srcdir/cli/package.json" "$srcdir/cli/node_modules" "$srcdir/cli/bin" "$srcdir/cli/dist" "$_installdir/"
+  pushd "$srcdir/cli"
+    cp -r package.json oclif.manifest.json node_modules bin dist "$_installdir/"
+  popd
 
   # completions
   local autocompletedir="$srcdir/cli/autocomplete-scripts"
