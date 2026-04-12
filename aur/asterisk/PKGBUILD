@@ -7,8 +7,8 @@
 # Contributor: Denis 'GNUtoo' Carikli <GNUtoo@cyberdimension.org>
 
 pkgname=asterisk
-pkgver=23.2.2
-pkgrel=2
+pkgver=23.3.0
+pkgrel=1
 pkgdesc='A complete PBX solution'
 arch=(x86_64 i686 aarch64 armv7h)
 url=https://www.asterisk.org
@@ -147,7 +147,7 @@ source=("https://downloads.asterisk.org/pub/telephony/$pkgname/releases/$_archiv
         "$pkgname.logrotated"
         "$pkgname.tmpfiles"
         "fix-upnp.patch")
-sha256sums=('dfba245e993d500a4a04a7e859e5e60d9623e769b403919254a140ec1d52aa71'
+sha256sums=('6130db86712d603f7e685adb6870983d5844f1755051b01185e8f6fbf19828ce'
             '38a53911647fb2308482179cba605ebf12345df37eed23eb4ea67bf0bf041486'
             'b97dc10a262621c95e4b75e024834712efd58561267b59b9171c959ecd9f7164'
             '1b6b489d4f71015bfc56ce739d92df7e9abdb349aed6f5a47dd9c18d84546c1b'
