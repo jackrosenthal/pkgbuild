@@ -1,5 +1,5 @@
 pkgname=easyuki
-pkgver=0.0.1
+pkgver=0.0.2
 pkgrel=1
 pkgdesc="Go CLI tool for stateless EFI system partitions with mkinitcpio UKI images"
 arch=('x86_64' 'aarch64')
@@ -9,7 +9,7 @@ depends=('mkinitcpio')
 makedepends=('go')
 options=('!debug')
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('3bf7fa2684c0f8ee8955675a2cdfe4d500322924bcf4b551d07364b7e8815b55')
+sha256sums=('cb72bee9ae049c0f6e5a7bf0f5fb9fd31182591b02afbb50ac035806e327b0fb')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
