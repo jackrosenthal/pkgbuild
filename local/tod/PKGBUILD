@@ -1,0 +1,26 @@
+# Maintainer: Jack Rosenthal <jack@rosenth.al>
+
+pkgname=tod
+pkgver=2.1.1
+pkgrel=1
+pkgdesc='CLI tool for OneDev CI/CD: run jobs locally, checkout PRs, and serve as an MCP server'
+arch=('x86_64')
+url='https://github.com/theonedev/tod'
+license=('MIT')
+makedepends=('go')
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('3811524573297edb8b4046dc17a759fb64f851cb3522095983bbe52287c6c2b5')
+
+build() {
+  export CGO_ENABLED=0
+  export GOFLAGS="-trimpath -mod=readonly -modcacherw"
+
+  cd "${pkgname}-${pkgver}"
+  go build -v -o "${pkgname}" .
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  install -Dvm755 "${pkgname}" -t "${pkgdir}/usr/bin"
+  install -Dvm644 license.txt -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}

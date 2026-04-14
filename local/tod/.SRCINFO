@@ -1,0 +1,12 @@
+pkgbase = tod
+	pkgdesc = CLI tool for OneDev CI/CD: run jobs locally, checkout PRs, and serve as an MCP server
+	pkgver = 2.1.1
+	pkgrel = 1
+	url = https://github.com/theonedev/tod
+	arch = x86_64
+	license = MIT
+	makedepends = go
+	source = tod-2.1.1.tar.gz::https://github.com/theonedev/tod/archive/refs/tags/v2.1.1.tar.gz
+	sha256sums = 3811524573297edb8b4046dc17a759fb64f851cb3522095983bbe52287c6c2b5
+
+pkgname = tod
