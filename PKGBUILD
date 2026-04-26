@@ -2,7 +2,7 @@
 
 pkgname=bstring
 pkgver=1.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Better String Library'
 url='https://mike.steinert.ca/bstring'
 license=('BSD-3-Clause')
@@ -13,7 +13,7 @@ md5sums=('72e6920f00587346da233ede274f5d6a')
 
 arch=('x86_64' 'i686' 'pentium4' 'armv6h' 'armv7h' 'aarch64')
 
-makedepends=()
+makedepends=('meson')
 
 depends=('glibc')
 
