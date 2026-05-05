@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: 0BSD
 # Maintainer: M Stoeckl <com dоt mstoeckl аt code>
 pkgname=windowtolayer
-pkgver=0.3.0
+pkgver=0.3.1
 pkgrel=1
 pkgdesc='Modify existing Wayland clients using xdg-shell to draw as a wallpaper instead'
 license=('GPL-3.0-or-later')
 makedepends=('rust' 'cargo' 'python')
 url='https://gitlab.freedesktop.org/mstoeckl/windowtolayer'
 source=("https://gitlab.freedesktop.org/mstoeckl/$pkgname/-/archive/v$pkgver/$pkgname-v$pkgver.tar.gz")
-sha256sums=('7944aeeb321806e3a45b3c278089c53491be1eb5299b408034ce866a79073729')
+sha256sums=('771be925123f4799b76ddaed16f40d73d820a0e447fd6fc49a2c0b8b92713cf3')
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 
 prepare() {
