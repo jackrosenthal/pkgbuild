@@ -7,7 +7,7 @@
 _pkgname=upscayl
 pkgname=$_pkgname-bin
 pkgver=2.15.0
-pkgrel=8
+pkgrel=9
 pkgdesc='Free and Open Source AI Image Upscaler'
 url='https://github.com/upscayl/upscayl'
 license=('AGPL-3.0-only')
@@ -16,7 +16,6 @@ depends=('libvips' 'openjpeg2' 'electron39' 'nodejs' 'vulkan-driver')
 makedepends=('unzip')
 provides=($_pkgname)
 conflicts=($_pkgname)
-options=('!strip')
 noextract=("upscayl-${pkgver}-linux.zip")
 
 source=(
