@@ -7,7 +7,7 @@
 _pkgname=upscayl
 pkgname=$_pkgname-bin
 pkgver=2.15.0
-pkgrel=9
+pkgrel=10
 pkgdesc='Free and Open Source AI Image Upscaler'
 url='https://github.com/upscayl/upscayl'
 license=('AGPL-3.0-only')
@@ -38,8 +38,9 @@ prepare() {
 package() {
   cd "$srcdir"
 
-  # Launcher script and xdg desktop file
+  # Launcher script, symlink to the cli and xdg desktop file
   install -Dm755 "$_pkgname" "$pkgdir"/usr/bin/$_pkgname
+  ln -s /usr/share/upscayl/bin/upscayl-bin "$pkgdir"/usr/bin/${_pkgname}-ncnn
   install -Dm644 org.upscayl.Upscayl.desktop "$pkgdir"/usr/share/applications/org.upscayl.Upscayl.desktop
 
   # Enter the package folder
