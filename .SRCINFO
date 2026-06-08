@@ -1,6 +1,6 @@
 pkgbase = netatalk
 	pkgdesc = Open-source implementation of the Apple Filing Protocol
-	pkgver = 4.4.3
+	pkgver = 4.5.0
 	pkgrel = 1
 	url = https://netatalk.io
 	arch = x86_64
@@ -11,7 +11,7 @@ pkgbase = netatalk
 	arch = aarch64
 	license = GPL-2.0-or-later
 	makedepends = cmark
-	makedepends = meson
+	makedepends = meson>=0.62
 	makedepends = unicode-character-database
 	depends = acl
 	depends = bash
@@ -26,10 +26,11 @@ pkgbase = netatalk
 	depends = libxcrypt
 	depends = pam
 	depends = perl
-	depends = perl-net-dbus
-	optdepends = localsearch: AFP Spotlight support
+	optdepends = localsearch: AFP Spotlight support (localsearch backend)
+	optdepends = dconf: AFP Spotlight support (localsearch backend)
+	optdepends = tinysparql: AFP Spotlight support (localsearch backend)
+	optdepends = xapian-core: AFP Spotlight support (xapian backend)
 	optdepends = talloc: AFP Spotlight support
-	optdepends = tinysparql: AFP Spotlight support
 	optdepends = avahi>=0.6: Automatic service discovery support
 	optdepends = krb5: Kerberos user authentication support
 	optdepends = mariadb-libs: MySQL CNID backend support
@@ -44,9 +45,10 @@ pkgbase = netatalk
 	backup = etc/afp.conf
 	backup = etc/atalkd.conf
 	backup = etc/extmap.conf
+	backup = etc/macipgw.conf
 	backup = etc/papd.conf
 	backup = etc/pam.d/netatalk
-	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-4-4-3/netatalk-4.4.3.tar.xz
-	md5sums = 2809abff9aa05932152103904a3732ea
+	source = https://github.com/Netatalk/netatalk/releases/download/netatalk-4-5-0/netatalk-4.5.0.tar.xz
+	md5sums = d5578640a87c5366f0ec0b948aa1dcbe
 
 pkgname = netatalk
